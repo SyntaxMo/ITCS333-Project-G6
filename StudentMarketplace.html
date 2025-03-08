@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Style.css">
+    <title>Marketplace</title>
+</head>
+<body>
+     <header>
+        <h1>Website Name</h1>
+        <div class="dropdown">
+            <button class="dropbtn">&#9776;</button>
+            <div class="dropdown-content">
+                <a href="#events">Events Calendar</a>
+                <a href="#reviews">Course Reviews</a>
+                <a href="#notes">Course Notes</a>
+                <a href="#news">Campus News</a>
+                <a href="#clubs">Club Activities</a>
+                <a href="#marketplace">Student Marketplace</a>
+            </div>
+        </div>
+     </header>
+
+     <div id="search">
+        <input type="search" placeholder="Search marketplace...">
+        <button>Filter</button>
+        <button>Sort</button>
+        <button>Add new item</button>
+    </div>
+
+    <!-- Form for adding new items-->
+    <div id="addItemForm">
+        <h3>Add a New Item</h3>
+        <label for="itemName">Item Name:</label>
+        <input type="text" id="itemName"><br>
+
+        <label for="itemDescription">Description:</label>
+        <textarea id="itemDescription"></textarea><br>
+
+        <label for="itemPrice">Price:</label>
+        <input type="number" id="itemPrice"><br>
+
+        <label for="itemImage">Upload Image:</label>
+        <input type="file" id="itemImage"><br>
+
+        <button id="submitItem">Submit Item</button>
+    </div>
+
+    <!-- Placeholder for displaying item -->
+    <div id="marketplaceItems">
+        <h3>Items for Sale:</h3>
+        <!-- Placeholder item -->
+        <div class="item-card">
+            <h4>Item Name</h4>
+            <p><strong>Price:</strong> $100</p>
+            <p><strong>Description:</strong> A great item for sale!</p>
+            <p><strong>Contact information:</strong></p>
+            <img src="" alt="Item Image">
+        </div>
+        <!-- Repeat similar structure for each item -->
+    </div>
+
+    <footer></footer>
+</body>
+</html>
