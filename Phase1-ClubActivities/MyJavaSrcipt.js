@@ -1,4 +1,5 @@
-function closeMenu() {
-  document.getElementById("TheSideBar").style.width = "0";}
+/* Close the navigation sidebar */
+function closeMenu(){document.getElementById("TheSideBar").style.width = "0px";}
 
-function openMenu(){document.getElementById("TheSideBar").style.width="250";}
+/* Open the navigation sidebar */
+function openMenu(){document.getElementById("TheSideBar").style.width="250px";}

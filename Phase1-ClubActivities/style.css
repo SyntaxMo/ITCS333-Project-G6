@@ -1,10 +1,10 @@
 /* structure of logo */
 .logo{
   position: absolute;
-  width: 250px;
-  height: 250px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  background-color: aquamarine;
+  background-color: rgb(116, 116, 116);
 }
 
 /* Sidebar structure */
@@ -54,5 +54,5 @@
     border: none;
     position: absolute;
     top: 10px;
-    left: 10px;
+    
 }
