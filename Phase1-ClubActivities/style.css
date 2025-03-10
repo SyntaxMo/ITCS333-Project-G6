@@ -56,3 +56,20 @@
     top: 10px;
     
 }
+
+.searchBar{
+  position: relative;
+  width: 300px;
+}
+
+/* filter menu structure */
+.filterMenu{
+  height: 50%;
+  width: 200px;
+  position: fixed;
+  top: 10px;
+  left: 15px;
+  background-color: #2E5077;
+  overflow-x: hidden;
+  transition: 0.3s;
+}
