@@ -35,12 +35,11 @@
       <button class="">Search</button>
     </div>
 
-    <!--Filter button, needs js to function-->
-    <div>
-      <button id="Filter" type="button" class="">Filter</button>
-    </div>
+    <!--Filter button, needs js to function-->  
+    <button type="button" onclick="openFilter()">Filter</button>
 
-    <div id="filterForm">
+    <div id="filterForm" class="filterMenu">
+      <span class="close-button" onclick="closeFilter()">Close</span>
       Filter by:
       <form method="get">
         <label for="Club">Choose Club:</label>

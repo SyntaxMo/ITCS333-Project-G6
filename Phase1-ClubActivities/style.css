@@ -1,6 +1,6 @@
 /* structure of logo */
 .logo{
-  position: absolute;
+  /*position: absolute;*/
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -10,8 +10,8 @@
 /* Sidebar structure */
 .sideBar{
   height: 100%;
-  width: 250px;
-  position: fixed;
+  width: 0px;
+  /*position: fixed;*/
   top: 10px;
   left: 15px;
   background-color: #2E5077;
@@ -36,7 +36,7 @@
 
 /* Close the sidebar */
 .close-button {
-    position: absolute;
+    /*position: absolute;*/
     top: 10px;
     right: 20px;
     font-size: 25px;
@@ -52,13 +52,13 @@
     color: white;
     padding: 10px 15px;
     border: none;
-    position: absolute;
+    /*position: absolute;*/
     top: 10px;
     
 }
 
 .searchBar{
-  position: relative;
+  /*position: relative;*/
   width: 300px;
 }
 
@@ -66,7 +66,7 @@
 .filterMenu{
   height: 50%;
   width: 200px;
-  position: fixed;
+  /*position: fixed;*/
   top: 10px;
   left: 15px;
   background-color: #2E5077;
