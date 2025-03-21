@@ -67,6 +67,28 @@
         </details>
       </div>
     </div>
+  
+    <button type="button">Schedule Activity</button>
+    <div class="container">
+      <h2>Activity Details</h2>
+      <form action="#" method="POST" enctype="multipart/form-data">
+        <label for="photo">Activity Photo:</label>
+        <input type="file" id="photo" name="photo" accept="image/*">
 
+        <label for="title">Activity Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="datetime">Date & Time:</label>
+        <input type="datetime-local" id="datetime" name="datetime" required>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4"></textarea>
+
+        <button type="submit">Post The Activity</button>
+      </form>
+  </div>
   </body>
 </html>
