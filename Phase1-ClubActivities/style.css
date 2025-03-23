@@ -1,17 +1,18 @@
 /* structure of logo */
 .logo{
-  /*position: absolute;*/
+  position: absolute;
   width: 120px;
   height: 120px;
   border-radius: 50%;
   background-color: rgb(116, 116, 116);
+  position: static;
+  cursor: pointer;
 }
 
 /* Sidebar structure */
-.sideBar{
+.side-bar{
   height: 0%;
   width: 0px;
-  /*position: fixed;*/
   top: 10px;
   left: 15px;
   background-color: #2E5077;
@@ -20,7 +21,7 @@
 }
 
 /* Styling the side bar */
-.sideBar a {
+.side-bar a {
     padding: 10px 15px;
     text-decoration: none;
     font-size: 18px;
@@ -30,13 +31,12 @@
 }
 
 /* Effect while hovering */
-.sideBar a:hover {
+.side-bar a:hover {
     background-color: #575757;
 }
 
 /* Close the sidebar */
 .close-button {
-    /*position: absolute;*/
     top: 10px;
     right: 20px;
     font-size: 25px;
@@ -44,7 +44,7 @@
     color: white;
 }
 
-/*  Open the sidebar */
+/*  Sidebar Button */
 .open-button {
     font-size: 20px;
     cursor: pointer;
@@ -52,21 +52,17 @@
     color: white;
     padding: 10px 15px;
     border: none;
-    /*position: absolute;*/
-    top: 10px;
-    
 }
 
-.searchBar{
-  /*position: relative;*/
+.search-bar{
   width: 300px;
+  top:110px;
 }
 
 /* filter menu structure */
-.filterMenu{
-  height: 50%;
-  width: 200px;
-  /*position: fixed;*/
+.filter-menu{
+  height: 50px;
+  width: 50px;
   top: 10px;
   left: 15px;
   background-color: #2E5077;
@@ -87,4 +83,24 @@
 
 .card-inner{
   background-color: aqua; 
+}
+
+header{
+  display:inline-flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.add-activity{
+  color: white;
+  max-width: 450px;
+  flex-direction: column;
+  display: flex;
+  background-color: #2E5077;
+  justify-content: flex-end;  
+}
+
+.btn-color{
+  background-color: #79D7BE;
+  outline-color: black;
 }

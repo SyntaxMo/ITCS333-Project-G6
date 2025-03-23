@@ -12,64 +12,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
+    
     <!--This is a logo which should be in a circular container css class="logo"-->
     <div class="logo">
       <img src="" href="">
     </div>
     
-    <button class="open-button" onclick="openMenu()">Menus</button>
+    <header>
+      <button class="open-button" onclick="openMenu()">Menus</button>
 
-    <!--The links are for other modules-->
-    <div id="TheSideBar" class="sideBar">
-      <span class="close-button" onclick="closeMenu()">Close</span> 
-      <a href="">Events Calender</a>
-      <a href="">Course Reviews</a>
-      <a href="">Course Notes</a>
-      <a href="">Campus News</a>
-      <a href="">Student Marketplace</a>  
-    </div>
-
-    <!--Search bar, need js to function-->
-    <div>
-      <input type="text" placeholder="Looking for something" class="searchBar">
-      <button class="">Search</button>
-    </div>
-
-    <!--Filter button, needs js to function-->  
-    <button type="button" onclick="openFilter()">Filter</button>
-
-    <div id="filterForm" class="filterMenu">
-      <span class="close-button" onclick="closeFilter()">Close</span>
-      Filter by:
-      <form method="get">
-        <label for="Club">Choose Club:</label>
-        <select id="Club">
-          <option value="Volleyball">Volleyball Club</option>
-          <option value="Basketball">Basketball Club</option>
-          <option value="Football">Football Club</option>
-          <option value="Swimming">Swimming Club</option>
-          <option value="Literature">Literature Club</option>
-          <option value="Theater">Theater Club</option>
-        </select>
-      </form>
-      <label for="search">Search for word:</label>
-      <input type="text" id="search" placeholder="Enter a word">
-    </div>
-
-    <div class="card-container">
-      <div class="card-outer">
-        <summary>
-          <img src="" alt="">
-          <p>This is the content on when the card collapses</p>
-        </summary>
-        <details class="card-inner">
-          <p>This is the inner card</p>
-        </details>
+      <!--The links are for other modules-->
+      <div id="the-side-bar" class="side-bar">
+        <span class="close-button" onclick="closeMenu()">Close</span> 
+        <a href="">Events Calender</a>
+        <a href="">Course Reviews</a>
+        <a href="">Course Notes</a>
+        <a href="">Campus News</a>
+        <a href="">Student Marketplace</a>  
       </div>
-    </div>
-  
-    <button type="button">Schedule Activity</button>
-    <div class="container">
+
+      <!--Search bar, need js to function-->
+      <div class="search-bar">
+        <input type="text" placeholder="Looking for something" class="searchBar">
+        <button class="">Search</button>
+      </div>
+
+      <!--Filter button, needs js to function-->  
+      <button class="btn btn-primary btn-color" type="button" onclick="openFilter()">Filter</button>
+
+      <!--Filter form choose and apply filter-->
+      <div id="filter-form" class="filter-menu">
+        <span class="close-button" onclick="closeFilter()">Close</span>
+        Filter by:
+        <form method="get">
+          <label for="Club">Choose Club:</label>
+          <select id="Club">
+            <option value="Volleyball">Volleyball Club</option>
+            <option value="Basketball">Basketball Club</option>
+            <option value="Football">Football Club</option>
+            <option value="Swimming">Swimming Club</option>
+            <option value="Literature">Literature Club</option>
+            <option value="Theater">Theater Club</option>
+          </select>
+        </form>
+        <label for="search">Search for word:</label>
+        <input type="text" id="search" placeholder="Enter a word">
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-primary btn-color">Apply</button>
+        </div>
+      </div>
+    </header>
+    <!--Adding activity card button-->
+    <button class="btn btn-primary btn-color" type="button" id="add-btn">Schedule Activity</button>
+    <div class="add-activity">
       <h2>Activity Details</h2>
       <form action="#" method="POST" enctype="multipart/form-data">
         <label for="photo">Activity Photo:</label>
@@ -85,10 +80,59 @@
         <input type="text" id="location" name="location" required>
 
         <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="4"></textarea>
+        <textarea id="description" name="description" rows="3"></textarea>
 
-        <button type="submit">Post The Activity</button>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary btn-color" type="submit">Post The Activity</button>
+        </div>
       </form>
-  </div>
+    </div>
+
+    <!--Activity Cards, need js to edit and add more-->
+    <div class="card" style="width: 18rem;">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Activity Title</h5>
+        <p class="card-text">
+          <h6>Location: </h6>
+          <h6>Date&Time: </h6>
+        </p>
+        <details>
+          <summary>More Info</summary>
+        </details>
+      </div>
+    </div>
+
+    <div class="card" style="width: 18rem;">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">
+          <h6>Location: </h6>
+          <h6>Date&Time: </h6>
+        </p>
+        <details>
+          <summary>More Info</summary>
+        </details>
+      </div>
+    </div>
+
+    <!--Pagination (move between pages) bar-->
+    <nav aria-label="...">
+      <ul class="pagination">
+        <li class="page-item disabled">
+          <a class="page-link">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active" aria-current="page">
+          <a class="page-link" href="#">2</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  
   </body>
 </html>
