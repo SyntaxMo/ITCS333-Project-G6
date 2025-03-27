@@ -13,8 +13,9 @@
 .side-bar{
   height: 0%;
   width: 0px;
-  top: 10px;
-  left: 15px;
+  top: 120px;
+  left: 0px;
+  position: fixed;
   background-color: #2E5077;
   overflow-x: hidden;
   transition: 0.3s;
@@ -46,12 +47,11 @@
 
 /*  Sidebar Button */
 .open-button {
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #2E5077;
-    color: white;
-    padding: 10px 15px;
-    border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+  padding: 10px 15px;
+  border: none;
 }
 
 .search-bar{
@@ -63,26 +63,13 @@
 .filter-menu{
   height: 50px;
   width: 50px;
-  top: 10px;
-  left: 15px;
+  top: 125px;
+  left: 380px;
+  position: fixed;
+  color: white;
   background-color: #2E5077;
   overflow-x: hidden;
   transition: 0.3s;
-}
-
-/*The colors are for differentiating between each div*/
-.card-container{
-  background-color: #2E5077;
-  height: 250px;
-  width: 225px;
-}
-.card-outer{
-  height: 175px;
-  background-color: aliceblue;
-}
-
-.card-inner{
-  background-color: aqua; 
 }
 
 header{
@@ -94,8 +81,12 @@ header{
 .add-activity{
   color: white;
   max-width: 450px;
+  width: 0px;
+  height: 0px; 
   flex-direction: column;
-  display: flex;
+  position: fixed;
+  top: 500;
+  left: 450;
   background-color: #2E5077;
   justify-content: flex-end;  
 }

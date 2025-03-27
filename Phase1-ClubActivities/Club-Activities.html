@@ -19,11 +19,10 @@
     </div>
     
     <header>
-      <button class="open-button" onclick="openMenu()">Menus</button>
-
+      <button class="open-button btn-color" onclick="openNavBar()">Menus</button>
       <!--The links are for other modules-->
       <div id="the-side-bar" class="side-bar">
-        <span class="close-button" onclick="closeMenu()">Close</span> 
+        <span class="close-button" onclick="closeNavBar()">Close</span> 
         <a href="">Events Calender</a>
         <a href="">Course Reviews</a>
         <a href="">Course Notes</a>
@@ -57,14 +56,17 @@
         </form>
         <label for="search">Search for word:</label>
         <input type="text" id="search" placeholder="Enter a word">
-        <div class="d-grid gap-2">
-          <button type="button" class="btn btn-primary btn-color">Apply</button>
+        <div class="d-grid gap-1">
+          <button type="button" class="btn btn-primary btn-color">Apply Filter</button>
+          <button type="button" class="btn btn-secondary btn-color">Reset Filter</button>
         </div>
       </div>
+
+      <!--Adding activity card button-->
+    <button class="btn btn-primary btn-color" type="button" id="add-btn" onclick="openScheduleActivity()">Schedule Activity</button>
     </header>
-    <!--Adding activity card button-->
-    <button class="btn btn-primary btn-color" type="button" id="add-btn">Schedule Activity</button>
-    <div class="add-activity">
+    <div class="add-activity" id="Schedule-activity">
+      <span class="close-button" onclick="closeScheduleActivity()">Close</span>
       <h2>Activity Details</h2>
       <form action="#" method="POST" enctype="multipart/form-data">
         <label for="photo">Activity Photo:</label>
@@ -87,7 +89,7 @@
         </div>
       </form>
     </div>
-
+    
     <!--Activity Cards, need js to edit and add more-->
     <div class="card" style="width: 18rem;">
       <img src="..." class="card-img-top" alt="...">
