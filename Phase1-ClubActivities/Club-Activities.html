@@ -17,11 +17,12 @@
     <div class="logo">
       <img src="" href="">
     </div>
+    <h2>Welcome, to Club Activities</h2>
     
     <header>
-      <button class="open-button btn-color" onclick="openNavBar()">Menus</button>
+      <button class="btn btn-primary btn-color" onclick="openNavBar()">Menus</button>
       <!--The links are for other modules-->
-      <div id="the-side-bar" class="side-bar">
+      <div id="the-side-bar" class="side-bar z-prio">
         <span class="close-button" onclick="closeNavBar()">Close</span> 
         <a href="">Events Calender</a>
         <a href="">Course Reviews</a>
@@ -40,7 +41,7 @@
       <button class="btn btn-primary btn-color" type="button" onclick="openFilter()">Filter</button>
 
       <!--Filter form choose and apply filter-->
-      <div id="filter-form" class="filter-menu">
+      <div id="filter-form" class="filter-menu z-prio">
         <span class="close-button" onclick="closeFilter()">Close</span>
         Filter by:
         <form method="get">
@@ -64,11 +65,11 @@
 
       <!--Adding activity card button-->
     <button class="btn btn-primary btn-color" type="button" id="add-btn" onclick="openScheduleActivity()">Schedule Activity</button>
-    </header>
-    <div class="add-activity" id="Schedule-activity">
+
+    <!--Activity card info form-->
+    <div class="add-activity z-prio" id="Schedule-activity">
       <span class="close-button" onclick="closeScheduleActivity()">Close</span>
       <h2>Activity Details</h2>
-      <form action="#" method="POST" enctype="multipart/form-data">
         <label for="photo">Activity Photo:</label>
         <input type="file" id="photo" name="photo" accept="image/*">
 
@@ -87,40 +88,85 @@
         <div class="d-grid gap-2">
           <button class="btn btn-primary btn-color" type="submit">Post The Activity</button>
         </div>
-      </form>
     </div>
-    
-    <!--Activity Cards, need js to edit and add more-->
-    <div class="card" style="width: 18rem;">
-      <img src="..." class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Activity Title</h5>
-        <p class="card-text">
-          <h6>Location: </h6>
-          <h6>Date&Time: </h6>
-        </p>
-        <details>
-          <summary>More Info</summary>
-        </details>
-      </div>
-    </div>
+    </header>
 
-    <div class="card" style="width: 18rem;">
-      <img src="..." class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">
-          <h6>Location: </h6>
-          <h6>Date&Time: </h6>
-        </p>
-        <details>
-          <summary>More Info</summary>
-        </details>
+    <div class="main-body">
+      <!--Activity Cards, need js to edit and add more-->
+      <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Activity Title</h5>
+          <p class="card-text">
+            <h6>Location: </h6>
+            <h6>Date&Time: </h6>
+          </p>
+          <details>
+            <summary>More Info</summary>
+          </details>
+        </div>
+      </div>
+
+      
+      <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            <h6>Location: </h6>
+            <h6>Date&Time: </h6>
+          </p>
+          <details>
+            <summary>More Info</summary>
+          </details>
+        </div>
+      </div>
+
+      <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            <h6>Location: </h6>
+            <h6>Date&Time: </h6>
+          </p>
+          <details>
+            <summary>More Info</summary>
+          </details>
+        </div>
+      </div>
+
+      <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            <h6>Location: </h6>
+            <h6>Date&Time: </h6>
+          </p>
+          <details>
+            <summary>More Info</summary>
+          </details>
+        </div>
+      </div>
+
+      <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            <h6>Location: </h6>
+            <h6>Date&Time: </h6>
+          </p>
+          <details>
+            <summary>More Info</summary>
+          </details>
+        </div>
       </div>
     </div>
 
     <!--Pagination (move between pages) bar-->
-    <nav aria-label="...">
+    <nav aria-label="..." class="pag-center">
       <ul class="pagination">
         <li class="page-item disabled">
           <a class="page-link">Previous</a>
