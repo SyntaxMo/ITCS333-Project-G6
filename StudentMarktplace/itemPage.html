@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #F6F4F0;
+            color: #2E5077;
+        }
+
+        /* Header Styling */
+        .navbar {
+            background-color: #2E5077 !important;
+        }
+
+        .navbar-light .navbar-nav .nav-link {
+            color: #F6F4F0;
+        }
+
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #79D7BE;
+        }
+
+        /* Back Button */
+        .btn-primary {
+            background-color: #4DA1A9;
+            border-color: #4DA1A9;
+            color: #F6F4F0;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #79D7BE;
+            border-color: #79D7BE;
+            color: #2E5077;
+        }
+
+        /* Card Styling */
+        .card {
+            border: 1px solid #4DA1A9;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            color: #2E5077;
+        }
+
+        .card-text {
+            color: #4DA1A9;
+        }
+
+        /* Comments Section */
+        .comment-box {
+            border: 1px solid #4DA1A9;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #ffffff;
+        }
+
+        .comment-box h5 {
+            color: #2E5077;
+        }
+
+        .comment-box p {
+            color: #4DA1A9;
+        }
+
+        .form-control {
+            border-color: #4DA1A9;
+        }
+
+        .btn-success {
+            background-color: #4DA1A9;
+            border-color: #4DA1A9;
+            color: #F6F4F0;
+            transition: background-color 0.3s;
+        }
+
+        .btn-success:hover {
+            background-color: #79D7BE;
+            border-color: #79D7BE;
+            color: #2E5077;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- Header -->
+<header class="p-3 navbar navbar-expand-md navbar-light bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="#"><h1>UniHub</h1></a>
+    
+        <!-- Button to toggle the menu on smaller screens -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Navigation menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                <a class="nav-link text-white" href="#events">Events Calendar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#reviews">Course Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#notes">Course Notes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#news">Campus News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#clubs">Club Activities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#marketplace">Student Marketplace</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<main class="container mt-4">
+
+        <!-- Back, Edit, and Delete Buttons -->
+    <div class="mb-3 d-flex gap-2">
+        <a href="StudentMarketplace.html" class="btn btn-primary">Back to Marketplace</a>
+        <button class="btn btn-outline-secondary">Edit</button>
+        <button class="btn btn-danger">Delete</button>
+    </div>
+
+
+    <!-- Item Details Section -->
+    <section class="row align-items-start">
+        <!-- Image Section -->
+        <div class="col-md-5">
+            <img src="images/dumbCar.jpg" class="img-fluid rounded" alt="Item Image" width="500px">
+        </div>
+
+        <!-- Details Section -->
+        <div class="col-md-7">
+            <h2 class="card-title">Car for Sale</h2> <br>
+            <p class="card-text"><strong>Price:</strong> 1 BHD</p>
+            <p class="card-text"><strong>Description:</strong> This car is useless, I don't want it anymore! it keeps meowing and eating my food then slapping me! everyday i wake up to this car standing on my face staring into the void of my soul please buy it.</p>
+        </div>
+    </section>
+
+    <!-- Comments Section -->
+    <section class="mt-5">
+        <h3>Comments:</h3>
+
+       <!-- Add New Comment -->
+        <div class="card mt-4 mb-4"> <!-- Added mb-4 here for margin bottom -->
+            <div class="card-body">
+                <h5 class="card-title">Add a Comment</h5>
+                <form>
+                    <div class="mb-3">
+                        <label for="commenterName" class="form-label">Your Name:</label>
+                        <input type="text" class="form-control" id="commenterName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="commentText" class="form-label">Your Comment:</label>
+                        <textarea class="form-control" id="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Submit Comment</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Placeholder Comments -->
+        <div class="comment-box">
+            <h5>hassan alaradi</h5>
+            <p>i want to get married</p>
+        </div>
+        <div class="comment-box">
+            <h5>ahmed taha</h5>
+            <p>Is the car still available? Please let me know i cant live without this car!</p>
+        </div>
+        <div class="comment-box">
+            <h5>mohammed alsaygh</h5>
+            <p>1 BHD for a car? is it better than a camry??</p>
+        </div>
+        <div class="comment-box">
+            <h5>firas abdulla</h5>
+            <p>the lemon>>></p>
+        </div>
+        <div class="comment-box">
+            <h5>mohammed essam</h5>
+            <p>wish i could drive the car :p</p>
+        </div>
+
+        
+    </section>
+</main>
+
+<footer class="text-center py-3 mt-5">
+    &copy; 2025 Student Marketplace. All rights reserved.
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
