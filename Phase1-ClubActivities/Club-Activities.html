@@ -22,7 +22,7 @@
     <header>
       <button class="btn btn-primary btn-color" onclick="openNavBar()">Menus</button>
       <!--The links are for other modules-->
-      <div id="the-side-bar" class="side-bar z-prio">
+      <div id="the-side-bar" class="side-bar z-prio box-texture">
         <span class="close-button" onclick="closeNavBar()">Close</span> 
         <a href="">Events Calender</a>
         <a href="">Course Reviews</a>
@@ -32,18 +32,18 @@
       </div>
 
       <!--Search bar, need js to function-->
-      <div class="search-bar">
-        <input type="text" placeholder="Looking for something" class="searchBar">
-        <button class="">Search</button>
+      <div class="search-container">
+        <input type="text" placeholder="Looking for something" class="search-input">
+        <button class="btn btn-primary btn-color">Search</button>
       </div>
 
       <!--Filter button, needs js to function-->  
       <button class="btn btn-primary btn-color" type="button" onclick="openFilter()">Filter</button>
 
       <!--Filter form choose and apply filter-->
-      <div id="filter-form" class="filter-menu z-prio">
+      <div id="filter-form" class="filter-menu z-prio box-texture">
         <span class="close-button" onclick="closeFilter()">Close</span>
-        Filter by:
+        <h6>Filter by:</h6>
         <form method="get">
           <label for="Club">Choose Club:</label>
           <select id="Club">
@@ -67,11 +67,10 @@
     <button class="btn btn-primary btn-color" type="button" id="add-btn" onclick="openScheduleActivity()">Schedule Activity</button>
 
     <!--Activity card info form-->
-    <div class="add-activity z-prio" id="Schedule-activity">
-      <span class="close-button" onclick="closeScheduleActivity()">Close</span>
+    <div class="add-activity z-prio box-texture" id="Schedule-activity">
       <h2>Activity Details</h2>
-        <label for="photo">Activity Photo:</label>
-        <input type="file" id="photo" name="photo" accept="image/*">
+        <label class="schedule-label" for="photo">Activity Photo:</label>
+        <input class="schedule-input" type="file" id="photo" name="photo" accept="image/*">
 
         <label for="title">Activity Title:</label>
         <input type="text" id="title" name="title" required>
@@ -87,28 +86,32 @@
 
         <div class="d-grid gap-2">
           <button class="btn btn-primary btn-color" type="submit">Post The Activity</button>
+          <button id="delete" class="btn btn-primary btn-color" type="submit" onclick="closeScheduleActivity()">Cancel</button>
         </div>
     </div>
     </header>
 
     <div class="main-body">
       <!--Activity Cards, need js to edit and add more-->
-      <div class="card" style="width: 18rem;">
+      <div class="card">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title">Activity Title</h5>
+          <h5 class="card-title">Test card</h5>
           <p class="card-text">
-            <h6>Location: </h6>
-            <h6>Date&Time: </h6>
+            <h6>Location: Home</h6>
+            <h6>Date&Time: 30-3-2025, 5:20AM</h6>
           </p>
           <details>
             <summary>More Info</summary>
+            <p>hello, world</p>
           </details>
+          <button id="edit" class="btn btn-primary" type="submit">Edit</button>
+          <button id="delete" class="btn btn-primary" type="submit">Delete</button>
         </div>
       </div>
 
       
-      <div class="card" style="width: 18rem;">
+      <div class="card">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
@@ -119,10 +122,12 @@
           <details>
             <summary>More Info</summary>
           </details>
+          <button id="edit" class="btn btn-primary" type="submit">Edit</button>
+          <button id="delete" class="btn btn-primary" type="submit">Delete</button>
         </div>
       </div>
 
-      <div class="card" style="width: 18rem;">
+      <div class="card">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
@@ -133,10 +138,12 @@
           <details>
             <summary>More Info</summary>
           </details>
+          <button id="edit" class="btn btn-primary" type="submit">Edit</button>
+          <button id="delete" class="btn btn-primary" type="submit">Delete</button>
         </div>
       </div>
 
-      <div class="card" style="width: 18rem;">
+      <div class="card">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
@@ -147,10 +154,12 @@
           <details>
             <summary>More Info</summary>
           </details>
+          <button id="edit" class="btn btn-primary" type="submit">Edit</button>
+          <button id="delete" class="btn btn-primary" type="submit">Delete</button>
         </div>
       </div>
 
-      <div class="card" style="width: 18rem;">
+      <div class="card">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
@@ -161,26 +170,29 @@
           <details>
             <summary>More Info</summary>
           </details>
+          <button id="edit" class="btn btn-primary" type="submit">Edit</button>
+          <button id="delete" class="btn btn-primary" type="submit">Delete</button>
         </div>
       </div>
     </div>
 
-    <!--Pagination (move between pages) bar-->
-    <nav aria-label="..." class="pag-center">
-      <ul class="pagination">
-        <li class="page-item disabled">
-          <a class="page-link">Previous</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active" aria-current="page">
-          <a class="page-link" href="#">2</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">Next</a>
-        </li>
-      </ul>
-    </nav>
-  
+    <footer>
+      <!--Pagination (move between pages) bar-->
+      <nav aria-label="..." class="pag-center">
+        <ul class="pagination">
+          <li class="page-item disabled">
+            <a class="page-link">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </footer>
   </body>
 </html>
