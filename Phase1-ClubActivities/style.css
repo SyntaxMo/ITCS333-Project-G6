@@ -13,7 +13,7 @@
 .side-bar{
   height: 0%;
   width: 0rem;
-  top: 175px;
+  top: 170px;
   left: 0px;
   position: fixed;
   background-color: #2E5077;
@@ -38,23 +38,18 @@
 
 /* Close the sidebar */
 .close-button {
-    top: 10px;
-    right: 20px;
-    font-size: 25px;
-    cursor: pointer;
-    color: white;
-}
-
-.search-bar{
-  width: 300px;
-  top:110px;
+  top: 10px;
+  right: 20px;
+  font-size: 25px;
+  cursor: pointer;
+  color: white;
 }
 
 /* filter menu structure */
 .filter-menu{
   height: 0rem;
   width: 0rem;
-  top: 175px;
+  top: 170px;
   left: 232px;
   position: fixed;
   color: white;
@@ -110,6 +105,7 @@ header{
 .card{
   margin-bottom: 5px;
   width: 25rem;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
 }
 
 .z-prio{
@@ -137,16 +133,17 @@ header{
 .schedule-label{
   font-size: 1fr;
   font-weight: bold;
+  padding-right: 5px;
 }
 
 .search-container {
   display: flex;
-  gap: 5px;
+  gap: 1px;
 }
 
 .search-input {
   flex: 1;
-  padding: 8px 12px;
+  padding: 4px 8px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   font-size: 15px;
@@ -166,4 +163,27 @@ header{
 footer{
   width: 100%;
   height: 6rem;
+}
+
+.btn-size{
+  font-size: 0.7rem;
+}
+
+#page-module {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 2.1rem;
+  letter-spacing: 0;
+  line-height: 1.1;
+  color: #1a1a1a;
+  font-style: italic;
+}
+
+.form-style{
+  display: inline;
+  width: 100%;
+}
+
+.input-size{
+  width: 100%;
 }

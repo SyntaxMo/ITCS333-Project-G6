@@ -6,13 +6,13 @@ function closeNavBar(){
 
 /* Open the navigation sidebar */
 function openNavBar(){
-  document.getElementById("the-side-bar").style.width="13em";
+  document.getElementById("the-side-bar").style.width="13rem";
   document.getElementById("the-side-bar").style.height = "100%";
 }
 
 function openFilter(){
   document.getElementById("filter-form").style.width="18rem"
-  document.getElementById("filter-form").style.height="15rem"
+  document.getElementById("filter-form").style.height="16.5rem"
 }
 
 function closeFilter(){
@@ -21,11 +21,21 @@ function closeFilter(){
 }
 
 function openScheduleActivity(){
-  document.getElementById("Schedule-activity").style.width="23rem"
-  document.getElementById("Schedule-activity").style.height="24rem"
+  document.getElementById("Schedule-activity").style.width="24rem"
+  document.getElementById("Schedule-activity").style.height="28.2rem"
 }
 
 function closeScheduleActivity(){
-  document.getElementById("Schedule-activity").style.width="0px"
-  document.getElementById("Schedule-activity").style.height="0px"
+  document.getElementById("Schedule-activity").style.width="0rem"
+  document.getElementById("Schedule-activity").style.height="0rem"
+}
+
+function closeEditActivity(){
+  document.getElementById("edit-activity").style.width="0rem"
+  document.getElementById("edit-activity").style.height="0rem"
+}
+
+function openEditActivity(){
+  document.getElementById("edit-activity").style.width="24rem"
+  document.getElementById("edit-activity").style.height="28.2rem"
 }

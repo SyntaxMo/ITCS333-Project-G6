@@ -17,10 +17,10 @@
     <div class="logo">
       <img src="" href="">
     </div>
-    <h2>Welcome, to Club Activities</h2>
+    <h2 id="page-module">Welcome, to Club Activities</h2>
     
     <header>
-      <button class="btn btn-primary btn-color" onclick="openNavBar()">Menus</button>
+      <button class="btn btn-primary btn-color btn-size" onclick="openNavBar()">Menus</button>
       <!--The links are for other modules-->
       <div id="the-side-bar" class="side-bar z-prio box-texture">
         <span class="close-button" onclick="closeNavBar()">Close</span> 
@@ -34,19 +34,21 @@
       <!--Search bar, need js to function-->
       <div class="search-container">
         <input type="text" placeholder="Looking for something" class="search-input">
-        <button class="btn btn-primary btn-color">Search</button>
+        <button class="btn btn-primary btn-color btn-size">Search</button>
       </div>
 
       <!--Filter button, needs js to function-->  
-      <button class="btn btn-primary btn-color" type="button" onclick="openFilter()">Filter</button>
+      <button class="btn btn-primary btn-color btn-size" type="button" onclick="openFilter()">Filter</button>
 
       <!--Filter form choose and apply filter-->
       <div id="filter-form" class="filter-menu z-prio box-texture">
         <span class="close-button" onclick="closeFilter()">Close</span>
         <h6>Filter by:</h6>
         <form method="get">
-          <label for="Club">Choose Club:</label>
-          <select id="Club">
+          <label class="schedule-label" for="Club">Choose Club:</label>
+          <div class="form-style">
+          <select class="input-size" id="Club">
+            <option value="">Select a Club</option>
             <option value="Volleyball">Volleyball Club</option>
             <option value="Basketball">Basketball Club</option>
             <option value="Football">Football Club</option>
@@ -55,8 +57,11 @@
             <option value="Theater">Theater Club</option>
           </select>
         </form>
-        <label for="search">Search for word:</label>
-        <input type="text" id="search" placeholder="Enter a word">
+          </div>
+        <label class="schedule-label" for="search">Search for a word:</label>
+        <div class=form-style>
+          <input class="input-size" type="text" id="search" placeholder="Enter a word">
+        </div>
         <div class="d-grid gap-1">
           <button type="button" class="btn btn-primary btn-color">Apply Filter</button>
           <button type="button" class="btn btn-secondary btn-color">Reset Filter</button>
@@ -64,26 +69,31 @@
       </div>
 
       <!--Adding activity card button-->
-    <button class="btn btn-primary btn-color" type="button" id="add-btn" onclick="openScheduleActivity()">Schedule Activity</button>
+    <button class="btn btn-primary btn-color btn-size" type="button" id="add-btn" onclick="openScheduleActivity()">Schedule Activity</button>
 
     <!--Activity card info form-->
     <div class="add-activity z-prio box-texture" id="Schedule-activity">
       <h2>Activity Details</h2>
-        <label class="schedule-label" for="photo">Activity Photo:</label>
-        <input class="schedule-input" type="file" id="photo" name="photo" accept="image/*">
-
-        <label for="title">Activity Title:</label>
-        <input type="text" id="title" name="title" required>
-
-        <label for="datetime">Date & Time:</label>
-        <input type="datetime-local" id="datetime" name="datetime" required>
-
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" required>
-
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="3"></textarea>
-
+        <div class="form-style">
+          <label class="schedule-label" for="photo">Activity Photo:</label>
+          <input class="input-size" type="file" id="photo" name="photo" accept="image/*">
+       </div>
+        <div class="form-style">
+          <label class="schedule-label" for="title">Activity Title:</label>
+          <input class="input-size" type="text" id="title" name="title" required>
+        </div>
+        <div class="form-style">
+          <label class="schedule-label" for="datetime">Date & Time:</label>
+          <input class="input-size" type="datetime-local" id="datetime" name="datetime" required>
+        </div>
+        <div class="form-style">
+          <label class="schedule-label" for="location">Location:</label>
+          <input class="input-size" type="text" id="location" name="location" required>
+        </div>
+        <div class="form-style">
+          <label class="schedule-label" for="description">Description:</label>
+          <textarea class="input-size" id="description" name="description" rows="3"></textarea>
+        </div>
         <div class="d-grid gap-2">
           <button class="btn btn-primary btn-color" type="submit">Post The Activity</button>
           <button id="delete" class="btn btn-primary btn-color" type="submit" onclick="closeScheduleActivity()">Cancel</button>
@@ -91,8 +101,36 @@
     </div>
     </header>
 
+    <div class="add-activity z-prio box-texture" id="edit-activity">
+      <h2>Edit Activity Details</h2>
+        <div class="form-style">
+          <label class="schedule-label" for="photo">Activity Photo:</label>
+          <input class="input-size" type="file" id="photo" name="photo" accept="image/*">
+       </div>
+        <div class="form-style">
+          <label class="schedule-label" for="title">Activity Title:</label>
+          <input class="input-size" type="text" id="title" name="title" required>
+        </div>
+        <div class="form-style">
+          <label class="schedule-label" for="datetime">Date & Time:</label>
+          <input class="input-size" type="datetime-local" id="datetime" name="datetime" required>
+        </div>
+        <div class="form-style">
+          <label class="schedule-label" for="location">Location:</label>
+          <input class="input-size" type="text" id="location" name="location" required>
+        </div>
+        <div class="form-style">
+          <label class="schedule-label" for="description">Description:</label>
+          <textarea class="input-size" id="description" name="description" rows="3"></textarea>
+        </div>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary btn-color" type="submit">Edit The Posy</button>
+          <button id="delete" class="btn btn-primary btn-color" type="submit" onclick="closeEditActivity()">Cancel Editing</button>
+        </div>
+    </div>
+
     <div class="main-body">
-      <!--Activity Cards, need js to edit and add more-->
+      <!--Activity Cards, need js to edit, delete and add more-->
       <div class="card">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
@@ -105,11 +143,10 @@
             <summary>More Info</summary>
             <p>hello, world</p>
           </details>
-          <button id="edit" class="btn btn-primary" type="submit">Edit</button>
+          <button id="edit" class="btn btn-primary" type="submit" onclick="openEditActivity()">Edit</button>
           <button id="delete" class="btn btn-primary" type="submit">Delete</button>
         </div>
       </div>
-
       
       <div class="card">
         <img src="..." class="card-img-top" alt="...">
