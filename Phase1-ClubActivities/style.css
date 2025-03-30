@@ -50,7 +50,7 @@
   height: 0rem;
   width: 0rem;
   top: 170px;
-  left: 232px;
+  left: 192px;
   position: fixed;
   color: white;
   background-color: #2E5077;
@@ -73,7 +73,7 @@ header{
   width: 0px;
   position: fixed;
   top: 170px;
-  left: 4.9rem;
+  left: 3rem;
   background-color: #2E5077;
   justify-content: center;
   overflow-x: hidden;
@@ -186,4 +186,14 @@ footer{
 
 .input-size{
   width: 100%;
+}
+
+/* Tablet View */
+@media only screen and (max-width: 481px) and (max-width:768px){
+  
+}
+
+/* PC View */
+@media only screen and (max-width: 769px){
+  
 }
