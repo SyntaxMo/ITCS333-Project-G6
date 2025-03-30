@@ -69,8 +69,8 @@ header{
 
 .add-activity{
   color: white;
-  height: 0px; 
-  width: 0px;
+  height: 0rem; 
+  width: 0rem;
   position: fixed;
   top: 170px;
   left: 3rem;
@@ -172,7 +172,7 @@ footer{
 #page-module {
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700;
-  font-size: 2.1rem;
+  font-size: 1.8rem;
   letter-spacing: 0;
   line-height: 1.1;
   color: #1a1a1a;
@@ -188,12 +188,100 @@ footer{
   width: 100%;
 }
 
+p {
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+}
+
 /* Tablet View */
-@media only screen and (max-width: 481px) and (max-width:768px){
-  
+@media only screen and (min-width: 500px){
+  .btn-size{
+    font-size: 0.8rem;
+  }
+
+  .add-activity{
+    left: 3.55rem;
+  }
+
+  .filter-menu{
+    left: 213px;
+  }
+}
+
+@media screen and (min-width:550px){
+  .add-activity{
+    left: 5.2rem;
+  }
+
+  .filter-menu{
+    left: 262px;
+  }
+}
+
+/* Big Tablet View */
+@media only screen and (min-width: 600px){
+  .btn-size{
+    font-size: 1rem;
+  }
+
+  .add-activity{
+    left: 6.7rem;
+  }
+
+  .filter-menu{
+    left: 312px;
+  }
+
+  .side-bar a{
+    font-size: 22px;
+  }
+}
+
+@media only screen and (min-width: 650px){
+  .btn-size{
+    font-size: 1.2rem;
+  }
+
+  .add-activity{
+    left: 8.3rem;
+  }
+
+  .filter-menu{
+    left: 363px;
+  }
+
+}
+
+@media only screen and (min-width: 700px){
+  .btn-size{
+    font-size: 1.4rem;
+  }
+
+  .add-activity{
+    left: 10rem;
+  }
+
+  .filter-menu{
+    left: 413px;
+  }
+
+  .card{
+    width: 30rem;
+  }
 }
 
 /* PC View */
-@media only screen and (max-width: 769px){
-  
+@media only screen and (min-width: 769px){
+  .main-body{
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .side-bar a{
+    font-size: 28px;
+  }
+
+  .add-activity{
+    
+  }
 }

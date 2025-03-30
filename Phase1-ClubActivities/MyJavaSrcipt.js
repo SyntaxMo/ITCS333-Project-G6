@@ -1,3 +1,4 @@
+function checkViewport() { return window.innerWidth || document.documentElement.clientWidth;}
 /* Close the navigation sidebar */
 function closeNavBar(){
   document.getElementById("the-side-bar").style.width = "0rem";
@@ -6,8 +7,19 @@ function closeNavBar(){
 
 /* Open the navigation sidebar */
 function openNavBar(){
+ if(checkViewport() > 599 && checkViewport() < 769){
+  document.getElementById("the-side-bar").style.width="18rem";
+  document.getElementById("the-side-bar").style.height = "100%";
+ }
+  else if(checkViewport() >= 769 ){
+    document.getElementById("the-side-bar").style.width="22rem";
+  document.getElementById("the-side-bar").style.height = "100%";
+  }
+ 
+ else{
   document.getElementById("the-side-bar").style.width="13rem";
   document.getElementById("the-side-bar").style.height = "100%";
+ }
 }
 
 function openFilter(){
@@ -21,8 +33,14 @@ function closeFilter(){
 }
 
 function openScheduleActivity(){
-  document.getElementById("Schedule-activity").style.width="24rem"
-  document.getElementById("Schedule-activity").style.height="28.2rem"
+  if(checkViewport() >= 769){
+    document.getElementById("Schedule-activity").style.width="24rem"
+    document.getElementById("Schedule-activity").style.height="29rem"
+  }
+  else{
+    document.getElementById("Schedule-activity").style.width="24rem"
+    document.getElementById("Schedule-activity").style.height="28.2rem"
+  }
 }
 
 function closeScheduleActivity(){
@@ -36,6 +54,17 @@ function closeEditActivity(){
 }
 
 function openEditActivity(){
-  document.getElementById("edit-activity").style.width="24rem"
-  document.getElementById("edit-activity").style.height="28.2rem"
+  if(checkViewport() >= 769){
+    document.getElementById("edit-activity").style.width="24rem"
+    document.getElementById("edit-activity").style.height="29rem"
+  }
+  else{
+    document.getElementById("edit-activity").style.width="24rem"
+    document.getElementById("edit-activity").style.height="28.2rem"
+  }
+}
+
+function toggleCardPrio(){
+  document.getElementById('edit-activity').classList.add('z-prio')
+  document.getElementById('Schedule-activity').classList.add('z-prio')
 }
