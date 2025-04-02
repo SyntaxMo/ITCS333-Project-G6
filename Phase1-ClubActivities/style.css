@@ -1,287 +1,198 @@
-/* structure of logo */
-.logo{
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-color: rgb(116, 116, 116);
-  position: static;
-  cursor: pointer;
+/* Navigation bar color */
+.navbar {
+  background-color: #2E5077 !important;
 }
 
-/* Sidebar structure */
-.side-bar{
-  height: 0%;
-  width: 0rem;
-  top: 170px;
-  left: 0px;
-  position: fixed;
-  background-color: #2E5077;
-  overflow-x: hidden;
-  transition: 0.3s;
+.navbar-toggler {
+  border: 0 !important;
 }
 
-/* Styling the side bar */
-.side-bar a {
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 18px;
-    color: white;
-    display: block;
-    transition: 0.2s;
+.navbar-toggler:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 /* Effect while hovering */
 .side-bar a:hover {
-    background-color: #575757;
+  background-color: #575757;
 }
 
-/* Close the sidebar */
-.close-button {
-  top: 10px;
-  right: 20px;
-  font-size: 25px;
-  cursor: pointer;
-  color: white;
+body {
+  background-color: #F6F4F0;
+  color: #2E5077;
 }
 
-/* filter menu structure */
-.filter-menu{
-  height: 0rem;
-  width: 0rem;
-  top: 170px;
-  left: 192px;
-  position: fixed;
-  color: white;
-  background-color: #2E5077;
-  overflow-x: hidden;
-  transition: 0.3s;
+/* Header Styling */
+.navbar {
+  background-color: #2E5077 !important;
 }
 
-header{
-  display:inline-flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 15px;
+.navbar-toggler {
+  border: 0 !important;
 }
 
-.add-activity{
-  color: white;
-  height: 0rem; 
-  width: 0rem;
-  position: fixed;
-  top: 170px;
-  left: 3rem;
-  background-color: #2E5077;
-  justify-content: center;
-  overflow-x: hidden;
-  transition: 0.3s;
-  align-items: center;
+.navbar-toggler:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-.btn-color{
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* Form Control */
+.form-control {
+  border-color: #4DA1A9;
+}
+
+/* Dropdown Styling */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #F6F4F0;
+  min-width: 200px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  z-index: 1000;
+  border-radius: 6px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Styling the content (links) inside menus */
+.dropdown-content a {
+  padding: 12px;
+  display: block;
+  color: #2E5077;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+/* Effect while hovering menus */
+.dropdown-content a:hover {
   background-color: #79D7BE;
-  outline-color: black;
+  color: #2E5077;
 }
 
-.pag-center{
-  position: absolute;  
-  left: 50%;       
-  transform: translateX(-50%);
-  color: white;
+/* Menus position */
+.dropdown-submenu {
+  position: relative;
 }
 
-/*break point: 519px, 580px*/
-.main-body{
-  height: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  align-items: center;
+/* Menus position */
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -1px;
 }
 
-.card{
-  margin-bottom: 5px;
-  width: 25rem;
-  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+/* Button Styling (applied on 'Add Activity') */
+.btn-primary, .btn-success {
+  background-color: #4DA1A9;
+  border-color: #4DA1A9;
+  color: #F6F4F0;
+  transition: background-color 0.3s;
+  border-radius: 0.375rem;
 }
 
-.z-prio{
-  z-index: 999;
+/* Change color when hovering (applied on 'Add Activity') */
+.btn-primary:hover, .btn-success:hover {
+  background-color: #79D7BE;
+  border-color: #79D7BE;
+  color: #2E5077;
+  border-radius: 0.375rem;
 }
 
-#search{
-  margin-bottom: 10px;
+/* Styling the buttons (applied on 'Filter' and 'Sort') */
+.btn-outline-secondary {
+  background-color: #ffffff;
+  color: #2E5077;
+  border-color: #4DA1A9;
+  transition: background-color 0.3s;
 }
 
-.box-texture {
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 3px;
+/* Invert colors when hovering (applied on 'Filter' and 'Sort') */
+.btn-outline-secondary:hover {
+  background-color: #4DA1A9;
+  color: #F6F4F0;
 }
 
-#edit{
+/* Card Styling */
+.card {
+  border: 1px solid #4DA1A9;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
+}
+
+/* Raise the cards on hover */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  color: #2E5077;
+}
+
+.card-text {
+  color: #4DA1A9;
+}
+
+/* Pagination Styling */
+.pagination .page-item .page-link {
+  color: #4DA1A9;
+  border: 1px solid #4DA1A9;
+  transition: background-color 0.3s;
+}
+
+/* pagination interactive */
+.pagination .page-item.active .page-link,
+.pagination .page-item .page-link:hover {
+  background-color: #4DA1A9;
+  color: #F6F4F0;
+  border-color: #4DA1A9;
+}
+
+/* Comments Section */
+.comment-box {
+  border: 1px solid #4DA1A9;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #ffffff;
+}
+
+.comment-box h5 {
+  color: #2E5077;
+}
+
+.comment-box p {
+  color: #4DA1A9;
+}
+
+/* General Border Radius Reset */
+#filterdropdown, #sortdropdown, .btn-primary {
+  border-radius: 0;
+}
+
+#edit-btn{
   background-color: #facc15;
+  color: white;
+  border-color: #facc15 !important;
+}
+
+#edit-btn:hover{
+  background-color: #d4ae13;
+  border-color: #d4ae13 !important;
 }
 
 #delete{
   background-color: #f33535;
-}
-
-.schedule-label{
-  font-size: 1fr;
-  font-weight: bold;
-  padding-right: 5px;
-}
-
-.search-container {
-  display: flex;
-  gap: 1px;
-}
-
-.search-input {
-  flex: 1;
-  padding: 4px 8px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 15px;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.search-input:focus {
-  border-color: #4a90e2;
-  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-}
-
-.search-input::placeholder {
-  color: #888;
-}
-
-footer{
-  width: 100%;
-  height: 6rem;
-}
-
-.btn-size{
-  font-size: 0.7rem;
-}
-
-#page-module {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700;
-  font-size: 1.8rem;
-  letter-spacing: 0;
-  line-height: 1.1;
-  color: #1a1a1a;
-  font-style: italic;
-}
-
-.form-style{
-  display: inline;
-  width: 100%;
-}
-
-.input-size{
-  width: 100%;
-}
-
-p {
-  font-family: 'Times New Roman', Times, serif;
-  font-weight: bold;
-}
-
-/* Tablet View */
-@media only screen and (min-width: 500px){
-  .btn-size{
-    font-size: 0.8rem;
-  }
-
-  .add-activity{
-    left: 3.55rem;
-  }
-
-  .filter-menu{
-    left: 213px;
-  }
-}
-
-@media screen and (min-width:550px){
-  .add-activity{
-    left: 5.2rem;
-  }
-
-  .filter-menu{
-    left: 262px;
-  }
-}
-
-/* Big Tablet View */
-@media only screen and (min-width: 600px){
-  .btn-size{
-    font-size: 1rem;
-  }
-
-  .add-activity{
-    left: 6.7rem;
-  }
-
-  .filter-menu{
-    left: 312px;
-  }
-
-  .side-bar a{
-    font-size: 22px;
-  }
-}
-
-@media only screen and (min-width: 650px){
-  .btn-size{
-    font-size: 1.2rem;
-  }
-
-  .add-activity{
-    left: 8.3rem;
-  }
-
-  .filter-menu{
-    left: 363px;
-  }
-
-}
-
-@media only screen and (min-width: 700px){
-  .btn-size{
-    font-size: 1.4rem;
-  }
-
-  .add-activity{
-    left: 10rem;
-  }
-
-  .filter-menu{
-    left: 413px;
-  }
-
-  .card{
-    width: 30rem;
-  }
-}
-
-/* PC View */
-@media only screen and (min-width: 769px){
-  .main-body{
-    flex-direction: row;
-    justify-content: space-evenly;
-  }
-
-  .side-bar a{
-    font-size: 28px;
-  }
-
-  .add-activity{
-    
-  }
 }
