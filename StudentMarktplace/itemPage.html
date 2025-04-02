@@ -7,98 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-    
-    <style>
-        body {
-            background-color: #F6F4F0;
-            color: #2E5077;
-        }
-
-        /* Header Styling */
-        .navbar {
-        background-color: #2E5077 !important;
-        }
-
-        .navbar-toggler {
-            border: 0 !important;
-        }
-    
-        .navbar-toggler:focus {
-            outline: none !important;
-            box-shadow: none !important;
-        }
-        
-
-        .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-        }
-
-        /* Back Button */
-        .btn-primary {
-            background-color: #4DA1A9;
-            border-color: #4DA1A9;
-            color: #F6F4F0;
-            transition: background-color 0.3s;
-        }
-
-        .btn-primary:hover {
-            background-color: #79D7BE;
-            border-color: #79D7BE;
-            color: #2E5077;
-        }
-
-        /* Card Styling */
-        .card {
-            border: 1px solid #4DA1A9;
-            transition: box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-title {
-            color: #2E5077;
-        }
-
-        .card-text {
-            color: #4DA1A9;
-        }
-
-        /* Comments Section */
-        .comment-box {
-            border: 1px solid #4DA1A9;
-            border-radius: 0.375rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            background-color: #ffffff;
-        }
-
-        .comment-box h5 {
-            color: #2E5077;
-        }
-
-        .comment-box p {
-            color: #4DA1A9;
-        }
-
-        .form-control {
-            border-color: #4DA1A9;
-        }
-
-        .btn-success {
-            background-color: #4DA1A9;
-            border-color: #4DA1A9;
-            color: #F6F4F0;
-            transition: background-color 0.3s;
-        }
-
-        .btn-success:hover {
-            background-color: #79D7BE;
-            border-color: #79D7BE;
-            color: #2E5077;
-        }
-    </style>
+    <link href="style.css" rel="stylesheet">
 
 </head>
 <body>
@@ -106,7 +15,7 @@
 <!-- Header -->
 <header class="p-3 navbar navbar-expand-md navbar-light bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand text-white" href="#"><h1>UNIHUB</h1></a>
+        <a class="navbar-brand text-white" href="#"><h2>UNIHUB - Marketplace </h2></a>
     
         <!-- Button to toggle the menu on smaller screens -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -146,7 +55,7 @@
 
         <!-- Back, Edit, and Delete Buttons -->
     <div class="mb-3 d-flex gap-2">
-        <a href="StudentMarketplace.html" class="btn btn-primary">Back to Marketplace</a>
+        <a href="StudentMarketplace.html" class="btn btn-success">Back to Marketplace</a>
         <button class="btn btn-outline-secondary">Edit</button>
         <button class="btn btn-danger">Delete</button>
     </div>
