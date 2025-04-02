@@ -19,30 +19,18 @@
         background-color: #2E5077 !important;
         }
 
-        /* Navbar Styling */
         .navbar-toggler {
-            background-color: #4DA1A9;
-            transition: background-color 0.3s;
+            border: 0 !important;
         }
-
-        .navbar-toggler:hover {
-            background-color: #79D7BE;
+    
+        .navbar-toggler:focus {
+            outline: none !important;
+            box-shadow: none !important;
         }
+        
 
-        .navbar-toggler-icon {
+        .navbar-toggler-icon{
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-        }
-
-        .navbar-toggler:hover .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='%234DA1A9' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-        }
-
-        .navbar-light .navbar-nav .nav-link {
-            color: #F6F4F0;
-        }
-
-        .navbar-light .navbar-nav .nav-link:hover {
-            color: #79D7BE;
         }
 
         /* Form Control */
@@ -107,11 +95,17 @@
         /* Card Styling */
         .card {
             border: 1px solid #4DA1A9;
-            transition: box-shadow 0.3s ease;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+
         }
 
         .card:hover {
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
         }
 
         .card-title {
@@ -150,6 +144,19 @@
             margin-top: -1px;
         }
 
+        .btn-success {
+            background-color: #4DA1A9;
+            border-color: #4DA1A9;
+            color: #F6F4F0;
+            transition: background-color 0.3s;
+        }
+
+        .btn-success:hover {
+            background-color: #79D7BE;
+            border-color: #79D7BE;
+            color: #2E5077;
+        }
+        
         </style>
 
     </head>
@@ -159,7 +166,7 @@
 <!-- Header -->
     <header class="p-3 navbar navbar-expand-md navbar-light bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand text-white" href="#"><h1>UniHub</h1></a>
+            <a class="navbar-brand text-white" href="#"><h2>UNIHUB - Marketplace </h2></a>
         
             <!-- Button to toggle the menu on smaller screens -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -169,6 +176,9 @@
             <!-- Navigation menu -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#Home">Home</a>
+                        </li>
                     <li class="nav-item">
                     <a class="nav-link text-white" href="#events">Events Calendar</a>
                     </li>
@@ -214,7 +224,7 @@
                         <li><a class="dropdown-item" href="#">Furniture</a></li>
                         <li><a class="dropdown-item" href="#">Accessories</a></li>
                         <li><a class="dropdown-item" href="#">Sports Equipment</a></li>
-                        <li><a class="dropdown-item" href="#">Stationery</a></li>
+                        <li><a class="dropdown-item" href="#">Books</a></li>
                         <li><a class="dropdown-item" href="#">Others</a></li>
                         <li><hr class="dropdown-divider"></li>
                         

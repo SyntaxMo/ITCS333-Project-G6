@@ -16,16 +16,22 @@
 
         /* Header Styling */
         .navbar {
-            background-color: #2E5077 !important;
+        background-color: #2E5077 !important;
         }
 
-        .navbar-light .navbar-nav .nav-link {
-            color: #F6F4F0;
+        .navbar-toggler {
+            border: 0 !important;
         }
+    
+        .navbar-toggler:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
 
-        .navbar-light .navbar-nav .nav-link:hover {
-            color: #79D7BE;
-        }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        }
 
         /* Back Button */
         .btn-primary {
@@ -100,7 +106,7 @@
 <!-- Header -->
 <header class="p-3 navbar navbar-expand-md navbar-light bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand text-white" href="#"><h1>UniHub</h1></a>
+        <a class="navbar-brand text-white" href="#"><h1>UNIHUB</h1></a>
     
         <!-- Button to toggle the menu on smaller screens -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,6 +116,9 @@
         <!-- Navigation menu -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#Home">Home</a>
+                    </li>
                 <li class="nav-item">
                 <a class="nav-link text-white" href="#events">Events Calendar</a>
                 </li>
