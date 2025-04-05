@@ -182,13 +182,23 @@ body {
   border-radius: 0;
 }
 
+/* Edit button color style */
 #edit-btn{
   background-color: #facc15;
   color: white;
   border-color: #facc15 !important;
 }
 
+/* Edit button style while hovering */
 #edit-btn:hover{
   background-color: #d4ae13;
   border-color: #d4ae13 !important;
+}
+
+/* Navigation Bar effects while hovering */
+.nav-item:hover{
+  background-color: #223c5a;
+  border-color: #4DA1A9;
+  color: #F6F4F0;
+  transition: background-color 0.3s;
 }

@@ -91,7 +91,7 @@
                 </ul>
             </div>
     
-            <!-- Add New Item Button (Right corner rounded) -->
+            <!-- Add New Activity Button (Right corner rounded) -->
             <button class="btn btn-primary flex-shrink-0" data-bs-toggle="collapse" data-bs-target="#addActivityForm" type="button" style="border-radius: 0 0.375rem 0.375rem 0;  margin-left: -1px; border-left: none;">
                 Add Activity
             </button>
@@ -104,18 +104,19 @@
             <div class="card-body">
                 <h3 class="card-title">Schedule New Activity</h3>
                 <form>
+
+                  <div class="mb-3">
+                    <label for="ActivityImage" class="form-label">Upload Image:</label>
+                    <input type="file" class="form-control" id="ActivityImage" required>
+                  </div>
+
                     <div class="mb-3">
-                        <label for="itemName" class="form-label">Activity Title:</label>
+                        <label for="ActivityName" class="form-label">Activity Title:</label>
                         <input type="text" placeholder="Enter Activity Title" class="form-control" id="itemName" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="itemDescription" class="form-label">Description:</label>
-                        <textarea class="form-control" placeholder="Write a short description of the activity" id="clubDescription" rows="3" required></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="Club" class="form-label">Choose a Club:</label>
+                        <label for="Club" class="form-label" title="Select the club hosting the activity ">Choose a Club:</label>
                         <select class="form-control" id="clubCategory" required>
                           <option value="" disabled selected>Select Club</option>
                           <option value="Volleyball">Volleyball Club</option>
@@ -134,12 +135,12 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="itemImage" class="form-label">Upload Image:</label>
-                        <input type="file" class="form-control" id="itemImage" required>
+                      <label for="ActivityDescription" class="form-label">Description:</label>
+                      <textarea class="form-control" placeholder="Write a short description of the activity" id="clubDescription" rows="3" required></textarea>
                     </div>
 
                     <div class="mb-3">
-                    <button type="submit" class="btn btn-success w-100">Submit Item</button>
+                    <button type="submit" class="btn btn-success w-100">Schedule The Activity</button>
                     </div>
 
                     <div class="mb-3">
