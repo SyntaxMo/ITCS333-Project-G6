@@ -8,8 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
         <link rel="stylesheet" href="styles.css">
-        <script src="https://kit.fontawesome.com/387937a7f8.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script defer src="https://kit.fontawesome.com/387937a7f8.js" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </head>
 </head>
 <body>
@@ -115,27 +115,34 @@
 
     
     <!-- Comments Section -->
-    <section class="mt-5 comment-header">
+    <section class="mt-5">
         <h3>Comments:</h3>
 
-       <!-- Add New Comment -->
-        <div class="card mt-4 mb-4"> <!-- Added mb-4 here for margin bottom -->
-            <div class="card-body">
-                <h5 class="card-title">Add a Comment</h5>
-                <form>
-                    <div class="mb-3">
-                        <label for="commenterName" class="form-label">Your Name:</label>
-                        <input type="text" class="form-control" id="commenterName" placeholder="Enter your name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="commentText" class="form-label">Your Comment:</label>
-                        <textarea class="form-control" id="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-success w-100">Submit Comment</button>
-                </form>
+        <!-- Add New Comment Toggle Button -->
+        <button class="btn btn-success mt-3 mb-3" type="button"               data-bs-toggle="collapse" data-bs-target="#commentForm" aria-expanded="false" aria-controls="commentForm">
+            Add a Comment
+        </button>
+
+        <!-- Collapsible Form -->
+        <div class="collapse" id="commentForm">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Add a Comment</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label for="commenterName" class="form-label">Your Name:</label>
+                            <input type="text" class="form-control" id="commenterName" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="commentText" class="form-label">Your Comment:</label>
+                            <textarea class="form-control" id="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Submit Comment</button>
+                    </form>
+                </div>
             </div>
         </div>
-
+    
         <!-- Placeholder Comments -->
         <div class="comment-box">
             <h5>Mohammed Essam</h5>
@@ -163,7 +170,7 @@
 </main>
 
 <footer class="text-center py-3 mt-5">
-    &copy; 2025 UniHub. All rights reserved.
+    &copy; 2025 UNIHUB. All rights reserved.
 </footer>
 
 </body>
