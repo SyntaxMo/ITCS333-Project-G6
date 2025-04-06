@@ -3,10 +3,6 @@
   background-color: #2E5077 !important;
 }
 
-.navbar-toggler {
-  border: 0 !important;
-}
-
 .navbar-toggler:focus {
   outline: none !important;
   box-shadow: none !important;
@@ -26,11 +22,6 @@ body {
   color: #2E5077;
 }
 
-/* Header Styling */
-.navbar {
-  background-color: #2E5077 !important;
-}
-
 .navbar-toggler {
   border: 0 !important;
 }
@@ -38,10 +29,6 @@ body {
 .navbar-toggler:focus {
   outline: none !important;
   box-shadow: none !important;
-}
-
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 /* Form Control */
@@ -184,21 +171,19 @@ body {
 
 /* Edit button color style */
 #edit-btn{
-  background-color: #facc15;
-  color: white;
-  border-color: #facc15 !important;
+  background-color: #ffffff;
+    color: #2E5077;
+    border-color: #4DA1A9;
+    transition: background-color 0.3s;
 }
 
 /* Edit button style while hovering */
 #edit-btn:hover{
-  background-color: #d4ae13;
-  border-color: #d4ae13 !important;
+  background-color: #4DA1A9;
+    color: #F6F4F0;
 }
 
 /* Navigation Bar effects while hovering */
-.nav-item:hover{
-  background-color: #223c5a;
-  border-color: #4DA1A9;
-  color: #F6F4F0;
-  transition: background-color 0.3s;
+.nav-item a:hover{
+  color: #67dbe6 !important;
 }

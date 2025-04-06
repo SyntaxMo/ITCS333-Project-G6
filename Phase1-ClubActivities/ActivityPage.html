@@ -59,7 +59,7 @@
         <!-- Back, Edit, and Delete Buttons -->
     <div class="mb-3 d-flex gap-2">
         <a href="Club-Activities.html" class="btn btn-success">Back to Activities</a>
-        <button class="btn btn-outline-secondary"  id="edit-btn">Edit</button>
+        <button class="btn btn-outline-secondary" id="edit-btn">Edit</button>
         <button class="btn btn-danger">Delete</button>
     </div>
 
@@ -80,39 +80,35 @@
             <p class="card-text"><strong>Description:</strong> We hacker, internet go boom</p>
         </div>
     </section>
-
-    <!-- Comments Section -->
+            
+        <!-- Comments Section -->
     <section class="mt-5">
         <h3>Comments:</h3>
-            
-        <!-- Interactive button shows the add comment form -->
-        <button class="btn btn-primary flex-shrink-0 mb-3" data-bs-toggle="collapse" data-bs-target="#addCommentForm" type="button" style="border-radius: 0.375rem;  margin-left: -1px; ">
-            Add Comment
+
+        <!-- Add New Comment Toggle Button -->
+        <button class="btn btn-success mt-3 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#commentForm" aria-expanded="false" aria-controls="commentForm">
+            Add a Comment
         </button>
-        <!-- Add New Comment section-->
-            <section id="addCommentForm" class="collapse mt-3">
-                    <div class="card-body">            
+
+        <!-- Collapsible Form -->
+        <div class="collapse" id="commentForm">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Add a Comment</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label for="commenterName" class="form-label">Your Name:</label>
+                            <input type="text" class="form-control" id="commenterName" placeholder="Enter your name" required>
                         </div>
-                        
-                        <div class="card mt-0 mb-4">
-                        <div class="card-body">
-                        <h5 class="card-title">Add a Comment</h5>
-                        <form>
-                            <div class="mb-3">
-                                <label for="commenterName" class="form-label">Your Name:</label>
-                                <input type="text" class="form-control" id="commenterName" placeholder="Enter your name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="commentText" class="form-label">Your Comment:</label>
-                                <textarea class="form-control" id="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-success w-100">Submit Comment</button>
-                        </form>
+                        <div class="mb-3">
+                            <label for="commentText" class="form-label">Your Comment:</label>
+                            <textarea class="form-control" id="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
                         </div>
-                    </div>                                   
-                    </div>
+                        <button type="submit" class="btn btn-success w-100">Submit Comment</button>
+                    </form>
                 </div>
-            </section>
+            </div>
+        </div>
 
         <!-- Placeholder Comments -->
         <div class="comment-box">
@@ -141,7 +137,7 @@
 </main>
 
 <footer class="text-center py-3 mt-5">
-  &copy; 2025 Student Marketplace. All rights reserved.
+  &copy; 2025 UNIHUB. All rights reserved.
 </footer>
 
 </body>
