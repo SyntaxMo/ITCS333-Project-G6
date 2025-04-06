@@ -149,3 +149,7 @@ body {
 #filterdropdown, #sortdropdown, .btn-primary {
     border-radius: 0;
 }
+
+.nav-item a:hover{
+    color: #67dbe6 !important;
+  }
