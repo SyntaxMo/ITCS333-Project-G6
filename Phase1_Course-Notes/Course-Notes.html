@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Notes</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="Style.css" rel="stylesheet">
+</head>
+<body>
+<!-- Header -->
+<header class="p-3 navbar navbar-expand-md navbar-light bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="#"><h2>UNIHUB - Course Notes</h2></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link text-white" href="#Home">Home</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#events">Events Calendar</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#reviews">Course Reviews</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#notes">Course Notes</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#news">Campus News</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#clubs">Club Activities</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#marketplace">Student Marketplace</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="container mt-4">
+    <!-- Search & Filters -->
+    <section class="mb-4">
+        <div class="d-flex justify-content-start align-items-center w-100" style="flex-wrap: nowrap;">
+            <input type="search" class="form-control" placeholder="Search notes..."
+                   style="border-radius: 0.375rem 0 0 0.375rem; border-right: none;">
+
+            <!-- Filter Dropdown -->
+            <div class="dropdown flex-shrink-0" style="margin-left: -1px;">
+                <button class="btn btn-outline-secondary dropdown-toggle h-100" type="button"
+                        data-bs-toggle="dropdown" style="border-radius: 0; border-left: none;">
+                    Filter
+                </button>
+                <ul class="dropdown-menu">
+                    <li><h6 class="dropdown-header">Courses</h6></li>
+                    <li><a class="dropdown-item" href="#">COMP 101</a></li>
+                    <li><a class="dropdown-item" href="#">MATH 202</a></li>
+                    <li><a class="dropdown-item" href="#">PHYS 101</a></li>
+                    <li><a class="dropdown-item" href="#">ITCS 333</a></li>
+                </ul>
+            </div>
+
+            <!-- Sort Dropdown -->
+            <div class="dropdown flex-shrink-0" style="margin-left: -1px;">
+                <button class="btn btn-outline-secondary dropdown-toggle h-100" type="button"
+                        data-bs-toggle="dropdown" style="border-radius: 0; border-left: none;">
+                    Sort
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Newest First</a></li>
+                    <li><a class="dropdown-item" href="#">Course Code</a></li>
+                </ul>
+            </div>
+
+            <!-- Add New Button -->
+            <button class="btn btn-primary flex-shrink-0" data-bs-toggle="modal"
+                    data-bs-target="#uploadModal" type="button"
+                    style="border-radius: 0 0.375rem 0.375rem 0; margin-left: -1px; border-left: none;">
+                Add Notes
+            </button>
+        </div>
+    </section>
+
+    <!-- Notes Grid -->
+    <section>
+        <h3>Available Notes:</h3>
+        <div class="row">
+            <!-- Note Card 1 -->
+            <article class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">CSS</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">ITCS 333</h6>
+                        <p class="card-text">Mastering selectors, flexbox, grid layout, and responsive design principles.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-warning">Lecture Notes</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <a href="Notes-Details.html" class="btn btn-success w-100">View</a>
+                </div>
+
+            </article>
+
+            <!-- ITCS 333 HTML Notes -->
+            <article class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Web Development Fundamentals</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">ITCS 333</h6>
+                        <p class="card-text">HTML5, semantic markup, and basic page structure.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-warning">HTML Notes</span>
+
+                        </div>
+                    </div>
+                    <a href="Notes-Details.html" class="btn btn-success w-100">View</a>
+                </div>
+            </article>
+
+            <!-- ITCS 333 JavaScript Notes -->
+            <article class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">JavaScript Essentials</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">ITCS 333</h6>
+                        <p class="card-text">Variables, functions, and DOM manipulation basics.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-warning">JavaScript Notes</span>
+
+                        </div>
+                    </div>
+                    <a href="Notes-Details.html" class="btn btn-success w-100">View</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Pagination -->
+    <section class="mt-4">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+            </ul>
+        </nav>
+    </section>
+</main>
+
+<!-- Upload Modal -->
+<div class="modal fade" id="uploadModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload New Notes</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Course Code</label>
+                            <input type="text" class="form-control" placeholder="e.g., COMP 101" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Note Type</label>
+                            <select class="form-select" required>
+                                <option>Lecture Notes</option>
+                                <option>Lab Manual</option>
+                                <option>Exam Prep</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Upload PDF</label>
+                        <input type="file" class="form-control" accept=".pdf" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">Upload</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center py-3 mt-5">
+    &copy; 2025 UNIHUB. Course Notes Module
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
