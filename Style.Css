@@ -1,0 +1,164 @@
+:root {
+    --primary-dark: #2D4C6A;
+    --secondary-teal: #4A9BAA;
+    --accent-mint: #87E0C1;
+    --light-bg: #F7F6F4;
+  }
+/* Navigation bar color */
+.navbar {
+    background-color: var(--primary-dark) !important;
+  }
+  
+  .navbar-toggler:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  }
+  
+  body {
+    background-color: var(--light-bg);
+    color: var(--primary-dark);
+    padding-top: 56px;
+  }
+  
+  .navbar-toggler {
+    border: 0 !important;
+  }
+  
+  /* Form Control */
+  .form-control {
+    border-color: var(--secondary-teal);
+  }
+  
+  /* Dropdown Styling */
+  .dropdown-menu {
+    background-color: var(--light-bg);
+    border: 1px solid var(--secondary-teal);
+  }
+  
+  .dropdown-item:hover {
+    background-color: var(--accent-mint);
+    color: var(--primary-dark);
+  }
+  
+  /* Button Styling */
+  .btn-primary {
+    background-color: var(--secondary-teal);
+    border-color: var(--secondary-teal);
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--accent-mint);
+    border-color: var(--accent-mint);
+    color: var(--primary-dark);
+  }
+  
+  /* Outline Button Styling */
+  .btn-outline-secondary {
+    background-color: white;
+    color: var(--primary-dark);
+    border-color: var(--secondary-teal);
+    transition: background-color 0.3s;
+  }
+  
+  .btn-outline-secondary:hover {
+    background-color: var(--secondary-teal);
+    color: white;
+  }
+  
+  /* Card Styling */
+  .card {
+    border: 1px solid var(--secondary-teal);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .card-title {
+    color: var(--primary-dark);
+  }
+  
+  .text-muted {
+    color: var(--secondary-teal) !important;
+  }
+  
+  /* Rating Stars */
+  .rating-stars {
+    color: #ffc107; /* Keeping the gold color for ratings */
+    font-size: 1.2rem;
+  }
+  
+  /* Pagination Styling */
+  .pagination .page-item .page-link {
+    color: var(--secondary-teal);
+    border: 1px solid var(--secondary-teal);
+    transition: background-color 0.3s;
+  }
+  
+  .pagination .page-item.active .page-link,
+  .pagination .page-item .page-link:hover {
+    background-color: var(--secondary-teal);
+    color: white;
+    border-color: var(--secondary-teal);
+  }
+  
+  /* Review Actions */
+  .btn-outline-success {
+    border-color: var(--secondary-teal);
+    color: var(--secondary-teal);
+  }
+  
+  .btn-outline-success:hover {
+    background-color: var(--secondary-teal);
+    color: white;
+  }
+  
+  .btn-outline-primary {
+    border-color: var(--primary-dark);
+    color: var(--primary-dark);
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: var(--primary-dark);
+    color: white;
+  }
+  
+  /* Modal Styling */
+  .modal-header {
+    background-color: var(--primary-dark);
+    color: white;
+  }
+  
+  /* Footer */
+  footer {
+    background-color: var(--primary-dark);
+    color: white;
+  }
+  
+  /* Navigation items */
+  .nav-item a:hover {
+    color: var(--accent-mint) !important;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .navbar-brand {
+      font-size: 1.25rem;
+    }
+    
+    .search-filter-group > * {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+  }
