@@ -1,12 +1,12 @@
 # ITCS333-Project-G6
 
 ## Module Assignments
-| Module | Student |
+| Module | Student | ID | 
 |---------------------|----------------------|
 | Events Calendar | Mohammed Essam |
 | Course Reviews | Abdulrhman Mohammed |
 | Course Notes | Jaber |
-| Campus News | Ayoub Mohammed | 202209598 | Campus News
+| Campus News | Ayoub Mohammed | 202209598
 | Club Activities | Mohammed Hussain |
 | Student Marketplace | Ahmed A. Hasan |
 
