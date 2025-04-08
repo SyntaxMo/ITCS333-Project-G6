@@ -2,7 +2,7 @@
 
 ## Module Assignments
 | Module | Student | ID | 
-|---------------------|----------------------|
+|---------------------|----------------------|----------------------|
 | Events Calendar | Mohammed Essam |
 | Course Reviews | Abdulrhman Mohammed |
 | Course Notes | Jaber |
