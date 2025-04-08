@@ -2,7 +2,7 @@
 
 ## Module Assignments
 | Module | Student | ID | User
-|---------------------|----------------------|----------------------|
+|---------------------|----------------------|----------------------|----------------------|
 | Events Calendar | Mohammed Essam | 202210718 |
 | Course Reviews | Abdulrhman Mohammed |
 | Course Notes | Jaber |
