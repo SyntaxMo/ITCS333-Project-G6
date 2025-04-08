@@ -55,42 +55,54 @@
     <!-- Main Content -->
     <main class="container mt-4 pt-2"> 
         <!-- Search and Filter Section -->
+        <!-- Search, Filter, and Sort Section -->
         <section class="mb-4">
-            <div class="d-flex flex-wrap gap-2">
-                <input type="search" class="form-control" placeholder="Search reviews...">
-                
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <div class="d-flex justify-content-start align-items-center w-100" style="flex-wrap: nowrap;">
+                <!-- Search Bar -->
+                <input type="search" class="form-control" placeholder="Search reviews..." style="border-radius: 0.375rem 0 0 0.375rem; min-width: 120px; border-right: none;">
+
+                <!-- Filter Dropdown -->
+                <div class="dropdown flex-shrink-0" style="margin-left: -1px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle h-100" type="button" data-bs-toggle="dropdown" style="border-radius: 0; border-left: none; border-right: none;">
                         Filter
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" aria-labelledby="filterDropdown">
                         <li><h6 class="dropdown-header">Course</h6></li>
                         <li><a class="dropdown-item" href="#">Computer Science</a></li>
                         <li><a class="dropdown-item" href="#">Engineering</a></li>
                         <li><a class="dropdown-item" href="#">Business</a></li>
+                        <li><a class="dropdown-item" href="#">Medicine</a></li>
                         <li><hr class="dropdown-divider"></li>
+                        
                         <li><h6 class="dropdown-header">Rating</h6></li>
                         <li><a class="dropdown-item" href="#">★★★★★ (5/5)</a></li>
                         <li><a class="dropdown-item" href="#">★★★★☆ (4/5)</a></li>
                         <li><a class="dropdown-item" href="#">★★★☆☆ (3/5)</a></li>
+                        <li><a class="dropdown-item" href="#">★★☆☆☆ (2/5)</a></li>
+                        <li><a class="dropdown-item" href="#">★☆☆☆☆ (1/5)</a></li>
                     </ul>
                 </div>
                 
-                <div class="dropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <!-- Sort Dropdown -->
+                <div class="dropdown flex-shrink-0" style="margin-left: -1px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle h-100" type="button" data-bs-toggle="dropdown" style="border-radius: 0; border-left: none; border-right: none;">
                         Sort
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
                         <li><a class="dropdown-item" href="#">Newest First</a></li>
+                        <li><a class="dropdown-item" href="#">Oldest First</a></li>
                         <li><a class="dropdown-item" href="#">Highest Rated</a></li>
+                        <li><a class="dropdown-item" href="#">Most Helpful</a></li>
                     </ul>
                 </div>
         
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReviewModal">
-                    Add Review
+                <!-- Add New Review Button -->
+                <button class="btn btn-primary flex-shrink-0" data-bs-toggle="modal" data-bs-target="#addReviewModal" type="button" style="border-radius: 0 0.375rem 0.375rem 0; margin-left: -1px; border-left: none;">
+                    Add New Review
                 </button>
             </div>
         </section>
+
 
         <!-- Reviews Section -->
         <section>
