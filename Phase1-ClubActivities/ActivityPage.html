@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+
+    <!-- Bootstrap js -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body>
+
+<!-- Header -->
+<header class="p-3 navbar navbar-expand-md navbar-light bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="#"><h2>UNIHUB - Club Activity </h2></a>
+    
+        <!-- Button to toggle the menu on smaller screens -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Navigation menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#Home">Home</a>
+                    </li>
+                <li class="nav-item">
+                <a class="nav-link text-white" href="#events">Events Calendar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#reviews">Course Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#notes">Course Notes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#news">Campus News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#clubs">Club Activities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#marketplace">Student Marketplace</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<main class="container mt-4">
+
+        <!-- Back, Edit, and Delete Buttons -->
+    <div class="mb-3 d-flex gap-2">
+        <a href="Club-Activities.html" class="btn btn-success">Back to Activities</a>
+        <button class="btn btn-outline-secondary" id="edit-btn">Edit</button>
+        <button class="btn btn-danger">Delete</button>
+    </div>
+
+
+    <!-- Activity Details Section -->
+    <section class="row align-items-start">
+        <!-- Image Section -->
+        <div class="col-md-5">
+            <img src="images/hacker.jpg" class="img-fluid rounded" alt="Activity Image" width="500px">
+        </div>
+
+        <!-- Activity details Section -->
+        <div class="col-md-7">
+            <h2 class="card-title">Hackathon 2025</h2> <br>
+            <p class="card-text"><strong>Host:</strong> Technology Club</p>
+            <p class="card-text"><strong>Location:</strong> IT College - UoB</p>
+            <p class="card-text"><strong>Date & Time:</strong> 4-2-2025, 7:29PM</p>
+            <p class="card-text"><strong>Description:</strong> We hacker, internet go boom</p>
+        </div>
+    </section>
+            
+        <!-- Comments Section -->
+    <section class="mt-5">
+        <h3>Comments:</h3>
+
+        <!-- Add New Comment Toggle Button -->
+        <button class="btn btn-success mt-3 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#commentForm" aria-expanded="false" aria-controls="commentForm">
+            Add a Comment
+        </button>
+
+        <!-- Collapsible Form -->
+        <div class="collapse" id="commentForm">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Add a Comment</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label for="commenterName" class="form-label">Your Name:</label>
+                            <input type="text" class="form-control" id="commenterName" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="commentText" class="form-label">Your Comment:</label>
+                            <textarea class="form-control" id="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Submit Comment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Placeholder Comments -->
+        <div class="comment-box">
+            <h5>hassan alaradi</h5>
+            <p>i want to get married</p>
+        </div>
+        <div class="comment-box">
+            <h5>ahmed taha</h5>
+            <p>Is the event still going?</p>
+        </div>
+        <div class="comment-box">
+            <h5>mohammed alsaygh</h5>
+            <p>The event was sick!!, so do I.</p>
+        </div>
+        <div class="comment-box">
+            <h5>firas abdulla</h5>
+            <p>the lemon>>></p>
+        </div>
+        <div class="comment-box">
+            <h5>mohammed essam</h5>
+            <p><a href="https://www.g9g.com">Enter the link, totally not a hack</a></p>
+        </div>
+
+        
+    </section>
+</main>
+
+<footer class="text-center py-3 mt-5">
+  &copy; 2025 UNIHUB. All rights reserved.
+</footer>
+
+</body>
+</html>
