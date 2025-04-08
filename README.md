@@ -6,7 +6,7 @@
 | Events Calendar | Mohammed Essam |
 | Course Reviews | Abdulrhman Mohammed |
 | Course Notes | Jaber |
-| Campus News | Ayoub Mohammed |
+| Campus News | Ayoub Mohammed | 202209598 | Campus News
 | Club Activities | Mohammed Hussain |
 | Student Marketplace | Ahmed A. Hasan |
 
