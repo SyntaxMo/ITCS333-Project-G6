@@ -3,7 +3,7 @@
 ## Module Assignments
 | Module | Student | ID | User
 |---------------------|----------------------|----------------------|----------------------|
-| Events Calendar | Mohammed Essam | 202210718 |
+| Events Calendar | Mohammed Essam | 202210718 | SyntaxMo
 | Course Reviews | Abdulrhman Mohammed |
 | Course Notes | Jaber |
 | Campus News | Ayoub Mohammed | 202209598 | A-Alomari |
