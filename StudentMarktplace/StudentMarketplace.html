@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <link href="style.css" rel="stylesheet">
+    
+    </head>
+
+
+    <body>
+
+<!-- Header -->
+<header class="p-3 navbar navbar-expand-md navbar-light bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="#"><h2>UNIHUB - Marketplace </h2></a>
+    
+        <!-- Button to toggle the menu on smaller screens -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Navigation menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#Home">Home</a>
+                    </li>
+                <li class="nav-item">
+                <a class="nav-link text-white" href="#events">Events Calendar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#reviews">Course Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#notes">Course Notes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#news">Campus News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#clubs">Club Activities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#marketplace">Student Marketplace</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+<!-- Main Content -->
+    <main class="container mt-4"> 
+        <!-- Search, Filter, and Sort Section -->
+        <section class="mb-4">
+            <div class="d-flex justify-content-start align-items-center w-100" style="flex-wrap: nowrap;">
+                <!-- Search Bar (Left corners not rounded) -->
+                <input type="search" class="form-control" placeholder="Search marketplace..." style="border-radius: 0.375rem 0 0 0.375rem; min-width: 120px; border-right: none;">
+
+                <!-- Filter Dropdown (No rounded corners) -->
+                <div class="dropdown flex-shrink-0" style="margin-left: -1px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle h-100" type="button" data-bs-toggle="dropdown" style="border-radius: 0; border-left: none; border-right: none;">
+                        Filter
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                        <!-- Category Header and Options -->
+                        <li><h6 class="dropdown-header">Category</h6></li>
+                        <li><a class="dropdown-item" href="#">Textbooks</a></li>
+                        <li><a class="dropdown-item" href="#">Electronics</a></li>
+                        <li><a class="dropdown-item" href="#">Clothing</a></li>
+                        <li><a class="dropdown-item" href="#">Furniture</a></li>
+                        <li><a class="dropdown-item" href="#">Accessories</a></li>
+                        <li><a class="dropdown-item" href="#">Sports Equipment</a></li>
+                        <li><a class="dropdown-item" href="#">Books</a></li>
+                        <li><a class="dropdown-item" href="#">Others</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        
+                        <!-- Price Range Header and Options -->
+                        <li><h6 class="dropdown-header">Price Range</h6></li>
+                        <li><a class="dropdown-item" href="#">0 - 50 BHD</a></li>
+                        <li><a class="dropdown-item" href="#">50 - 100 BHD</a></li>
+                        <li><a class="dropdown-item" href="#">100 - 200 BHD</a></li>
+                        <li><a class="dropdown-item" href="#">200 - 500 BHD</a></li>
+                        <li><a class="dropdown-item" href="#">500+ BHD</a></li>
+                    </ul>
+                </div>
+                
+             
+                <!-- Sort Dropdown (No rounded corners) -->
+                <div class="dropdown flex-shrink-0" style="margin-left: -1px;">
+                    <button class="btn btn-outline-secondary dropdown-toggle h-100" type="button" data-bs-toggle="dropdown"  style="border-radius: 0; border-left: none; border-right: none;">
+                        Sort
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                        <li><a class="dropdown-item" href="#">Price Low-High</a></li>
+                        <li><a class="dropdown-item" href="#">Price High-Low</a></li>
+                        <li><a class="dropdown-item" href="#">Newest</a></li>
+                        <li><a class="dropdown-item" href="#">Popular</a></li>
+                    </ul>
+                </div>
+        
+                <!-- Add New Item Button (Right corner rounded) -->
+                <button class="btn btn-primary flex-shrink-0" data-bs-toggle="collapse" data-bs-target="#addItemForm" type="button" style="border-radius: 0 0.375rem 0.375rem 0;  margin-left: -1px; border-left: none;">
+                    Add New Item
+                </button>
+            </div>
+        </section>
+
+<!-- Form for Adding New Items -->
+    <section id="addItemForm" class="collapse mt-3">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Add a New Item</h3>
+                <form>
+                    <div class="mb-3">
+                        <label for="itemName" class="form-label">Item Name:</label>
+                        <input type="text" placeholder="Enter item name" class="form-control" id="itemName" required>
+                    </div>
+ 
+                    <div class="mb-3">
+                        <label for="itemDescription" class="form-label">Description:</label>
+                        <textarea class="form-control" placeholder="write a short discription of the item" id="itemDescription" rows="3" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="itemCategory" class="form-label">Category:</label>
+                        <select class="form-control" id="itemCategory" required>
+                            <option value="" disabled selected>Select Category</option>
+                            <option value="Textbooks">Textbooks</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Clothing">Clothing</option>
+                            <option value="Furniture">Furniture</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Sports Equipment">Sports Equipment</option>
+                            <option value="Stationery">Stationery</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="itemPrice" class="form-label">Price:</label>
+                        <input type="number" placeholder="123BHD" class="form-control" id="itemPrice" min="0" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="itemImage" class="form-label">Upload Image:</label>
+                        <input type="file" class="form-control" id="itemImage" required>
+                    </div>
+
+                    <div class="mb-3">
+                    <button type="submit" class="btn btn-success w-100">Submit Item</button>
+                    </div>
+
+                    <div class="mb-3">
+                    <button type="button" class="btn btn-danger w-100">Cancel</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </section>
+
+<!-- Marketplace Items -->
+    <section>
+        <h3>Items for Sale:</h3>
+        <div class="row">
+            <!-- Repeat this card for each item -->
+            <article class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Car for sale</h5>
+                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
+                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
+                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Car for sale</h5>
+                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
+                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
+                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Car for sale</h5>
+                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
+                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
+                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Car for sale</h5>
+                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
+                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
+                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Car for sale</h5>
+                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
+                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
+                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Car for sale</h5>
+                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
+                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
+                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Car for sale</h5>
+                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
+                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
+                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Car for sale</h5>
+                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
+                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
+                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
+                    </div>
+                </div>
+            </article>
+
+
+            <!-- Repeat ends -->
+        </div>
+    </section>
+
+<!-- Pagination -->
+    <section class="mt-4">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+            </ul>
+        </nav>
+    </section>
+</main>
+
+<footer class="text-center py-3 mt-5">
+    &copy; 2025 UNIHUB. All rights reserved.
+</footer>
+
+</body>
+</html>
