@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="styles.css">
+        <script defer src="https://kit.fontawesome.com/387937a7f8.js" crossorigin="anonymous"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </head>
+</head>
+<body>
+
+<!-- Header -->
+<header class="p-3 navbar navbar-expand-md navbar-light bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="#"><h2>UNIHUB</h2></a>
+    
+        <!-- Button to toggle the menu on smaller screens -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Navigation menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#Home">Home</a>
+                    </li>
+                <li class="nav-item">
+                <a class="nav-link text-white" href="Events-Calender.html">Events Calendar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#reviews">Course Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#notes">Course Notes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#news">Campus News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#clubs">Club Activities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#marketplace">Student Marketplace</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+
+<!--Main-->
+<main class="container mt-4">
+    <!-- Back, Edit, and Delete Buttons -->
+    <div class="mb-3 d-flex gap-2">
+        <a href="Events-Calender.html" class="btn" style="background-color: #4DA1A9; color: white;">Back</a>
+        <button class="btn btn-outline-secondary">Edit</button>
+        <button class="btn btn-danger">Delete</button>
+    </div>
+
+    <!-- Event Details Section -->
+    <section class="row">
+        <!-- Mobile-only Title & Details -->
+        <div class="col-12 order-0 d-block d-md-none">
+            <div class="event-header mb-4">
+                <h1 class="event-title">Science Fair</h1>
+                <div class="event-meta">
+                    <p class="h5 mb-1">📅 April 10, 2025</p>
+                    <p class="h5 mb-0">📍 University Hall</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image & Event Details -->
+        <div class="col-md-5 order-1 order-md-0">
+            <img src="Pics/imaa.jpeg" class="img-fluid rounded" alt="Science Fair">
+            <div class="additional-details mt-3">
+                <h4>Event Essentials:</h4>
+                <ul class="list-unstyled">
+                    <li>Time: 10:00 AM - 4:00 PM</li>
+                    <li>Organizer: Science Department</li>
+                    <li>Contact: science@university.edu</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Desktop-only Title & Description -->
+        <div class="col-md-7 order-2 order-md-1 event-header-container d-none d-md-block">
+            <div class="event-header mb-4">
+                <h1 class="event-title">Science Fair</h1>
+                <div class="event-meta">
+                    <p class="h5 mb-1">📅 April 10, 2025</p>
+                    <p class="h5 mb-0">📍 University Hall</p>
+                </div>
+            </div>
+            <div class="event-description mt-3">
+                <p class="lead">The annual university science fair showcases innovative projects from STEM students. Participants will demonstrate breakthroughs in robotics, environmental science, and biotechnology. Open to all students and faculty members.</p>
+            </div>
+        </div>
+
+        <!-- Mobile-only Description -->
+        <div class="col-12 order-3 d-block d-md-none">
+             <div class="event-description mt-3">
+                <h4 class="mb-3 about-title">About The Event:</h4>
+                <p class="lead">The annual university science fair showcases innovative projects from STEM students. Participants will demonstrate breakthroughs in robotics, environmental science, and biotechnology. Open to all students and faculty members.</p>
+             </div>
+        </div>
+    </section>
+
+
+    
+    <!-- Comments Section -->
+    <section class="mt-5">
+        <h3>Comments:</h3>
+
+        <!-- Add New Comment Toggle Button -->
+        <button class="btn btn-success mt-3 mb-3" type="button"               data-bs-toggle="collapse" data-bs-target="#commentForm" aria-expanded="false" aria-controls="commentForm">
+            Add a Comment
+        </button>
+
+        <!-- Collapsible Form -->
+        <div class="collapse" id="commentForm">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Add a Comment</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label for="commenterName" class="form-label">Your Name:</label>
+                            <input type="text" class="form-control" id="commenterName" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="commentText" class="form-label">Your Comment:</label>
+                            <textarea class="form-control" id="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Submit Comment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Placeholder Comments -->
+        <div class="comment-box">
+            <h5>Mohammed Essam</h5>
+            <p>Can’t wait to showcase our eco-friendly water purifier! Hope to see you all there</p>
+        </div>
+        <div class="comment-box">
+            <h5>Dr. Omar Al-Khatib</h5>
+            <p>Proud of our students’ work. These projects reflect real innovation. Don’t miss it!</p>
+        </div>
+        <div class="comment-box">
+            <h5>Sara K.</h5>
+            <p>Will there be a section for AI or machine learning projects? Super excited 🔍🤖</p>
+        </div>
+        <div class="comment-box">
+            <h5>Ahmed Abdulhasan</h5>
+            <p>Is it okay for non-STEM students to attend? Looks interesting 👀</p>
+        </div>
+        <div class="comment-box">
+            <h5>Hasan Alaradi</h5>
+            <p>booked the day off just to come. Big fan of student-led innovation </p>
+        </div>
+
+        
+    </section>
+</main>
+
+<footer class="text-center py-3 mt-5">
+    &copy; 2025 UNIHUB. All rights reserved.
+</footer>
+
+</body>
+</html>
