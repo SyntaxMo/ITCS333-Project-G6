@@ -9,7 +9,6 @@
   <link href="Style.css" rel="stylesheet" />
 </head>
 <body>
-
 <!-- Secondary Navbar -->
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
@@ -22,11 +21,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" href="#">Home</a>
+        <a class="nav-link" href="#">Home</a>
         <a class="nav-link" href="#">Events Calendar</a>
         <a class="nav-link" href="#">Course Reviews</a>
         <a class="nav-link" href="#">Course Notes</a>
-        <a class="nav-link" href="#">Campus News</a>
+        <a class="nav-link active" href="#">Campus News</a>
         <a class="nav-link" href="#">Club Activities</a>
         <a class="nav-link" href="#">Student Marketplace</a>
       </div>
@@ -73,31 +72,53 @@
       </button>
     </div>
   </section>
-
-  <!-- Modal -->
-  <div class="modal fade" id="addArticleModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add Article</h5>
-          <button class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label class="form-label">Title</label>
-              <input type="text" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Content</label>
-              <div id="froala-editor"></div>
-            </div>
-            <button type="submit" class="btn btn-primary">Publish</button>
-          </form>
-        </div>
+<!-- Modal -->
+<div class="modal fade" id="addArticleModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Article</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label class="form-label">Title <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">College <span class="text-danger">*</span></label>
+            <select class="form-select" required>
+              <option value="" disabled selected>Select a college</option>
+              <option value="all">All Colleges</option>
+              <option value="College of Law">College of Law</option>
+              <option value="College of Arts">College of Arts</option>
+              <option value="College of Science">College of Science</option>
+              <option value="College of Engineering">College of Engineering</option>
+              <option value="Bahrain Teachers College">Bahrain Teachers College</option>
+              <option value="College of Applied Science">College of Applied Science</option>
+              <option value="College of Information Technology">College of Information Technology</option>
+              <option value="College of Business Administration">College of Business Administration</option>
+              <option value="College of Health and Sport Sciences">College of Health and Sport Sciences</option>
+            </select>
+          </div>
+          
+          
+          <div class="mb-3">
+            <label class="form-label">course Code (optional)</label>
+            <input type="text" class="form-control" placeholder="e.g., CS101">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Content</label>
+            <div id="froala-editor"></div>
+          </div>
+          <button type="submit" class="btn btn-outline-primary">Publish</button>
+        </form>
       </div>
     </div>
   </div>
+</div>
+
 
   <!-- Articles Grid -->
   <div class="row">
