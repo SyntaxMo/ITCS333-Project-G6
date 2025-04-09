@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- Header -->
+<header class="p-3 navbar navbar-expand-md navbar-light bg-dark">
+        <!-- new Navbar -->
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="https://brandslogos.com/wp-content/uploads/images/large/html-logo.png" alt="Logo" width="30" height="24">
+            UNIHUB
+        </a>
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="#">Events Calendar</a>
+            <a class="nav-link" href="#">Course Reviews</a>
+            <a class="nav-link" href="#">Course Notes</a>
+            <a class="nav-link active " href="#">Campus News</a>
+            <a class="nav-link" href="#">Club Activities</a>
+            <a class="nav-link" href="#">Student Marketplace</a>
+            </div>
+        </div>
+        </div>
+    </nav>
+</div>
+</header>
+
+<main class="container mt-4">
+
+        <!-- Back, Edit, and Delete Buttons -->
+    <div class="mb-3 d-flex gap-2">
+        <a href="StudentMarketplace.html" class="btn btn-success">Back to Marketplace</a>
+        <button class="btn btn-outline-secondary">Edit</button>
+        <button class="btn btn-danger">Delete</button>
+    </div>
+
+
+    <!-- Item Details Section -->
+    <section class="row align-items-start">
+        <!-- Image Section -->
+        <div class="col-md-5">
+            <img src="images/dumbCar.jpg" class="img-fluid rounded" alt="Item Image" width="500px">
+        </div>
+
+        <!-- Details Section -->
+        <div class="col-md-7">
+            <h2 class="card-title">Car for Sale</h2> <br>
+            <p class="card-text"><strong>Price:</strong> 1 BHD</p>
+            <p class="card-text"><strong>Description:</strong> This car is useless, I don't want it anymore! it keeps meowing and eating my food then slapping me! everyday i wake up to this car standing on my face staring into the void of my soul please buy it.</p>
+        </div>
+    </section>
+
+    <!-- Comments Section -->
+    <section class="mt-5">
+        <h3>Comments:</h3>
+
+        <!-- Add New Comment Toggle Button -->
+        <button class="btn btn-success mt-3 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#commentForm" aria-expanded="false" aria-controls="commentForm">
+            Add a Comment
+        </button>
+
+        <!-- Collapsible Form -->
+        <div class="collapse" id="commentForm">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Add a Comment</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label for="commenterName" class="form-label">Your Name:</label>
+                            <input type="text" class="form-control" id="commenterName" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="commentText" class="form-label">Your Comment:</label>
+                            <textarea class="form-control" id="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Submit Comment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+        <!-- Placeholder Comments -->
+        <div class="comment-box">
+            <h5>hassan alaradi</h5>
+            <p>i want to get married</p>
+        </div>
+        <div class="comment-box">
+            <h5>ahmed taha</h5>
+            <p>Is the car still available? Please let me know i cant live without this car!</p>
+        </div>
+        <div class="comment-box">
+            <h5>mohammed alsaygh</h5>
+            <p>1 BHD for a car? is it better than a camry??</p>
+        </div>
+        <div class="comment-box">
+            <h5>firas abdulla</h5>
+            <p>the lemon>>></p>
+        </div>
+        <div class="comment-box">
+            <h5>mohammed essam</h5>
+            <p>wish i could drive the car :p</p>
+        </div>
+
+        
+    </section>
+</main>
+
+<footer class="text-center py-3 mt-5">
+    &copy; 2025 UNIHUB. All rights reserved.
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
