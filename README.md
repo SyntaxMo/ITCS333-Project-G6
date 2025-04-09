@@ -7,7 +7,7 @@
 | Course Reviews | Abdulrhman Mohammed |
 | Course Notes | Jaber |
 | Campus News | Ayoub Mohammed | 202209598 | A-Alomari |
-| Club Activities | Mohammed Hussain |
+| Club Activities | Mohammed Hussain | 202204231 | MohammedAlaradi
 | Student Marketplace | Ahmed AbdulHasan | 202205376 | Ahmed-ahasan
 
 ## CSS Framework
