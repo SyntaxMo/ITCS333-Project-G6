@@ -29,7 +29,7 @@ body {
 
 /* Remove border from navbar toggler */
 .navbar-toggler {
-    border: 0 !important;
+    border: 0 !important;   
 }
 
 /* Remove focus outline and shadow from navbar toggler */
