@@ -7,27 +7,44 @@ body{
     background-color: #F6F4F0 ;
 }
 
-/* Header Styling */
+/* Navigation bar */
 .navbar {
     background-color: #2E5077 !important;
-    }
+}
 
-    .navbar-toggler {
-        border: 0 !important;
-    }
-   
-    .navbar-toggler:focus {
-        outline: none !important;
-        box-shadow: none !important;
-    }
-    
-    .nav-item a:hover{
-        color: #67dbe6 !important;
-      }
+/* Navbar link default color */
+.navbar a {
+    color: white !important;
+}
 
-    .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-    }
+/* Navbar link hover color */
+.navbar a:hover {
+    color: #79D7BE !important;
+}
+
+/* Navbar active link styling (underline effect) */
+.navbar a.active {
+    color: #79D7BE !important;
+    font-weight: bold;
+    display: inline-block; /* Makes the element inline and allows border-bottom to affect only the text */
+    border-bottom: 2px solid #79D7BE;
+}
+
+/* Remove border from navbar toggler */
+.navbar-toggler {
+    border: 0 !important;
+}
+
+/* Remove focus outline and shadow from navbar toggler */
+.navbar-toggler:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Custom hamburger icon for navbar toggler */
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
 
     .form-control:focus {
         box-shadow: none !important;
