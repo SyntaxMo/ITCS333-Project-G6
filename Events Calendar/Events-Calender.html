@@ -15,44 +15,32 @@
         
         
 <!-- Header -->
-<header class="p-3 navbar navbar-expand-md navbar-light bg-dark">
+
+  <!-- Navigation menu -->
+<header class="p-3 navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand text-white" href="#"><h2>UNIHUB</h2></a>
-    
-        <!-- Button to toggle the menu on smaller screens -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="#">
+            <img src="pics/Logo.png" alt="Logo" width="30" height="24">
+            
+        </a>
+        <button class="navbar-toggler ms-auto" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
             <span class="navbar-toggler-icon"></span>
         </button>
-    
-        <!-- Navigation menu -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#Home">Home</a>
-                    </li>
-                <li class="nav-item">
-                <a class="nav-link text-white" href="Events-Calender.html">Events Calendar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#reviews">Course Reviews</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#notes">Course Notes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#news">Campus News</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#clubs">Club Activities</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#marketplace">Student Marketplace</a>
-                </li>
-            </ul>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link active" href="Events-Calender.html">Events Calendar</a>
+                <a class="nav-link" href="#">Course Reviews</a>
+                <a class="nav-link" href="#">Course Notes</a>
+                <a class="nav-link" href="#">Campus News</a>
+                <a class="nav-link" href="#">Club Activities</a>
+                <a class="nav-link" href="#">Student Marketplace</a>
+            </div>
         </div>
     </div>
 </header>
-        
+
+
 <!-- Main Content -->
 <main class="container mt-4">
 
@@ -142,7 +130,7 @@
   
             <div class="mb-3">
               <label for="eventImage" class="form-label">Upload Poster:</label>
-              <input type="file" class="form-control" id="eventImage" required>
+              <input type="file" class="form-control" id="eventImage" accept="image/jpeg, image/png, .jpg, .jpeg, .png"required>
             </div>
   
             <div class="mb-3">
