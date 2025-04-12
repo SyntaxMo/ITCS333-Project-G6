@@ -1,8 +1,14 @@
+
 :root {
   --primary-dark: #2D4C6A;
   --secondary-teal: #4A9BAA;
   --accent-mint: #87E0C1;
   --light-bg: #F7F6F4;
+}
+body {
+  background-color: #F6F4F0;
+  color: #2E5077;
+  font-family: Arial, Helvetica, sans-serif;
 }
 /* Navigation bar color */
 .navbar {

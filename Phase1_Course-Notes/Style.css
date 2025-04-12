@@ -1,4 +1,8 @@
-
+body {
+  background-color: #F6F4F0;
+  color: #2E5077;
+  font-family: Arial, Helvetica, sans-serif;
+}
 /* Navbar Styling */
 .navbar {
     background-color: #2E5077 !important;
