@@ -34,10 +34,17 @@
     </div>
   </header>
   
-<!-- Main Content -->
+<!--Main-->
 <main class="container mt-4">
-  <h2 class="mb-4">Add Article</h2>
+  <!-- Back, Edit, and Delete Buttons -->
+  <div class="mb-3 d-flex justify-content-between">
+      <a href="Campus News.html" class="btn" style="background-color: #4DA1A9; color: white;">Back</a>
+      <div>
+          <button class="btn btn-danger">Delete</button>
+      </div>
+  </div>
 
+  <h2 class="mb-4">Add Article</h2>
   <form action="submit_article.php" method="POST">
     <div class="mb-3">
       <label class="form-label">Title <span class="text-danger">*</span></label>
