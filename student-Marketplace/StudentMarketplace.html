@@ -52,33 +52,35 @@
 
                 <!-- Filter Dropdown (No rounded corners) -->
                 <div class="dropdown flex-shrink-0" style="margin-left: -1px;">
-                    <button class="btn btn-outline-secondary dropdown-toggle h-100" type="button" data-bs-toggle="dropdown" style="border-radius: 0; border-left: none; border-right: none;">
+                    <button class="btn btn-outline-secondary dropdown-toggle h-100" type="button" id="filterDropdown" data-bs-toggle="dropdown" style="border-radius: 0; border-left: none; border-right: none;">
                         Filter
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="filterDropdown">
                         <!-- Category Header and Options -->
                         <li><h6 class="dropdown-header">Category</h6></li>
-                        <li><a class="dropdown-item" href="#">Textbooks</a></li>
-                        <li><a class="dropdown-item" href="#">Electronics</a></li>
-                        <li><a class="dropdown-item" href="#">Clothing</a></li>
-                        <li><a class="dropdown-item" href="#">Furniture</a></li>
-                        <li><a class="dropdown-item" href="#">Accessories</a></li>
-                        <li><a class="dropdown-item" href="#">Sports Equipment</a></li>
-                        <li><a class="dropdown-item" href="#">Books</a></li>
-                        <li><a class="dropdown-item" href="#">Others</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="all">All Categories</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="Books">Books</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="Electronics">Electronics</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="Clothing">Clothing</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="Furniture">Furniture</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="Accessories">Accessories</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="Sports Equipment">Sports Equipment</a></li>
+                        <li><a class="dropdown-item" href="#" data-category="Others">Others</a></li>
                         <li><hr class="dropdown-divider"></li>
                         
                         <!-- Price Range Header and Options -->
                         <li><h6 class="dropdown-header">Price Range</h6></li>
-                        <li><a class="dropdown-item" href="#">0 - 50 BHD</a></li>
-                        <li><a class="dropdown-item" href="#">50 - 100 BHD</a></li>
-                        <li><a class="dropdown-item" href="#">100 - 200 BHD</a></li>
-                        <li><a class="dropdown-item" href="#">200 - 500 BHD</a></li>
-                        <li><a class="dropdown-item" href="#">500+ BHD</a></li>
+                        <li><a class="dropdown-item" href="#" data-price-range="all">All Prices</a></li>
+                        <li><a class="dropdown-item" href="#" data-price-range="0-50">0 - 50 BHD</a></li>
+                        <li><a class="dropdown-item" href="#" data-price-range="50-100">50 - 100 BHD</a></li>
+                        <li><a class="dropdown-item" href="#" data-price-range="100-200">100 - 200 BHD</a></li>
+                        <li><a class="dropdown-item" href="#" data-price-range="200-500">200 - 500 BHD</a></li>
+                        <li><a class="dropdown-item" href="#" data-price-range="500+">500+ BHD</a></li>
                     </ul>
                 </div>
                 
              
+
                 <!-- Sort Dropdown (No rounded corners) -->
                 <div class="dropdown flex-shrink-0" style="margin-left: -1px;">
                     <button class="btn btn-outline-secondary dropdown-toggle h-100" type="button" data-bs-toggle="dropdown"  style="border-radius: 0; border-left: none; border-right: none;">
@@ -104,40 +106,39 @@
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title">Add a New Item</h3>
-                <form>
+                <form id="addNewItemForm">
                     <div class="mb-3">
                         <label for="itemName" class="form-label">Item Name:</label>
-                        <input type="text" placeholder="Enter item name" class="form-control" id="itemName" required>
+                        <input type="text" placeholder="Enter item name" class="form-control" id="itemName" name="itemName" required>
                     </div>
- 
+
                     <div class="mb-3">
                         <label for="itemDescription" class="form-label">Description:</label>
-                        <textarea class="form-control" placeholder="write a short discription of the item" id="itemDescription" rows="3" required></textarea>
+                        <textarea class="form-control" placeholder="write a short discription of the item" id="itemDescription" name="itemDescription" rows="3" required></textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="itemCategory" class="form-label">Category:</label>
-                        <select class="form-control" id="itemCategory" required>
+                        <select class="form-control" id="itemCategory" name="itemCategory" required>
                             <option value="" disabled selected>Select Category</option>
-                            <option value="Textbooks">Textbooks</option>
+                            <option value="Books">Books</option>
                             <option value="Electronics">Electronics</option>
                             <option value="Clothing">Clothing</option>
                             <option value="Furniture">Furniture</option>
                             <option value="Accessories">Accessories</option>
                             <option value="Sports Equipment">Sports Equipment</option>
-                            <option value="Stationery">Stationery</option>
                             <option value="Others">Others</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label for="itemPrice" class="form-label">Price:</label>
-                        <input type="number" placeholder="123BHD" class="form-control" id="itemPrice" min="0" required>
+                        <input type="number" placeholder="123BHD" class="form-control" id="itemPrice" name="itemPrice" min="0" step="0.01" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="itemImage" class="form-label">Upload Image:</label>
-                        <input type="file" class="form-control" id="itemImage" required>
+                        <input type="file" class="form-control" id="itemImage" name="itemImage" required>
                     </div>
 
                     <div class="mb-3">
@@ -157,105 +158,7 @@
     <section>
         <h3>Items for Sale:</h3>
         <div class="row">
-            <!-- Repeat this card for each item -->
-            <article class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Car for sale</h5>
-                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
-                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
-                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Car for sale</h5>
-                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
-                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
-                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Car for sale</h5>
-                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
-                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
-                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Car for sale</h5>
-                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
-                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
-                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Car for sale</h5>
-                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
-                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
-                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Car for sale</h5>
-                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
-                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
-                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Car for sale</h5>
-                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
-                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
-                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="images/dumbCar.jpg" class="card-img-top" alt="Item Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Car for sale</h5>
-                        <p class="card-text"><strong>Price:</strong> 1bhd</p>
-                        <p class="card-text"><strong>Description:</strong> this car is useless i dont want it anymore!</p>
-                        <a href="itemPage.html"><button class="btn btn-success w-100">view</button></a>
-                    </div>
-                </div>
-            </article>
-
-
-            <!-- Repeat ends -->
+            <!-- Items will be dynamically rendered here -->
         </div>
     </section>
 
@@ -263,11 +166,7 @@
     <section class="mt-4">
         <nav>
             <ul class="pagination justify-content-center">
-                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                <!-- Pagination will be dynamically rendered here -->
             </ul>
         </nav>
     </section>
@@ -276,6 +175,6 @@
 <footer class="text-center py-3 mt-5">
     &copy; 2025 UNIHUB. All rights reserved.
 </footer>
-
+    <script src="index.js"></script>
 </body>
 </html>
