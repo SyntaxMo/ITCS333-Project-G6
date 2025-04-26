@@ -27,7 +27,7 @@ const mockEvents = Array.from({ length: 20 }, (_, i) => ({
     image: 'Pics/imaa.jpeg',
     popularity: Math.floor(Math.random() * 100),
     comments: [],
-    addedAt: Date.now() - (i * 1000) // Add timestamps in reverse order for mock data
+    addedAt: Date.now() - (i * 1000)
 }));
 
 // Filter and sort events
