@@ -71,6 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = document.querySelector('h2.card-title');
         const priceText = document.querySelector('p.card-text:nth-of-type(1)');
         const descText = document.querySelector('p.card-text:nth-of-type(2)');
+        const imgElement = document.querySelector('.img-fluid');
+        const imgContainer = imgElement.parentElement;
         
         if (editable) {
             title.contentEditable = true;
@@ -86,7 +88,22 @@ document.addEventListener('DOMContentLoaded', () => {
             
             descText.innerHTML = `
                 <strong>Description:</strong>
-                <textarea class="form-control mt-2">${currentItem.description}</textarea>`;
+                <textarea class="form-control mt-2 mb-3">${currentItem.description}</textarea>
+                <strong>Change Image:</strong>
+                <input type="file" class="form-control mt-2" id="imageInput" accept="image/*">`;
+
+            const imageInput = document.getElementById('imageInput');
+            imageInput.addEventListener('change', async (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    try {
+                        const newImageData = await handleImageUpload(e.target.files[0]);
+                        imgElement.src = newImageData;
+                        currentItem.imageData = newImageData;
+                    } catch (error) {
+                        alert(error.message || 'Error uploading image');
+                    }
+                }
+            });
             
             title.style.padding = '0.375rem';
             title.style.border = '1px solid #ced4da';
@@ -102,6 +119,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function handleImageUpload(file) {
+        if (!file || !file.type.startsWith('image/')) {
+            throw new Error('Please select a valid image file');
+        }
+
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    const maxSize = 800;
+                    if (width > height && width > maxSize) {
+                        height *= maxSize / width;
+                        width = maxSize;
+                    } else if (height > maxSize) {
+                        width *= maxSize / height;
+                        height = maxSize;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.6));
+                };
+                img.onerror = () => reject(new Error('Failed to process image'));
+                img.src = e.target.result;
+            };
+            reader.onerror = () => reject(new Error('Failed to read file'));
+            reader.readAsDataURL(file);
+        });
+    }
+
     function saveChanges() {
         const title = document.querySelector('h2.card-title').textContent.trim();
         const priceInput = document.querySelector('p.card-text:nth-of-type(1) input');
@@ -115,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentItem.title = title;
         currentItem.price = priceInput.value + ' BHD';
         currentItem.description = descTextarea.value;
+        // Image data is already updated in the currentItem when file is selected
         
         const items = JSON.parse(localStorage.getItem('marketplaceItems')) || [];
         const itemIndex = items.findIndex(item => item.id === currentItem.id);

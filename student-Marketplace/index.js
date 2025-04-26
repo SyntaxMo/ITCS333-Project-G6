@@ -8,6 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const paginationContainer = document.querySelector(".pagination");
     const filterButton = document.querySelector('#filterDropdown');
     const sortButton = document.querySelector('[data-bs-toggle="dropdown"]:not(#filterDropdown)');
+    const loadingSpinner = document.querySelector('#loadingSpinner');
+
+    // Function to show/hide loading spinner
+    function toggleLoading(show) {
+        if (loadingSpinner) {
+            loadingSpinner.classList.toggle('d-none', !show);
+            if (itemsContainer) {
+                itemsContainer.style.opacity = show ? '0.5' : '1';
+            }
+        }
+    }
 
     // State Variables
     let items = [];
@@ -18,7 +29,60 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPriceRange = 'all';
     let currentSort = 'Newest';
 
+    // Function to save filter/sort settings
+    function saveSettings() {
+        const settings = {
+            category: currentCategory,
+            priceRange: currentPriceRange,
+            sort: currentSort,
+            page: currentPage
+        };
+        localStorage.setItem('marketplaceSettings', JSON.stringify(settings));
+    }
+
+    // Function to restore filter/sort settings
+    function restoreSettings() {
+        const savedSettings = localStorage.getItem('marketplaceSettings');
+        if (!savedSettings) return;
+
+        const settings = JSON.parse(savedSettings);
+        currentCategory = settings.category;
+        currentPriceRange = settings.priceRange;
+        currentSort = settings.sort;
+        currentPage = settings.page || 1;
+
+        // Restore category UI
+        if (currentCategory !== 'all') {
+            const categoryItem = filterDropdown.querySelector(`[data-category="${currentCategory}"]`);
+            if (categoryItem) {
+                categoryItem.classList.add('active');
+                filterButton.textContent = `Category: ${categoryItem.textContent}`;
+            }
+        }
+
+        // Restore price range UI
+        if (currentPriceRange !== 'all') {
+            const priceItem = filterDropdown.querySelector(`[data-price-range="${currentPriceRange}"]`);
+            if (priceItem) {
+                priceItem.classList.add('active');
+            }
+        }
+
+        // Restore sort UI
+        if (currentSort !== 'Newest') {
+            const sortItems = sortDropdown.querySelectorAll('.dropdown-item');
+            const sortItem = Array.from(sortItems).find(item => item.textContent === currentSort);
+            if (sortItem) {
+                sortItem.classList.add('active');
+                sortButton.textContent = `Sort: ${currentSort}`;
+            }
+        }
+
+        applyFilters();
+    }
+
     async function loadItems() {
+        toggleLoading(true);
         try {
             const savedItems = localStorage.getItem('marketplaceItems');
             let needsPlaceholders = true;
@@ -64,6 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 filteredItems = [...items];
             }
         } finally {
+            await new Promise(resolve => setTimeout(resolve, 100)); // Minimum loading time
+            toggleLoading(false);
             renderItems();
             renderPagination();
         }
@@ -72,10 +138,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Filter by Category and Price Range
     const filterDropdown = document.querySelector('.dropdown-menu[aria-labelledby="filterDropdown"]');
     if (filterDropdown) {
-        filterDropdown.addEventListener('click', (e) => {
+        filterDropdown.addEventListener('click', async (e) => {
             if (!e.target.classList.contains('dropdown-item')) return;
             e.preventDefault();
             
+            toggleLoading(true);
             const isCategory = !!e.target.dataset.category;
             const siblings = e.target.parentElement.parentElement.querySelectorAll('.dropdown-item');
             siblings.forEach(item => {
@@ -93,7 +160,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentPriceRange = e.target.dataset.priceRange;
             }
             
+            await new Promise(resolve => setTimeout(resolve, 300)); // Small delay for visual feedback
             applyFilters();
+            saveSettings();
+            toggleLoading(false);
         });
     }
 
@@ -112,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             applySorting();
             renderItems();
+            saveSettings();
         });
     }
 
@@ -136,7 +207,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        currentPage = 1;
+        const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+        if (currentPage > totalPages) {
+            currentPage = Math.max(1, totalPages);
+        }
+        
         applySorting();
         renderItems();
         renderPagination();
@@ -228,6 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentPage = newPage;
                     renderItems();
                     renderPagination();
+                    saveSettings(); // Save settings when changing pages
                 }
             });
         });
@@ -235,15 +311,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Search Functionality
     if (searchInput) {
+        let searchTimeout;
         searchInput.addEventListener("input", (e) => {
-            const query = e.target.value.toLowerCase();
-            filteredItems = items.filter(item => 
-                item.title.toLowerCase().includes(query) ||
-                item.description.toLowerCase().includes(query)
-            );
-            currentPage = 1;
-            renderItems();
-            renderPagination();
+            toggleLoading(true);
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const query = e.target.value.toLowerCase();
+                filteredItems = items.filter(item => 
+                    item.title.toLowerCase().includes(query) ||
+                    item.description.toLowerCase().includes(query)
+                );
+                currentPage = 1;
+                renderItems();
+                renderPagination();
+                toggleLoading(false);
+            }, 300);
         });
     }
 
@@ -293,6 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const submitButton = addItemForm.querySelector('button[type="submit"]');
             submitButton.disabled = true;
             submitButton.textContent = 'Adding...';
+            toggleLoading(true);
 
             try {
                 const formData = new FormData(addItemForm);
@@ -326,10 +409,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } finally {
                 submitButton.disabled = false;
                 submitButton.textContent = 'Submit Item';
+                toggleLoading(false);
             }
         });
     }
 
     // Initialize
-    loadItems();
+    loadItems().then(() => {
+        restoreSettings();
+    });
 });
