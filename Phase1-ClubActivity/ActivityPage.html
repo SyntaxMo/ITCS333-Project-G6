@@ -11,6 +11,7 @@
 
     <!-- Bootstrap js -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script defer src="Phase2-ClubActivity/JavaScript.js"></script>
 
 </head>
 <body>
@@ -43,9 +44,65 @@
         <!-- Back, Edit, and Delete Buttons -->
     <div class="mb-3 d-flex gap-2">
         <a href="ClubActivity.html" class="btn btn-success">Back to Activities</a>
-        <button class="btn btn-outline-secondary" id="edit-btn">Edit</button>
+        <button class="btn btn-outline-secondary" id="edit-btn" data-bs-toggle="collapse" data-bs-target="#editActivityForm">Edit</button>
         <button class="btn btn-danger">Delete</button>
     </div>
+
+    <section id="editActivityForm" class="collapse mt-3">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Edit Activity</h3>
+            <form>
+              <div class="mb-3">
+                <label for="editActivityImage" class="form-label">Upload Image:</label>
+                <input type="file" class="form-control" id="editActivityImage">
+              </div>
+      
+              <div class="mb-3">
+                <label for="editActivityName" class="form-label">Activity Title:</label>
+                <input type="text" class="form-control" id="editActivityName" placeholder="Edit The Activity Title" required>
+              </div>
+      
+              <div class="mb-3">
+                <label for="editClub" class="form-label">Choose a Club:</label>
+                <select class="form-control" id="editClub" required>
+                  <option value="" disabled>Select Club</option>
+                  <option value="Volleyball">Volleyball Club</option>
+                  <option value="Basketball">Basketball Club</option>
+                  <option value="Football">Football Club</option>
+                  <option value="Swimming">Swimming Club</option>
+                  <option value="Literature">Literature Club</option>
+                  <option value="Theater">Theater Club</option>
+                  <option value="Technology">Technology Club</option>
+                </select>
+              </div>
+      
+              <div class="mb-3">
+                <label for="editDatetime" class="form-label">Date & Time:</label>
+                <input type="datetime-local" class="form-control" id="editDatetime" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="Location">Location:</label>
+                <input type="textarea" cols="1" placeholder="Edit The Activity Location" class="form-control" id="location" required>
+              </div>
+      
+              <div class="mb-3">
+                <label for="editActivityDescription" class="form-label">Description:</label>
+                <textarea class="form-control" id="editActivityDescription" rows="3" placeholder="Edit The Activity Description" required></textarea>
+              </div>
+      
+              <div class="mb-3">
+                <button type="submit" class="btn btn-success w-100">Save Changes</button>
+              </div>
+      
+              <div class="mb-3">
+                <button type="button" class="btn btn-danger w-100" data-bs-toggle="collapse" data-bs-target="#editActivityForm">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
 
 
     <!-- Activity Details Section -->

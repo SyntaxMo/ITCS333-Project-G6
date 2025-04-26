@@ -9,6 +9,7 @@
   
     <!-- Bootstrap script for event handling -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script defer src="Phase2-ClubActivity/JavaScript.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
@@ -41,24 +42,24 @@
     <section class="mb-4">
         <div class="d-flex justify-content-start align-items-center w-100" style="flex-wrap: nowrap;">
             <!-- Search Bar (Left corners not rounded) -->
-            <input type="search" class="form-control" placeholder="Search Activities..." style="border-radius: 0.375rem 0 0 0.375rem; min-width: 120px; border-right: none;">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search For Activities..." style="border-radius: 0.375rem 0 0 0.375rem; min-width: 120px; border-right: none;">
 
             <!-- Filter Dropdown (No rounded corners) -->
             <div class="dropdown flex-shrink-0" style="margin-left: -1px;">
                 <button class="btn btn-outline-secondary dropdown-toggle h-100" type="button" data-bs-toggle="dropdown" style="border-radius: 0; border-left: none; border-right: none;">
                     Filter
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                <ul id="clubsFilter" class="dropdown-menu" aria-labelledby="filterDropdown">
                     <!-- Category Header and Options -->
                     <li><h6 class="dropdown-header">Clubs</h6></li>
-                    <li><a class="dropdown-item" href="#">Volleyball Club</a></li>
-                    <li><a class="dropdown-item" href="#">Basketball Club</a></li>
-                    <li><a class="dropdown-item" href="#">Football Club</a></li>
-                    <li><a class="dropdown-item" href="#">Swimming Club</a></li>
-                    <li><a class="dropdown-item" href="#">Literature Club</a></li>
-                    <li><a class="dropdown-item" href="#">Theater Club</a></li>
-                    <li><a class="dropdown-item" href="#">Technology Club</a></li>
-                    <li><a class="dropdown-item" href="#">Others</a></li>
+                    <li><a class="dropdown-item" >Volleyball Club</a></li>
+                    <li><a class="dropdown-item" >Basketball Club</a></li>
+                    <li><a class="dropdown-item" >Football Club</a></li>
+                    <li><a class="dropdown-item" >Swimming Club</a></li>
+                    <li><a class="dropdown-item" >Literature Club</a></li>
+                    <li><a class="dropdown-item" >Theater Club</a></li>
+                    <li><a class="dropdown-item" >Technology Club</a></li>
+                    <li><a class="dropdown-item" >Others</a></li>
                 </ul>
             </div>
         
@@ -97,7 +98,7 @@
 
                     <div class="mb-3">
                         <label for="ActivityName" class="form-label">Activity Title:</label>
-                        <input type="text" placeholder="Enter Activity Title" class="form-control" id="itemName" required>
+                        <input type="text" placeholder="Enter The Activity Title" class="form-control" id="itemName" required>
                     </div>
 
                     <div class="mb-3">
@@ -120,6 +121,11 @@
                     </div>
 
                     <div class="mb-3">
+                      <label class="form-label" for="Location">Location:</label>
+                      <input type="textarea" cols="1" placeholder="Enter The Activity Location" class="form-control" id="location" required>
+                    </div>
+
+                    <div class="mb-3">
                       <label for="ActivityDescription" class="form-label">Description:</label>
                       <textarea class="form-control" placeholder="Write a short description of the activity" id="clubDescription" rows="3" required></textarea>
                     </div>
@@ -129,7 +135,7 @@
                     </div>
 
                     <div class="mb-3">
-                    <button type="button" class="btn btn-danger w-100">Cancel</button>
+                    <button type="button" class="btn btn-danger w-100" data-bs-toggle="collapse" data-bs-target="#addActivityForm">Cancel</button>
                     </div>
                     
                 </form>
@@ -146,7 +152,7 @@
                   <img src="Images/hacker.jpg" class="card-img-top" alt="Activity Image">
                   <div class="card-body">
                     <h5 class="card-title">Hackathon 2025</h5>
-                    <p class="card-text"><strong>Host:</strong> Technology Club</p>
+                    <p class="card-text" id="hostClub"><strong>Host:</strong> Technology Club</p>
                     <p class="card-text"><strong>Location:</strong> IT College - UoB</p>
                     <p class="card-text"><strong>Date & Time:</strong> 4-2-2025, 7:29PM</p>
                     <p class="card-text"><strong>Description:</strong> We hacker, internet go boom</p>
@@ -203,11 +209,10 @@
           <section class="mt-4">
             <nav>
               <ul class="pagination justify-content-center">
-                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
               </ul>
             </nav>
           </section>

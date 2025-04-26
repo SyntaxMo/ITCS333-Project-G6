@@ -185,3 +185,8 @@
 .nav-item a:hover{
   color: #67dbe6 !important;
 }
+
+#clubsFilter{
+cursor: pointer;
+
+}
