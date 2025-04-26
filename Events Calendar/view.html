@@ -1,163 +1,459 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniHub</title>
+    <title>Event Details - UniHub</title>
     <link rel="icon" href="../images/Logo.png">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-        <link rel="stylesheet" href="styles.css">
-        <script defer src="https://kit.fontawesome.com/387937a7f8.js" crossorigin="anonymous"></script>
-        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<!-- Header -->
-<header class="p-3 navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="../index.html">
-            <img src="Pics/Logo.png" alt="Logo" width="30" height="24">
-        </a>
-        <button class="navbar-toggler ms-auto" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav mr-auto">
-                <a class="nav-link" href="../index.html">Home</a>
-                <a class="nav-link" href="../Campus News/Campus News.html">Campus News</a>
-                <a class="nav-link" href="../course-review2/Course-Review.html">Course Review</a>
-                <a class="nav-link active" href="../Events Calendar/Events-Calender.html">Events Calendar</a>
-                <a class="nav-link" href="../Phase1_Course-Notes/Course-Notes.html">Course Notes</a>
-                <a class="nav-link" href="../Phase1-ClubActivity/ClubActivity.html">Club Activities</a>
-                <a class="nav-link" href="../student-Marketplace/StudentMarketplace.html">Student Marketplace</a>
-            </div>
-        </div>
-    </div>
-</header>
-
-
-
-<!--Main-->
-<main class="container mt-4">
-    <!-- Back, Edit, and Delete Buttons -->
-    <div class="mb-3 d-flex gap-2">
-        <a href="Events-Calender.html" class="btn" style="background-color: #4DA1A9; color: white;">Back</a>
-        <button class="btn btn-outline-secondary">Edit</button>
-        <button class="btn btn-danger">Delete</button>
-    </div>
-
-    <!-- Event Details Section -->
-    <section class="row">
-        <!-- Mobile-only Title & Details -->
-        <div class="col-12 order-0 d-block d-md-none">
-            <div class="event-header mb-4">
-                <h1 class="event-title">Science Fair</h1>
-                <div class="event-meta">
-                    <p class="h5 mb-1">📅 April 10, 2025</p>
-                    <p class="h5 mb-0">📍 University Hall</p>
+    <!-- Header -->
+    <header class="p-3 navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">
+                <img src="Pics/Logo.png" alt="Logo" width="30" height="24">
+            </a>
+            <button class="navbar-toggler ms-auto" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-link" href="../index.html">Home</a>
+                    <a class="nav-link" href="../Campus News/Campus News.html">Campus News</a>
+                    <a class="nav-link" href="../course-review2/Course-Review.html">Course Review</a>
+                    <a class="nav-link active" href="Events-Calender.html">Events Calendar</a>
+                    <a class="nav-link" href="../Phase1_Course-Notes/Course-Notes.html">Course Notes</a>
+                    <a class="nav-link" href="../Phase1-ClubActivity/ClubActivity.html">Club Activities</a>
+                    <a class="nav-link" href="../student-Marketplace/StudentMarketplace.html">Student Marketplace</a>
                 </div>
             </div>
         </div>
+    </header>
 
-        <!-- Image & Event Details -->
-        <div class="col-md-5 order-1 order-md-0">
-            <img src="Pics/imaa.jpeg" class="img-fluid rounded" alt="Science Fair">
-            <div class="additional-details mt-3">
-                <h4>Event Essentials:</h4>
-                <ul class="list-unstyled">
-                    <li>Time: 10:00 AM - 4:00 PM</li>
-                    <li>Organizer: Science Department</li>
-                    <li>Contact: science@university.edu</li>
-                </ul>
+    <!-- Main Content -->
+    <main class="container mt-4">
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="text-center d-none">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
         </div>
 
-        <!-- Desktop-only Title & Description -->
-        <div class="col-md-7 order-2 order-md-1 event-header-container d-none d-md-block">
-            <div class="event-header mb-4">
-                <h1 class="event-title">Science Fair</h1>
-                <div class="event-meta">
-                    <p class="h5 mb-1">📅 April 10, 2025</p>
-                    <p class="h5 mb-0">📍 University Hall</p>
+        <!-- Error Container -->
+        <div id="errorContainer" class="mt-3"></div>
+
+        <!-- Action Buttons -->
+        <div class="mb-3 d-flex gap-2">
+            <a href="Events-Calender.html" class="btn btn-success">← Back to Events</a>
+            <button id="editButton" class="btn btn-outline-secondary">Edit Event</button>
+            <button id="deleteButton" class="btn btn-danger">Delete</button>
+        </div>
+
+        <!-- Event Details Section -->
+        <section class="row">
+            <!-- Event Image -->
+            <div class="col-md-5">
+                <div id="eventImage"></div>
+                <div class="additional-details mt-3">
+                    <button id="registerButton" class="btn btn-primary btn-lg w-100">Register for Event</button>
                 </div>
             </div>
-            <div class="event-description mt-3">
-                <p class="lead">The annual university science fair showcases innovative projects from STEM students. Participants will demonstrate breakthroughs in robotics, environmental science, and biotechnology. Open to all students and faculty members.</p>
-            </div>
-        </div>
 
-        <!-- Mobile-only Description -->
-        <div class="col-12 order-3 d-block d-md-none">
-             <div class="event-description mt-3">
-                <h4 class="mb-3 about-title">About The Event:</h4>
-                <p class="lead">The annual university science fair showcases innovative projects from STEM students. Participants will demonstrate breakthroughs in robotics, environmental science, and biotechnology. Open to all students and faculty members.</p>
-             </div>
-        </div>
-    </section>
+            <!-- Event Details -->
+            <div class="col-md-7">
+                <!-- View Mode -->
+                <div id="viewMode">
+                    <div class="event-header-container">
+                        <h2 id="eventTitle" class="event-title"></h2>
+                        <div class="event-meta">
+                            <p id="eventDate"></p>
+                            <p id="eventLocation"></p>
+                            <p id="eventCategory"></p>
+                        </div>
+                    </div>
 
-
-    
-    <!-- Comments Section -->
-    <section class="mt-5">
-        <h3>Comments:</h3>
-
-        <!-- Add New Comment Toggle Button -->
-        <button class="btn btn-success mt-3 mb-3" type="button"               data-bs-toggle="collapse" data-bs-target="#commentForm" aria-expanded="false" aria-controls="commentForm">
-            Add a Comment
-        </button>
-
-        <!-- Collapsible Form -->
-        <div class="collapse" id="commentForm">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Add a Comment</h5>
-                    <form>
+                    <div class="event-description mt-4">
+                        <h4 class="about-title">About Event</h4>
+                        <p id="eventDescription" class="lead"></p>
+                    </div>
+                </div>
+                
+                <!-- Edit Form -->
+                <div id="editMode" class="d-none">
+                    <form id="editForm" class="mt-3">
                         <div class="mb-3">
-                            <label for="commenterName" class="form-label">Your Name:</label>
-                            <input type="text" class="form-control" id="commenterName" placeholder="Enter your name" required>
+                            <label for="editTitle" class="form-label">Event Title:</label>
+                            <input type="text" class="form-control" id="editTitle" name="title" required>
                         </div>
                         <div class="mb-3">
-                            <label for="commentText" class="form-label">Your Comment:</label>
-                            <textarea class="form-control" id="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
+                            <label for="editDate" class="form-label">Event Date:</label>
+                            <input type="datetime-local" class="form-control" id="editDate" name="date" required>
                         </div>
-                        <button type="submit" class="btn btn-success w-100">Submit Comment</button>
+                        <div class="mb-3">
+                            <label for="editLocation" class="form-label">Location:</label>
+                            <input type="text" class="form-control" id="editLocation" name="location" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCategory" class="form-label">Category:</label>
+                            <select class="form-control" id="editCategory" name="category" required>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Competition">Competition</option>
+                                <option value="Talk">Talk</option>
+                                <option value="Meetup">Meetup</option>
+                                <option value="Social">Social</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDescription" class="form-label">Description:</label>
+                            <textarea class="form-control" id="editDescription" name="description" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editImage" class="form-label">Event Image:</label>
+                            <input type="file" class="form-control" id="editImage" name="image" accept="image/*">
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+                            <button type="button" class="btn btn-danger" id="cancelEdit">Cancel</button>
+                        </div>
                     </form>
                 </div>
             </div>
-        </div>
-    
-        <!-- Placeholder Comments -->
-        <div class="comment-box">
-            <h5>Mohammed Essam</h5>
-            <p>Can’t wait to showcase our eco-friendly water purifier! Hope to see you all there</p>
-        </div>
-        <div class="comment-box">
-            <h5>Dr. Omar Al-Khatib</h5>
-            <p>Proud of our students’ work. These projects reflect real innovation. Don’t miss it!</p>
-        </div>
-        <div class="comment-box">
-            <h5>Sara K.</h5>
-            <p>Will there be a section for AI or machine learning projects? Super excited 🔍🤖</p>
-        </div>
-        <div class="comment-box">
-            <h5>Ahmed Abdulhasan</h5>
-            <p>Is it okay for non-STEM students to attend? Looks interesting 👀</p>
-        </div>
-        <div class="comment-box">
-            <h5>Hasan Alaradi</h5>
-            <p>booked the day off just to come. Big fan of student-led innovation </p>
-        </div>
+        </section>
 
-        
-    </section>
-</main>
+        <!-- Comments Section -->
+        <section class="mb-5 mt-5">
+            <h3 class="comment-header mb-4">Comments</h3>
 
-<footer class="text-center py-3 mt-5">
-    &copy; 2025 UNIHUB. All rights reserved.
-</footer>
+            <!-- Add Comment Button -->
+            <button class="btn btn-success mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#commentForm" onclick="scrollToCommentForm()">
+                Add a Comment
+            </button>
 
+            <!-- Comment Form -->
+            <div class="collapse" id="commentForm">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Add a Comment</h5>
+                        <form id="addCommentForm">
+                            <div class="mb-3">
+                                <label for="commenterName" class="form-label">Your Name:</label>
+                                <input type="text" class="form-control" id="commenterName" name="commenterName" placeholder="Enter your name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="commentText" class="form-label">Your Comment:</label>
+                                <textarea class="form-control" id="commentText" name="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Submit Comment</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments Container -->
+            <div id="commentsContainer"></div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-3 mt-5">
+        &copy; 2025 UNIHUB. All rights reserved.
+    </footer>
+
+    <script>
+        // DOM Elements
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const errorContainer = document.getElementById('errorContainer');
+        const eventImage = document.getElementById('eventImage');
+        const eventTitle = document.getElementById('eventTitle');
+        const eventDate = document.getElementById('eventDate');
+        const eventLocation = document.getElementById('eventLocation');
+        const eventCategory = document.getElementById('eventCategory');
+        const eventDescription = document.getElementById('eventDescription');
+        const registerButton = document.getElementById('registerButton');
+        const commentsContainer = document.getElementById('commentsContainer');
+        const commentForm = document.getElementById('addCommentForm');
+        const editButton = document.getElementById('editButton');
+        const viewMode = document.getElementById('viewMode');
+        const editMode = document.getElementById('editMode');
+        const editForm = document.getElementById('editForm');
+        const cancelEdit = document.getElementById('cancelEdit');
+        const deleteButton = document.getElementById('deleteButton');
+
+        let currentEvent = null;
+
+        // Helper functions
+        function showLoading() {
+            loadingIndicator.classList.remove('d-none');
+        }
+
+        function hideLoading() {
+            loadingIndicator.classList.add('d-none');
+        }
+
+        function showError(message) {
+            errorContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+        }
+
+        function showSuccess(message) {
+            errorContainer.innerHTML = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+        }
+
+        function formatDate(date) {
+            return new Date(date).toLocaleString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function formatDateForInput(date) {
+            const d = new Date(date);
+            // Adjust for local timezone
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            const hours = String(d.getHours()).padStart(2, '0');
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        // Display comments
+        function displayComments(comments) {
+            commentsContainer.innerHTML = comments.length === 0 
+                ? '<p>No comments yet. Be the first to comment!</p>'
+                : comments.map(comment => `
+                    <div class="comment-box">
+                        <h5>${comment.name}</h5>
+                        <p class="text-muted small mb-2">Posted on ${formatDate(comment.date)}</p>
+                        <p>${comment.text}</p>
+                    </div>
+                `).join('');
+        }
+
+        // Toggle edit mode
+        function toggleEditMode(show) {
+            if (show) {
+                viewMode.classList.add('d-none');
+                editMode.classList.remove('d-none');
+                // Populate edit form
+                document.getElementById('editTitle').value = currentEvent.title;
+                document.getElementById('editDate').value = formatDateForInput(currentEvent.date);
+                document.getElementById('editLocation').value = currentEvent.location;
+                document.getElementById('editCategory').value = currentEvent.category;
+                document.getElementById('editDescription').value = currentEvent.description;
+            } else {
+                viewMode.classList.remove('d-none');
+                editMode.classList.add('d-none');
+            }
+        }
+
+        // Update event display
+        function updateEventDisplay() {
+            // Handle base64 images or regular image paths
+            const imageSrc = currentEvent.image.startsWith('data:') ? 
+                currentEvent.image : 
+                currentEvent.image;
+                
+            eventImage.innerHTML = `<img src="${imageSrc}" class="img-fluid rounded" alt="${currentEvent.title}">`;
+            eventTitle.textContent = currentEvent.title;
+            eventDate.innerHTML = `📅 Date: ${formatDate(currentEvent.date)}`;
+            eventLocation.innerHTML = `📍 Location: ${currentEvent.location}`;
+            eventCategory.innerHTML = `🏷️ Category: ${currentEvent.category}`;
+            eventDescription.textContent = currentEvent.description;
+            displayComments(currentEvent.comments || []);
+        }
+
+        // Get event details
+        async function fetchEventDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventId = parseInt(urlParams.get('id'));
+
+            if (!eventId) {
+                showError('Event not found');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // Get events from session storage
+                const events = JSON.parse(sessionStorage.getItem('events'));
+                if (!events) {
+                    throw new Error('No events found');
+                }
+
+                currentEvent = events.find(e => e.id === eventId);
+                if (!currentEvent) {
+                    throw new Error('Event not found');
+                }
+
+                // Initialize comments array if it doesn't exist
+                if (!currentEvent.comments) {
+                    currentEvent.comments = [];
+                }
+
+                updateEventDisplay();
+
+                // Register button handler
+                registerButton.addEventListener('click', () => {
+                    currentEvent.popularity++;
+                    // Update in session storage
+                    const updatedEvents = events.map(e => e.id === currentEvent.id ? currentEvent : e);
+                    sessionStorage.setItem('events', JSON.stringify(updatedEvents));
+                    showSuccess(`Successfully registered for ${currentEvent.title}!`);
+                    registerButton.disabled = true;
+                    registerButton.textContent = 'Registered';
+                });
+
+            } catch (error) {
+                showError('Failed to load event details. Please try again later.');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Edit button handler
+        editButton.addEventListener('click', () => toggleEditMode(true));
+        cancelEdit.addEventListener('click', () => toggleEditMode(false));
+
+        // Edit form handler
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(editForm);
+
+            // Handle image file
+            const imageFile = document.getElementById('editImage').files[0];
+            if (imageFile) {
+                // Convert image to base64
+                const reader = new FileReader();
+                try {
+                    const base64Image = await new Promise((resolve, reject) => {
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = () => reject(reader.error);
+                        reader.readAsDataURL(imageFile);
+                    });
+                    
+                    // Update current event with new image
+                    currentEvent.image = base64Image;
+                } catch (error) {
+                    console.error('Error processing image:', error);
+                    showError('Failed to process image. Please try again.');
+                    return;
+                }
+            }
+
+            // Update current event
+            currentEvent.title = formData.get('title');
+            currentEvent.date = new Date(formData.get('date'));
+            currentEvent.location = formData.get('location');
+            currentEvent.category = formData.get('category');
+            currentEvent.description = formData.get('description');
+
+            // Update in session storage
+            const events = JSON.parse(sessionStorage.getItem('events'));
+            const updatedEvents = events.map(e => e.id === currentEvent.id ? currentEvent : e);
+            sessionStorage.setItem('events', JSON.stringify(updatedEvents));
+
+            // Update display
+            toggleEditMode(false);
+            updateEventDisplay();
+            showSuccess('Event updated successfully!');
+        });
+
+        // Comment form handler
+        commentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!currentEvent) {
+                showError('Cannot add comment: Event not found');
+                return;
+            }
+
+            const formData = new FormData(commentForm);
+            const name = formData.get('commenterName');
+            const text = formData.get('commentText');
+
+            if (!name || !text) {
+                showError('Please fill in all fields');
+                return;
+            }
+
+            const newComment = {
+                name: name,
+                text: text,
+                date: new Date()
+            };
+
+            if (!currentEvent.comments) {
+                currentEvent.comments = [];
+            }
+
+            // Add comment and update storage
+            currentEvent.comments.unshift(newComment);
+            const events = JSON.parse(sessionStorage.getItem('events'));
+            const updatedEvents = events.map(e => e.id === currentEvent.id ? currentEvent : e);
+            sessionStorage.setItem('events', JSON.stringify(updatedEvents));
+            
+            // Update display
+            displayComments(currentEvent.comments);
+            
+            // Reset form and collapse
+            commentForm.reset();
+            const commentFormCollapse = bootstrap.Collapse.getInstance(document.getElementById('commentForm'));
+            if (commentFormCollapse) {
+                commentFormCollapse.hide();
+            }
+            
+            showSuccess('Comment added successfully!');
+        });
+
+        // Function to scroll to comment form
+        function scrollToCommentForm() {
+            setTimeout(() => {
+                document.getElementById('commentForm').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }, 200); // Small delay to ensure collapse animation has started
+        }
+
+        // Delete button handler
+        deleteButton.addEventListener('click', () => {
+            if (confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+                try {
+                    const events = JSON.parse(sessionStorage.getItem('events'));
+                    const updatedEvents = events.filter(e => e.id !== currentEvent.id);
+                    sessionStorage.setItem('events', JSON.stringify(updatedEvents));
+                    showSuccess('Event deleted successfully!');
+                    // Redirect back to events page after short delay
+                    setTimeout(() => {
+                        window.location.href = 'Events-Calender.html';
+                    }, 1500);
+                } catch (error) {
+                    showError('Failed to delete event. Please try again.');
+                }
+            }
+        });
+
+        // Initialize the page
+        fetchEventDetails();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
