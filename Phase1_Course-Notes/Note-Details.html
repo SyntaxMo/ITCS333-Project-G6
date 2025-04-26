@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniHub</title>
+    <title>Unihub - Note Details</title>
     <link rel="icon" href="images/Logo.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <link href="Style.css" rel="stylesheet">
 </head>
 <body>
-<!-- Header -->
 <header class="p-3 navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="../index.html">
@@ -31,37 +30,26 @@
         </div>
     </div>
 </header>
-<main class="container mt-4">
-    <!-- Action Buttons -->
+
+<main class="container mt-4 note-details-page">
     <div class="mb-3 d-flex gap-2">
         <a href="Course-Notes.html" class="btn btn-success">← Back to Notes</a>
-        <button class="btn btn-outline-secondary">Edit</button>
-        <button class="btn btn-danger">Delete</button>
+        <button class="btn btn-outline-secondary" id="editBtn">Edit</button>
+        <button class="btn btn-danger" id="deleteBtn">Delete</button>
     </div>
 
-    <!-- Note Details Section -->
     <section class="card mb-4">
         <div class="card-body">
-            <h2 class="card-title mb-4">CSS - Mastering Selectors and Layouts</h2>
-
+            <h2 class="card-title mb-4" id="noteTitle"></h2>
             <div class="row">
-                <!-- Main Content -->
                 <div class="col-md-8">
-                    <p class="fs-5"><strong>Course:</strong> ITCS 333</p>
-                    <p class="fs-5"><strong>Type:</strong> <span class="badge bg-warning">Lecture Notes</span></p>
-
+                    <p class="fs-5"><strong>Course:</strong> <span data-course></span></p>
+                    <p class="fs-5"><strong>Type:</strong> <span data-type class="badge bg-warning"></span></p>
                     <div class="mt-4">
                         <h5 class="mb-3">Content Overview:</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item">Flexbox layouts</li>
-                            <li class="list-group-item">CSS Grid systems</li>
-                            <li class="list-group-item">Responsive design principles</li>
-                            <li class="list-group-item">Advanced selector techniques</li>
-                        </ul>
+                        <ul class="list-group" id="contentList"></ul>
                     </div>
                 </div>
-
-                <!-- Side Info -->
                 <div class="col-md-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
@@ -69,15 +57,15 @@
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>Upload Date:</span>
-                                    <span>2025-03-15</span>
+                                    <span data-date></span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>Downloads:</span>
-                                    <span class="text-success">142</span>
+                                    <span data-downloads></span>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between">
                                     <span>File Size:</span>
-                                    <span>2.4 MB</span>
+                                    <span data-size></span>
                                 </li>
                             </ul>
                             <button class="btn btn-primary w-100 mt-3">
@@ -90,54 +78,34 @@
         </div>
     </section>
 
-    <!-- Comments Section -->
     <section class="mb-5">
-        <h3 class="mb-4">Comments (2)</h3>
-
-        <!-- Comment Toggle -->
+        <h3 class="mb-4">Comments (<span id="commentCount">0</span>)</h3>
         <button class="btn btn-success mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#commentForm">
             Add a Comment
         </button>
-
-        <!-- Comment Form -->
         <div class="collapse" id="commentForm">
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">New Comment</h5>
-                    <form>
+                    <form id="commentForm">
                         <div class="mb-3">
                             <label class="form-label">Your Name:</label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" name="name" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Comment:</label>
-                            <textarea class="form-control" rows="3" required></textarea>
+                            <textarea class="form-control" name="comment" rows="3" required></textarea>
                         </div>
-                        <button class="btn btn-success"> Comment</button>
+                        <button class="btn btn-success">Comment</button>
                     </form>
                 </div>
             </div>
         </div>
-
-        <!-- Existing Comments -->
-        <div class="comment-box bg-light p-3 mb-3 rounded">
-            <h5>Jaber</h5>
-            <p class="text-muted small mb-2">Posted 2 days ago</p>
-            <p>Extremely helpful notes! Keep uploading notes </p>
-        </div>
-
-        <div class="comment-box bg-light p-3 mb-3 rounded">
-            <h5>Ebrahim Ahmed</h5>
-            <p class="text-muted small mb-2">Posted 1 day ago</p>
-            <p>Could you add more examples about grid template areas?</p>
-        </div>
+        <div id="commentsContainer"></div>
     </section>
 </main>
 
-<footer class="text-center py-3 mt-5">
-    &copy; 2025 UNIHUB. Course Notes Module
-</footer>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="index.js"></script>
 </body>
 </html>
