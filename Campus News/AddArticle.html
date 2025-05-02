@@ -108,6 +108,104 @@
       }
     }
   });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check if there is a selected article in localStorage
+    const selectedArticle = JSON.parse(localStorage.getItem('selectedArticle'));
+
+    if (selectedArticle) {
+        // Populate the form fields with the selected article details
+        const titleInput = document.querySelector('input[name="title"]');
+        const contentTextarea = document.querySelector('textarea[name="content"]');
+        const imageInput = document.querySelector('input[name="image_file"]');
+        const collegeSelect = document.querySelector('select[name="college"]');
+        const courseCodeInput = document.querySelector('input[name="course_code"]');
+        const publishButton = document.querySelector('button[type="submit"]');
+
+        if (titleInput) titleInput.value = selectedArticle.title;
+        if (contentTextarea) contentTextarea.value = selectedArticle.content;
+        if (imageInput) imageInput.value = selectedArticle.image;
+        if (collegeSelect) collegeSelect.value = selectedArticle.college;
+        if (courseCodeInput) courseCodeInput.value = selectedArticle.courseCode;
+
+        // Change the publish button to an update button
+        if (publishButton) {
+            publishButton.textContent = 'Update';
+            publishButton.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Update the article details
+                const updatedArticle = {
+                    title: titleInput.value,
+                    content: contentTextarea.value,
+                    image: imageInput.value,
+                    college: collegeSelect.value,
+                    courseCode: courseCodeInput.value
+                };
+
+                // Save the updated article back to localStorage (or send to server if needed)
+                localStorage.setItem('selectedArticle', JSON.stringify(updatedArticle));
+
+                alert('Article updated successfully!');
+
+                // Redirect back to the Campus News page
+                window.location.href = 'Campus News.html';
+            });
+        }
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const title = form.querySelector('input[name="title"]').value;
+      const college = form.querySelector('select[name="college"]').value;
+      const courseCode = form.querySelector('input[name="course_code"]').value || null;
+      const image = form.querySelector('input[name="image_file"]').files[0]?.name || "default.jpg";
+      const content = form.querySelector('textarea[name="content"]').value;
+
+      if (!title || !college) {
+        alert('Title and College are required fields.');
+        return;
+      }
+
+      const newArticle = {
+        id: Date.now(), // Use a timestamp as a unique ID
+        title,
+        content,
+        author: "Anonymous", // Default author
+        date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+        image: `Pic/${image}`,
+        college,
+        courseCode,
+        views: 0
+      };
+
+      try {
+        const response = await fetch('https://replit.com/@A-Alomari/camp#add_article.php', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newArticle)
+});
+
+        if (response.ok) {
+          alert('Article added successfully!');
+          window.location.href = 'Campus News.html';
+        } else {
+          alert('Failed to add article. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error adding article:', error);
+        alert('An error occurred. Please try again later.');
+      }
+    });
+  });
 </script>
 </body>
 </html>

@@ -50,7 +50,7 @@
         <section class="row">
             <!-- Article Image -->
             <div class="col-md-5">
-                <img src="Pic\University-of-Bahrain-1260x630.jpg" class="img-fluid rounded" alt="Article Image">
+                <img src="Pic\University-of-Bahrain-1260x630.jpg" class="img-fluid rounded article-image" alt="Article Image">
             </div>
     
             <!-- Article Title & Content -->
@@ -126,5 +126,29 @@
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if there is a selected article in localStorage
+    const selectedArticle = JSON.parse(localStorage.getItem('selectedArticle'));
+
+    if (selectedArticle) {
+        // Populate the article details on the ViewNews.html page
+        const articleTitle = document.querySelector('.article-title');
+        const articleContent = document.querySelector('.article-content');
+        const articleImage = document.querySelector('.article-image');
+        const articleDate = document.querySelector('.article-meta .h5.mb-1');
+        const articleAuthor = document.querySelector('.article-meta .h5.mb-0');
+
+        if (articleTitle) articleTitle.textContent = selectedArticle.title;
+        if (articleContent) articleContent.textContent = selectedArticle.content;
+        if (articleImage) articleImage.src = selectedArticle.image;
+        if (articleDate) articleDate.textContent = `🗓️ ${selectedArticle.date}`;
+        if (articleAuthor) articleAuthor.textContent = `✍️ ${selectedArticle.author}`;
+
+        // Clear the selected article from localStorage
+        localStorage.removeItem('selectedArticle');
+    }
+});
+</script>
 </body>
 </html>
