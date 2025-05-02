@@ -1,4 +1,3 @@
-// CampusNews.js - Complete Fixed Version
 
 // DOM Elements
 const newsContainer = document.querySelector('#news-container');
@@ -9,6 +8,7 @@ const otherCheckboxes = document.querySelectorAll('#collegeCollapse input[type="
 const searchInput = document.querySelector('input[type="search"]');
 const sortDropdown = document.querySelector('.dropdown-menu');
 const courseCodeInput = document.getElementById('courseCode');
+const deleteButton = document.querySelector('.btn-danger'); // Fix: define deleteButton so it doesn't throw ReferenceError
 
 // Global Data Stores
 let globalNewsData = [];
@@ -76,10 +76,12 @@ function createArticleElement(article) {
     colDiv.className = 'col-md-4 mb-4';
     colDiv.setAttribute('data-college', article.college);
     colDiv.setAttribute('data-course-code', article.courseCode || '');
-
+    // Use default image if not found or if image is missing
+    let imgSrc = article.image && article.image !== '' ? article.image : 'Pic/default.jpg';
+    // fallback for broken images
     colDiv.innerHTML = `
         <div class="card h-100">
-            <img src="${article.image}" class="card-img-top" alt="${article.title}">
+            <img src="${imgSrc}" class="card-img-top" alt="${article.title}" onerror="this.onerror=null;this.src='Pic/default.jpg';">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title">${article.title}</h5>
                 <p class="card-text flex-grow-1">${article.content?.substring(0, 100) || 'No content available'}...</p>
