@@ -44,15 +44,18 @@
       </div>
   </div>
 
+  
+
   <h2 class="mb-4">Add Article</h2>
-  <form action="submit_article.php" method="POST">
-    <div id="form-errors" class="text-danger mb-3"></div>
-    <div class="mb-3">
+  <!-- In AddArticle.html, update the form element -->
+<form id="articleForm" enctype="multipart/form-data">
+  <div id="form-errors" class="text-danger mb-3"></div>
+  <div class="mb-3">
       <label class="form-label">Title <span class="text-danger">*</span></label>
       <input type="text" class="form-control" name="title" required>
-    </div>
+  </div>
 
-    <div class="mb-3">
+  <div class="mb-3">
       <label class="form-label">College <span class="text-danger">*</span></label>
       <select class="form-select" name="college" required>
         <option value="" disabled selected>Select a college</option>
@@ -67,29 +70,45 @@
         <option value="College of Business Administration">College of Business Administration</option>
         <option value="College of Health and Sport Sciences">College of Health and Sport Sciences</option>
       </select>
-    </div>
+  </div>
 
-    <div class="mb-3">
+  <div class="mb-3">
       <label class="form-label">Course Code (optional)</label>
       <input type="text" class="form-control" name="course_code" placeholder="e.g., CS101">
-    </div>
+  </div>
 
-    <div class="mb-3">
+  <div class="mb-3">
       <label class="form-label">Article Image</label>
       <div class="input-group">
-        <input type="file" class="form-control" name="image_file" accept="image/*">
+          <input type="file" class="form-control" id="image_file" name="image_file" accept="image/*">
       </div>
-    </div>
+  </div>
 
-    <div class="mb-3">
+  <div class="mb-3">
       <label class="form-label">Content</label>
       <div id="froala-editor"></div>
-      <textarea name="content" style="display:none;"></textarea> <!-- Froala Editor will populate this -->
-    </div>
+      <textarea id="editorContent" name="content" style="display:none;"></textarea>
+  </div>
 
-    <button type="submit" class="btn btn-outline-primary">Publish</button>
-  </form>
+  <button type="submit" class="btn btn-outline-primary">Publish</button>
+</form>
 </main>
+
+<!-- Modal for custom alerts and confirmations -->
+<div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customModalLabel">Message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="customModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modalCloseBtn">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Footer -->
 <footer class="text-center py-3 mt-5">
@@ -99,6 +118,71 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
+<script>
+  // Initialize Froala Editor
+  new FroalaEditor('#froala-editor', {
+    events: {
+      // Sync content with hidden textarea
+      'contentChanged': function () {
+        document.querySelector('textarea[name="content"]').value = this.html.get();
+      }
+    }
+  });
+</script>
+<script>
+function showModal(message, onClose) {
+    document.getElementById('customModalBody').textContent = message;
+    const modalEl = document.getElementById('customModal');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+    const submitBtn = document.querySelector('#articleForm button[type="submit"]');
+    function handleClose() {
+        modalEl.removeEventListener('hidden.bs.modal', handleClose);
+        if (submitBtn) submitBtn.disabled = false;
+        if (onClose) onClose();
+    }
+    modalEl.addEventListener('hidden.bs.modal', handleClose);
+    document.getElementById('modalCloseBtn').onclick = () => {
+        modal.hide();
+    };
+}
+
+const articleForm = document.getElementById('articleForm');
+if (articleForm) {
+    articleForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        const formData = new FormData(this);
+        formData.append('content', document.getElementById('editorContent').value);
+        try {
+            const response = await fetch('addArticle.php', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+                showModal('Article added successfully!', () => {
+                    window.location.href = 'Campus News.html';
+                });
+            } else {
+                showModal('Error: ' + (result.message || 'Failed to add article'));
+            }
+        } catch (error) {
+            showModal('An error occurred while adding the article');
+        }
+    });
+}
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Hide the delete button on the Add Article page
+        const deleteButton = document.querySelector('.btn-danger');
+        if (deleteButton) {
+            deleteButton.style.display = 'none';
+        }
+    });
+</script>
 <script src="CampusNews.js"></script>
 </body>
 </html>
