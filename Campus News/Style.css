@@ -71,7 +71,7 @@ body {
 }
 
 /* Primary and success button styles */
-.btn-primary, .btn-success {
+.btn-primary, .btn-success .btn-confirm {
     background-color: #4DA1A9;
     border-color: #4DA1A9;
     color: #F6F4F0;
@@ -80,7 +80,7 @@ body {
 }
 
 /* Primary and success button hover effects */
-.btn-primary:hover, .btn-success:hover {
+.btn-primary:hover, .btn-success:hover, .btn-confirm:hover {
     background-color: #79D7BE;
     border-color: #79D7BE;
     color: #2E5077;
@@ -102,7 +102,7 @@ body {
 }
 
 /* Outline primary button style */
-.btn-outline-primary {
+.btn-outline-primary, .btn-confirm {
     background-color: #4DA1A9;
     border-color: #4DA1A9;
     color: #F6F4F0;

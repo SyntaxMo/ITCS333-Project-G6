@@ -1,4 +1,3 @@
-
 // DOM Elements
 const newsContainer = document.querySelector('#news-container');
 const loadingIndicator = document.querySelector('#loading-indicator');
@@ -362,28 +361,29 @@ function initializeFroalaEditor() {
 }
 
 // Show modal for user feedback
-function showModal(message, options = {}) {
-    const modalElement = document.getElementById('feedbackModal');
-    const modalBody = modalElement.querySelector('.modal-body');
-    const confirmButton = modalElement.querySelector('.btn-confirm');
-    const cancelButton = modalElement.querySelector('.btn-cancel');
-
-    modalBody.textContent = message;
-
-    if (options.showConfirm) {
-        confirmButton.style.display = 'inline-block';
-        cancelButton.style.display = 'inline-block';
-        confirmButton.onclick = options.onConfirm || (() => {});
-    } else {
-        confirmButton.style.display = 'none';
-        cancelButton.style.display = 'none';
+function showModal(message, onClose) {
+    const modalBody = document.getElementById('customModalBody');
+    if (!modalBody) {
+        // Only fallback to alert if modal is truly missing
+        alert(message);
+        if (onClose) onClose();
+        return;
     }
-
-    const modal = new bootstrap.Modal(modalElement);
+    modalBody.textContent = message;
+    const modalEl = document.getElementById('customModal');
+    const modal = new bootstrap.Modal(modalEl);
     modal.show();
+    const closeBtn = document.getElementById('modalCloseBtn');
+    // Remove any previous click handlers to avoid double-calling
+    closeBtn.onclick = null;
+    closeBtn.onclick = () => {
+        modal.hide();
+        if (onClose) onClose();
+    };
 }
 
 // Delete article
+const DeleteButton = document.getElementById('deleteButton');
 if (deleteButton) {
     deleteButton.addEventListener('click', () => {
         const articleId = localStorage.getItem('selectedArticleId');
@@ -391,8 +391,8 @@ if (deleteButton) {
             showModal('No article selected for deletion.');
             return;
         }
+        
         showModal('Are you sure you want to delete this article?', {
-            showConfirm: true,
             onConfirm: async () => {
                 try {
                     const formData = new FormData();
@@ -403,11 +403,12 @@ if (deleteButton) {
                     });
                     const result = await response.json();
                     if (result.success) {
-                        showModal('Article deleted successfully!');
-                        await fetchNews();
-                        setTimeout(() => {
-                            window.location.href = 'Campus News.html';
-                        }, 1200);
+                        showModal('Article deleted successfully!', {
+                            onConfirm: () => {
+                                // Redirect with cache busting
+                                window.location.href = 'Campus News.html?' + new Date().getTime();
+                            }
+                        });
                     } else {
                         showModal(`Error: ${result.message || 'Failed to delete article'}`);
                     }
