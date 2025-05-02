@@ -12,7 +12,7 @@ async function fetchNews() {
     loadingIndicator.style.display = 'block';
 
     try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+        const response = await fetch('Campus News/news.json');
         if (!response.ok) throw new Error('Failed to fetch news articles');
         const newsData = await response.json();
 
