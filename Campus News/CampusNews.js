@@ -36,8 +36,8 @@ async function fetchNews() {
     newsContainer.innerHTML = '';
 
     try {
-        // Add cache-busting query param to always get the latest news.json
-        const response = await fetch('./news.json?' + new Date().getTime());
+        // Add cache-busting query param to always get the latest news
+        const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/getNews.php?' + new Date().getTime());
         if (!response.ok) throw new Error('Failed to fetch articles');
         
         globalNewsData = await response.json();
@@ -45,7 +45,7 @@ async function fetchNews() {
         
         displayArticles(1, filteredNewsData);
         updatePagination(filteredNewsData.length);
-        updateRecentNewsCards(globalNewsData); // <-- Add this line
+        updateRecentNewsCards(globalNewsData);
     } catch (error) {
         newsContainer.innerHTML = `<p class="text-danger">Error: ${error.message}</p>`;
     } finally {
@@ -277,7 +277,7 @@ function setupEventListeners() {
             const formData = new FormData(this);
             formData.append('content', document.getElementById('editorContent').value);
             try {
-                const response = await fetch('addArticle.php', {
+                const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/addNews.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -305,7 +305,7 @@ async function handleArticleSubmission(e) {
     const formData = new FormData(e.target);
     formData.append('content', document.getElementById('editorContent').value);
     try {
-        const response = await fetch('addArticle.php', {
+        const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/addNews.php', {
             method: 'POST',
             body: formData
         });

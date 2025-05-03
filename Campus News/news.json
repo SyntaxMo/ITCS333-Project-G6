@@ -2,13 +2,13 @@
     {
         "id": 1,
         "title": "University Hosts Annual Science Fair",
-        "content": "The University of Bahrain hosted its annual science fair, showcasing innovative projects from students across various disciplines.",
+        "content": "The University of Bahrain hosted its annual science fair, showcasing innovative projects from students across various disciplines.E",
         "author": "Dr. Omar Al-Khatib",
         "date": "2025-05-01",
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Science",
         "courseCode": "SCI101",
-        "views": 24
+        "views": 48
     },
     {
         "id": 2,
@@ -184,7 +184,7 @@
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Arts",
         "courseCode": "ART303",
-        "views": 0
+        "views": 4
     },
     {
         "id": 18,
@@ -206,7 +206,7 @@
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Business Administration",
         "courseCode": "BUS404",
-        "views": 0
+        "views": 9
     },
     {
         "id": 20,
@@ -284,5 +284,16 @@
         "college": "College of Arts",
         "courseCode": "",
         "views": 1
+    },
+    {
+        "id": 27,
+        "title": "WERE",
+        "content": "<p>6TEWDS<\/p>",
+        "author": "Anonymous",
+        "date": "2025-05-03",
+        "image": "Pic\/article_1746299650.png",
+        "college": "College of Arts",
+        "courseCode": null,
+        "views": 0
     }
 ]

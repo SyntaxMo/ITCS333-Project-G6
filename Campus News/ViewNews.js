@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Fetch the article data
-    fetch('./news.json?' + new Date().getTime())
+    fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/getNews.php?' + new Date().getTime())
         .then(response => response.json())
         .then(articles => {
             const article = articles.find(a => a.id == articleId);
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Increment views count when article is loaded
     if (articleId) {
-        fetch('incrementViews.php', {
+        fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/views.php', {
             method: 'POST',
             body: (() => {
                 const fd = new FormData();
@@ -86,7 +86,7 @@ function showDeleteConfirmation(articleId) {
             const formData = new FormData();
             formData.append('id', articleId);
             
-            const response = await fetch('deleteArticle.php', {
+            const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/deleteNews.php', {
                 method: 'POST',
                 body: formData
             });
@@ -135,7 +135,7 @@ async function loadComments(articleId) {
     const commentsList = document.getElementById('commentsList');
     commentsList.innerHTML = '<div>Loading comments...</div>';
     try {
-        const response = await fetch('comments.json?' + new Date().getTime());
+        const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/getComments.php?' + new Date().getTime());
         const comments = await response.json();
         const articleComments = comments.filter(c => c.articleId == articleId);
         if (articleComments.length === 0) {
@@ -176,7 +176,7 @@ if (addCommentForm) {
         formData.append('content', content);
         
         try {
-            const response = await fetch('addComment.php', {
+            const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/addComment.php', {
                 method: 'POST',
                 body: formData
             });
@@ -234,7 +234,7 @@ function showDeleteCommentConfirmation(commentId) {
             const formData = new FormData();
             formData.append('id', commentId);
             
-            const response = await fetch('deleteComment.php', {
+            const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/deleteComment.php', {
                 method: 'POST',
                 body: formData
             });
@@ -295,7 +295,7 @@ function showEditCommentModal(commentId, oldContent) {
             formData.append('id', commentId);
             formData.append('content', newContent);
             
-            const response = await fetch('editComment.php', {
+            const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/editComment.php', {
                 method: 'POST',
                 body: formData
             });
