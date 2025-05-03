@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Article - UniHub</title>
+  <link rel="icon" href="../images/Logo.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" />
+  <link href="Style.css" rel="stylesheet" />
+</head>
+<body>
+<header class="p-3 navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="../index.html">
+            <img src="Pic/Logo.png" alt="Logo" width="30" height="24">
+        </a>
+        <button class="navbar-toggler ms-auto" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav mr-auto">
+                <a class="nav-link" href="../index.html">Home</a>
+                <a class="nav-link active" href="Campus News.html">Campus News</a>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="container mt-4">
+  <div class="mb-3 d-flex justify-content-between">
+      <a href="Campus News.html" class="btn" style="background-color: #4DA1A9; color: white;">Back</a>
+  </div>
+  <h2 class="mb-4">Edit Article</h2>
+  <form id="editArticleForm" enctype="multipart/form-data">
+    <div id="form-errors" class="text-danger mb-3"></div>
+    <div class="mb-3">
+        <label class="form-label">Title <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" name="title" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">College <span class="text-danger">*</span></label>
+        <select class="form-select" name="college" required>
+          <option value="" disabled>Select a college</option>
+          <option value="all">All Colleges</option>
+          <option value="College of Law">College of Law</option>
+          <option value="College of Arts">College of Arts</option>
+          <option value="College of Science">College of Science</option>
+          <option value="College of Engineering">College of Engineering</option>
+          <option value="Bahrain Teachers College">Bahrain Teachers College</option>
+          <option value="College of Applied Science">College of Applied Science</option>
+          <option value="College of Information Technology">College of Information Technology</option>
+          <option value="College of Business Administration">College of Business Administration</option>
+          <option value="College of Health and Sport Sciences">College of Health and Sport Sciences</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Course Code (optional)</label>
+        <input type="text" class="form-control" name="course_code" placeholder="e.g., CS101">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Current Image</label><br>
+        <img id="currentImage" src="" alt="Current Article Image" style="max-width:200px; max-height:150px; border-radius:8px; margin-bottom:10px;">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Change Image</label>
+        <div class="input-group">
+            <input type="file" class="form-control" id="image_file" name="image_file" accept="image/*">
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Content</label>
+        <div id="froala-editor"></div>
+        <textarea id="editorContent" name="content" style="display:none;"></textarea>
+    </div>
+    <button type="submit" class="btn btn-outline-primary">Update</button>
+  </form>
+</main>
+<div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customModalLabel">Message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="customModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modalCloseBtn">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="text-center py-3 mt-5">
+  &copy; 2025 UNIHUB. All rights reserved.
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
+<script>
+function showModal(message, onClose) {
+    document.getElementById('customModalBody').textContent = message;
+    const modalEl = document.getElementById('customModal');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+    const submitBtn = document.querySelector('#editArticleForm button[type="submit"]');
+    function handleClose() {
+        modalEl.removeEventListener('hidden.bs.modal', handleClose);
+        if (submitBtn) submitBtn.disabled = false;
+        if (onClose) onClose();
+    }
+    modalEl.addEventListener('hidden.bs.modal', handleClose);
+    document.getElementById('modalCloseBtn').onclick = () => {
+        modal.hide();
+    };
+}
+
+// Initialize Froala Editor
+let froalaInstance;
+document.addEventListener('DOMContentLoaded', async () => {
+    froalaInstance = new FroalaEditor('#froala-editor', {
+        events: {
+            'contentChanged': function () {
+                document.querySelector('textarea[name="content"]').value = this.html.get();
+            }
+        }
+    });
+
+    // Pre-fill form if editing
+    const articleId = localStorage.getItem('selectedArticleId');
+    if (articleId) {
+        const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/getNews.php?' + new Date().getTime());
+        const articles = await response.json();
+        const article = articles.find(a => a.id == articleId);
+        if (article) {
+            document.querySelector('input[name="title"]').value = article.title;
+            document.querySelector('select[name="college"]').value = article.college;
+            document.querySelector('input[name="course_code"]').value = article.courseCode || '';
+            document.getElementById('editorContent').value = article.content || '';
+            froalaInstance.html.set(article.content || '');
+            document.getElementById('currentImage').src = article.image || 'Pic/default.jpg';
+        }
+    }
+});
+
+const editArticleForm = document.getElementById('editArticleForm');
+if (editArticleForm) {
+    editArticleForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        const formData = new FormData(this);
+        formData.append('content', document.getElementById('editorContent').value);
+        const articleId = localStorage.getItem('selectedArticleId');
+        if (articleId) {
+            formData.append('id', articleId);
+            const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/editNews.php', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.success) {
+                showModal('Article updated successfully!', () => {
+                    localStorage.removeItem('selectedArticleId');
+                    window.location.href = 'Campus News.html';
+                });
+            } else {
+                showModal('Error: ' + (result.message || 'Failed to update article'), () => {
+                    submitBtn.disabled = false;
+                });
+            }
+        } else {
+            showModal('No article selected for update.', () => {
+                submitBtn.disabled = false;
+            });
+        }
+    });
+}
+</script>
+</body>
+</html>

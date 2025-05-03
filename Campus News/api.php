@@ -78,31 +78,17 @@ if ($path[0] === 'articles') {
             echo json_encode(['success' => 'Article updated']);
             break;
 
-        // In your api.php, fix the DELETE handler:
-case 'DELETE':
-    header('Content-Type: application/json');
-    
-    if (!isset($path[1])) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Article ID is required']);
-        exit;
-    }
-
-    try {
-        $stmt = $pdo->prepare('DELETE FROM articles WHERE id = ?');
-        $stmt->execute([$path[1]]);
-        
-        if ($stmt->rowCount() > 0) {
-            echo json_encode(['success' => true, 'message' => 'Article deleted']);
-        } else {
-            http_response_code(404);
-            echo json_encode(['error' => 'Article not found']);
-        }
-    } catch (PDOException $e) {
-        http_response_code(500);
-        echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
-    }
-    break;
+        case 'DELETE':
+            // Delete an article
+            if (!isset($path[1])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Article ID is required']);
+                exit;
+            }
+            $stmt = $pdo->prepare('DELETE FROM articles WHERE id = ?');
+            $stmt->execute([$path[1]]);
+            echo json_encode(['success' => 'Article deleted']);
+            break;
 
         default:
             http_response_code(405);
