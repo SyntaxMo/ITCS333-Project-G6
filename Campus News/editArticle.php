@@ -22,7 +22,11 @@ try {
             $article['title'] = $_POST['title'];
             $article['college'] = $_POST['college'];
             $article['courseCode'] = $_POST['course_code'];
-            $article['content'] = $_POST['content'];
+            // Remove <p> tags from content if present
+            $content = $_POST['content'];
+            $content = preg_replace('/<p>/i', '', $content);
+            $content = preg_replace('/<\/p>/i', '', $content);
+            $article['content'] = $content;
             // Handle image update if a new image is uploaded
             if (!empty($_FILES['image_file']['name'])) {
                 $uploadDir = 'Pic/';

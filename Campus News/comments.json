@@ -1,1 +1,30 @@
-[]
+[
+    {
+        "id": 1,
+        "articleId": 9,
+        "author": "n,nmm,",
+        "content": ",n,,,nnlknlk",
+        "date": "2025-05-03"
+    },
+    {
+        "id": 2,
+        "articleId": 1,
+        "author": "nlknknl",
+        "content": "lnknlknlknlk",
+        "date": "2025-05-03"
+    },
+    {
+        "id": 3,
+        "articleId": 27,
+        "author": "m,n,n,",
+        "content": ", mn,n,mnmmn,,n,mn,n,",
+        "date": "2025-05-03"
+    },
+    {
+        "id": 4,
+        "articleId": 1,
+        "author": "kubjvh",
+        "content": "7dfghg",
+        "date": "2025-05-03"
+    }
+]

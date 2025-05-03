@@ -45,6 +45,7 @@ async function fetchNews() {
         
         displayArticles(1, filteredNewsData);
         updatePagination(filteredNewsData.length);
+        updateRecentNewsCards(globalNewsData); // <-- Add this line
     } catch (error) {
         newsContainer.innerHTML = `<p class="text-danger">Error: ${error.message}</p>`;
     } finally {
@@ -379,5 +380,32 @@ function showModal(message, onClose) {
         modal.hide();
         if (typeof onClose === 'function') onClose();
     };
+}
+
+// Add this function to update the recent news cards
+function updateRecentNewsCards(newsData) {
+    const recentNewsContainer = document.getElementById('recent-news-cards');
+    if (!recentNewsContainer) return;
+    // Sort by date descending
+    const sorted = [...newsData].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const latestThree = sorted.slice(0, 3);
+    recentNewsContainer.innerHTML = '';
+    latestThree.forEach(article => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        // Remove <p> tags from content if present
+        let cleanContent = (article.content || '').replace(/<p>/gi, '').replace(/<\/p>/gi, '');
+        cleanContent = cleanContent.replace(/<[^>]+>/g, ''); // Remove any other HTML tags
+        card.innerHTML = `
+            <img src="${article.image || 'Pic/Logo.png'}" class="card-img-top" alt="..." onerror="this.onerror=null;this.src='Pic/default.jpg';">
+            <div class="card-body">
+                <h5 class="card-title">${article.title}</h5>
+                <p class="card-text">${cleanContent.substring(0, 80)}...</p>
+                <p class="card-text"><small class="text-body-secondary">${article.date}</small></p>
+                <a href="ViewNews.html" class="btn btn-outline-primary" onclick="localStorage.setItem('selectedArticleId', ${article.id})">Read More</a>
+            </div>
+        `;
+        recentNewsContainer.appendChild(card);
+    });
 }
 

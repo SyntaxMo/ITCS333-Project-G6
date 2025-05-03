@@ -2,13 +2,13 @@
     {
         "id": 1,
         "title": "University Hosts Annual Science Fair",
-        "content": "<p>The University of Bahrain hosted its annual science fair, showcasing innovative projects from students across various disciplines.&gt;<\/p>",
+        "content": "The University of Bahrain hosted its annual science fair, showcasing innovative projects from students across various disciplines.",
         "author": "Dr. Omar Al-Khatib",
         "date": "2025-05-01",
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Science",
         "courseCode": "SCI101",
-        "views": 2
+        "views": 24
     },
     {
         "id": 2,
@@ -19,7 +19,7 @@
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Information Technology",
         "courseCode": "IT202",
-        "views": 5
+        "views": 7
     },
     {
         "id": 3,
@@ -52,7 +52,7 @@
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Business Administration",
         "courseCode": "BUS505",
-        "views": 0
+        "views": 1
     },
     {
         "id": 6,
@@ -96,7 +96,7 @@
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Health and Sport Sciences",
         "courseCode": "HSS101",
-        "views": 0
+        "views": 9
     },
     {
         "id": 10,
@@ -272,17 +272,17 @@
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Arts",
         "courseCode": "ART707",
-        "views": 0
+        "views": 2
     },
     {
         "id": 26,
         "title": "4567",
-        "content": "<p>erty<\/p>",
+        "content": "<p>ertyn,nm,<\/p>",
         "author": "Anonymous",
         "date": "2025-05-03",
         "image": "Pic\/article_1746277352.png",
         "college": "College of Arts",
-        "courseCode": "rfg",
-        "views": 0
+        "courseCode": "",
+        "views": 1
     }
 ]
