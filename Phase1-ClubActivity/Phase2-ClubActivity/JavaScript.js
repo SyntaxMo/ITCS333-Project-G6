@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const itemsPerPage = 3; // Number of activities per page
+  const itemsPerPage = 15; // Number of activities per page
   const activities = document.querySelectorAll(".card"); // Select all activity cards
   const paginationLinks = document.querySelectorAll(".pagination .page-link");
 
@@ -9,7 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Hide all activities
     activities.forEach((activity, index) => {
-      activity.style.display = index >= start && index < end ? "block" : "none";
+      if (index >= start && index < end) {
+        activity.style.display = "block";
+      } else {
+        activity.style.display = "none";
+      }
     });
   }
 
@@ -17,12 +21,14 @@ document.addEventListener("DOMContentLoaded", () => {
   paginationLinks.forEach((link, index) => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
-      const page = index + 1; // Page number based on index
-      showPage(page);
+      const page = parseInt(link.textContent.trim()); // Parse the page number from the link text
+      if (!isNaN(page)) {
+        showPage(page);
 
-      // Toggle active class
-      paginationLinks.forEach((link) => link.parentElement.classList.remove("active"));
-      link.parentElement.classList.add("active");
+        // Toggle active class
+        paginationLinks.forEach((link) => link.parentElement.classList.remove("active"));
+        link.parentElement.classList.add("active");
+      }
     });
   });
 
@@ -48,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("editClub").value = host;
       document.getElementById("editDatetime").value = datetime;
       document.getElementById("editActivityDescription").value = description;
+      document.getElementById("editLocation").value = location;
 
       // Show the edit form
       editForm.classList.add("show");
@@ -71,7 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
       activityDetails.querySelector(".card-title").textContent = updatedTitle;
       activityDetails.querySelector(".card-text strong:nth-of-type(1)").nextSibling.textContent = ` ${updatedHost}`;
       activityDetails.querySelector(".card-text strong:nth-of-type(3)").nextSibling.textContent = ` ${updatedDatetime}`;
-      activityDetails.querySelector(".card-text strong:nth-of-type(4)").nextSibling.textContent = ` ${updatedDescription}`;
+      activityDetails.querySelector(".card-text strong:nth-of-type(4)").nextSibling.textContent = ` ${updatedLocation}`;
+      activityDetails.querySelector(".card-text strong:nth-of-type(5)").nextSibling.textContent = ` ${updatedDescription}`;
 
       // Hide the edit form
       editForm.classList.remove("show");
@@ -116,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const sortDropdown = document.querySelector(".dropdown-menu[aria-labelledby='sortDropdown']");
+  const sortDropdown = document.getElementById("sortDate");
   const activityCards = document.querySelectorAll(".card");
 
   sortDropdown.addEventListener("click", (event) => {
@@ -190,4 +198,51 @@ document.addEventListener("DOMContentLoaded", () => {
       bootstrapCollapse.hide();
     }
   });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  async function fetchActivities() {
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("API Response:", data); //  Print in log the API response
+
+      if (Array.isArray(data)) {
+        renderActivities(data);
+      } else {
+        console.error("Expected an array but received:", data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch activities:", error);
+    }
+  }
+
+  function renderActivities(activities) {
+    const activitiesContainer = document.querySelector(".row");
+    activitiesContainer.innerHTML = ""; // Clear existing activities
+
+    activities.forEach((activity) => {
+      const activityCard = document.createElement("article");
+      activityCard.classList.add("col-md-4", "mb-4");
+      activityCard.innerHTML = `
+        <div class="card">
+          <img src="${activity.image}" class="card-img-top" alt="Activity Image">
+          <div class="card-body">
+            <h5 class="card-title">${activity.title}</h5>
+            <p class="card-text"><strong>Host:</strong> ${activity.host}</p>
+            <p class="card-text"><strong>Location:</strong> ${activity.location}</p>
+            <p class="card-text"><strong>Date & Time:</strong> ${activity.datetime}</p>
+            <p class="card-text"><strong>Description:</strong> ${activity.description}</p>
+            <a href="ActivityPage.html"><button class="btn btn-success w-100">view</button></a>
+          </div>
+        </div>
+      `;
+      activitiesContainer.appendChild(activityCard);
+    });
+  }
+
+  fetchActivities();
 });
