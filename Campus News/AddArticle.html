@@ -39,9 +39,6 @@
   <!-- Back, Edit, and Delete Buttons -->
   <div class="mb-3 d-flex justify-content-between">
       <a href="Campus News.html" class="btn" style="background-color: #4DA1A9; color: white;">Back</a>
-      <div>
-          <button class="btn btn-danger">Delete</button>
-      </div>
   </div>
 
   
@@ -128,87 +125,6 @@
       }
     }
   });
-</script>
-<script>
-function showModal(message, onClose) {
-    document.getElementById('customModalBody').textContent = message;
-    const modalEl = document.getElementById('customModal');
-    const modal = new bootstrap.Modal(modalEl);
-    modal.show();
-    const submitBtn = document.querySelector('#articleForm button[type="submit"]');
-    function handleClose() {
-        modalEl.removeEventListener('hidden.bs.modal', handleClose);
-        if (submitBtn) submitBtn.disabled = false;
-        if (onClose) onClose();
-    }
-    modalEl.addEventListener('hidden.bs.modal', handleClose);
-    document.getElementById('modalCloseBtn').onclick = () => {
-        modal.hide();
-    };
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-    // Only pre-fill if NOT editing (no selectedArticleId)
-    const articleId = localStorage.getItem('selectedArticleId');
-    if (!articleId) {
-        // Ensure the button says Publish
-        const submitBtn = document.querySelector('button[type="submit"]');
-        if (submitBtn) submitBtn.textContent = 'Publish';
-        // Clear all fields
-        document.querySelector('input[name="title"]').value = '';
-        document.querySelector('select[name="college"]').selectedIndex = 0;
-        document.querySelector('input[name="course_code"]').value = '';
-        document.getElementById('editorContent').value = '';
-        if (window.FroalaEditor && document.getElementById('froala-editor').FroalaEditor) {
-            document.getElementById('froala-editor').FroalaEditor.html.set('');
-        }
-        // Optionally clear image input
-        const imageInput = document.getElementById('image_file');
-        if (imageInput) imageInput.value = '';
-    }
-});
-
-const articleForm = document.getElementById('articleForm');
-if (articleForm) {
-    articleForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const submitBtn = this.querySelector('button[type="submit"]');
-        submitBtn.disabled = true;
-        const formData = new FormData(this);
-        formData.append('content', document.getElementById('editorContent').value);
-        // Only add (not edit) in this form
-        try {
-            const response = await fetch('addArticle.php', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-            if (result.success) {
-                showModal('Article added successfully!', () => {
-                    // Redirect to Campus News.html with cache-busting param to force reload
-                    window.location.href = 'Campus News.html?' + new Date().getTime();
-                });
-            } else {
-                showModal('Error: ' + (result.message || 'Failed to add article'), () => {
-                    submitBtn.disabled = false;
-                });
-            }
-        } catch (error) {
-            showModal('An error occurred while adding the article', () => {
-                submitBtn.disabled = false;
-            });
-        }
-    });
-}
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Hide the delete button on the Add Article page
-        const deleteButton = document.querySelector('.btn-danger');
-        if (deleteButton) {
-            deleteButton.style.display = 'none';
-        }
-    });
 </script>
 <script src="CampusNews.js"></script>
 </body>

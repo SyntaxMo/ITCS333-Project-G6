@@ -281,11 +281,9 @@ function setupEventListeners() {
                     body: formData
                 });
                 const result = await response.json();
-                if (result.success) {
-                    showModal('Article added successfully!', {
-                        onConfirm: () => {
-                            window.location.href = 'Campus News.html';
-                        }
+                if (result.success === true) {
+                    showModal('Article added successfully!', function() {
+                        window.location.href = 'Campus News.html';
                     });
                 } else {
                     showModal('Error: ' + (result.message || 'Failed to add article'));
@@ -383,40 +381,3 @@ function showModal(message, onClose) {
     };
 }
 
-// Delete article
-const DeleteButton = document.getElementById('deleteButton');
-if (deleteButton) {
-    deleteButton.addEventListener('click', () => {
-        const articleId = localStorage.getItem('selectedArticleId');
-        if (!articleId) {
-            showModal('No article selected for deletion.');
-            return;
-        }
-        
-        showModal('Are you sure you want to delete this article?', {
-            onConfirm: async () => {
-                try {
-                    const formData = new FormData();
-                    formData.append('id', articleId);
-                    const response = await fetch('deleteArticle.php', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    const result = await response.json();
-                    if (result.success) {
-                        showModal('Article deleted successfully!', {
-                            onConfirm: () => {
-                                // Redirect with cache busting
-                                window.location.href = 'Campus News.html?' + new Date().getTime();
-                            }
-                        });
-                    } else {
-                        showModal(`Error: ${result.message || 'Failed to delete article'}`);
-                    }
-                } catch (error) {
-                    showModal('An error occurred while deleting the article.');
-                }
-            }
-        });
-    });
-}

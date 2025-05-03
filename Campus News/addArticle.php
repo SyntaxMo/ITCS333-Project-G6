@@ -1,75 +1,65 @@
 <?php
 header('Content-Type: application/json');
-// Enable error reporting for debugging
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Disable error reporting for production
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
+
 $response = ['success' => false, 'message' => ''];
+
 try {
+    // Basic validation
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        throw new Exception('Invalid request method');
+        throw new Exception('Invalid request');
     }
 
-    // Required fields validation
-    if (empty($_POST['title'])) {
-        throw new Exception('Title is required');
-    }
-    if (empty($_POST['college'])) {
-        throw new Exception('College is required');
+    if (empty($_POST['title']) || empty($_POST['college'])) {
+        throw new Exception('Title and college are required');
     }
 
-    // Process image upload
-    $imagePath = 'Pic/default.jpg'; // Default image
-    if (!empty($_FILES['image_file']['name'])) {
-        $uploadDir = 'Pic/';
-        $uploadFile = $uploadDir . basename($_FILES['image_file']['name']);
+    // Process image
+    $imagePath = 'Pic/default.jpg';
+    if (!empty($_FILES['image_file']['tmp_name'])) {
+        $validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($fileInfo, $_FILES['image_file']['tmp_name']);
         
-        // Check if image file is valid
-        $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
-        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
-        
-        if (!in_array($imageFileType, $allowedTypes)) {
-            throw new Exception('Only JPG, JPEG, PNG & GIF files are allowed');
-        }
-        
-        if (move_uploaded_file($_FILES['image_file']['tmp_name'], $uploadFile)) {
-            $imagePath = $uploadFile;
-        } else {
-            throw new Exception('Error uploading image');
+        if (in_array($mime, $validTypes)) {
+            $ext = str_replace('image/', '', $mime);
+            $filename = 'article_' . time() . '.' . $ext;
+            $targetPath = 'Pic/' . $filename;
+            
+            if (move_uploaded_file($_FILES['image_file']['tmp_name'], $targetPath)) {
+                $imagePath = $targetPath;
+            }
         }
     }
 
-    // Load existing articles
+    // Load and update articles
     $filePath = __DIR__ . '/news.json';
     $articles = file_exists($filePath) ? json_decode(file_get_contents($filePath), true) : [];
+    
+    // Find the max ID in the existing articles
+    $newId = empty($articles) ? 1 : (max(array_column($articles, 'id')) + 1);
 
-    if ($articles === null && json_last_error() !== JSON_ERROR_NONE) {
-        throw new Exception('Error reading news data');
-    }
-
-    // Create new article
-    $newArticle = [
-        'id' => count($articles) + 1,
-        'title' => $_POST['title'],
+    $articles[] = [
+        'id' => $newId,
+        'title' => substr(trim($_POST['title']), 0, 255),
         'content' => $_POST['content'] ?? '',
-        'author' => 'Anonymous', // You can change this to get from session
+        'author' => 'Anonymous',
         'date' => date('Y-m-d'),
         'image' => $imagePath,
-        'college' => $_POST['college'],
-        'courseCode' => $_POST['course_code'] ?? null,
+        'college' => substr(trim($_POST['college']), 0, 100),
+        'courseCode' => !empty($_POST['course_code']) ? substr(trim($_POST['course_code']), 0, 20) : null,
         'views' => 0
     ];
 
-    // Add new article
-    $articles[] = $newArticle;
-
-    // Save back to file
-    if (!file_put_contents($filePath, json_encode($articles, JSON_PRETTY_PRINT))) {
-        throw new Exception('Error saving article');
+    if (file_put_contents($filePath, json_encode($articles, JSON_PRETTY_PRINT))) {
+        $response['success'] = true;
+        $response['message'] = 'Article published';
+    } else {
+        throw new Exception('Failed to save article');
     }
-
-    $response['success'] = true;
-    $response['message'] = 'Article added successfully';
 
 } catch (Exception $e) {
     $response['message'] = $e->getMessage();

@@ -65,46 +65,19 @@
     
         <!-- Comments Section -->
         <section class="mt-5">
-            <h3>Comments:</h3>
-    
-            <!-- Add New Comment Toggle Button -->
-            <button class="btn btn-success mt-3 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#commentForm" aria-expanded="false" aria-controls="commentForm">
-                Add a Comment
-            </button>
-    
-            <!-- Collapsible Form -->
-            <div class="collapse" id="commentForm">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Add a Comment</h5>
-                        <form>
-                            <div class="mb-3">
-                                <label for="commenterName" class="form-label">Your Name:</label>
-                                <input type="text" class="form-control" id="commenterName" placeholder="Enter your name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="commentText" class="form-label">Your Comment:</label>
-                                <textarea class="form-control" id="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-success w-100">Submit Comment</button>
-                        </form>
-                    </div>
+            <h3 class="comment-header">Comments:</h3>
+            <!-- Add New Comment Form -->
+            <form id="addCommentForm" class="mb-4">
+                <div class="mb-2">
+                    <input type="text" class="form-control" id="commenterName" placeholder="Your Name" required>
                 </div>
-            </div>
-        
-            <!-- Placeholder Comments -->
-            <div class="comment-box">
-                <h5>Student Name</h5>
-                <p>The comment go here</p>
-            </div>
-            <div class="comment-box">
-                <h5>Student Name</h5>
-                <p>The comment go here</p>
-            </div>
-            <div class="comment-box">
-                <h5>Student Name</h5>
-                <p>The comment go here</p>
-            </div>
+                <div class="mb-2">
+                    <textarea class="form-control" id="commentText" rows="2" placeholder="Write your comment here..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Submit Comment</button>
+            </form>
+            <!-- Comments List -->
+            <div id="commentsList"></div>
         </section>
     </main>
     
@@ -132,6 +105,7 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="CampusNews.js"></script>
+// Replace the existing script section with this corrected version
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Retrieve the selected article ID from localStorage
@@ -168,6 +142,9 @@
                 showDeleteConfirmation(articleId);
             });
         }
+
+        // On article load, also load comments
+        if (articleId) loadComments(articleId);
     });
 
     function showDeleteConfirmation(articleId) {
@@ -180,13 +157,19 @@
         modalBody.textContent = 'Are you sure you want to delete this article?';
         confirmBtn.style.display = 'inline-block';
         cancelBtn.style.display = 'inline-block';
+        confirmBtn.textContent = 'Delete';
+        confirmBtn.classList.remove('btn-primary');
+        confirmBtn.classList.add('btn-danger');
         
         // Clear previous event listeners
-        confirmBtn.replaceWith(confirmBtn.cloneNode(true));
-        const newConfirmBtn = document.querySelector('.btn-confirm');
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
         
-        newConfirmBtn.onclick = async () => {
-            newConfirmBtn.disabled = true;
+        const newCancelBtn = cancelBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+        
+        document.querySelector('.btn-confirm').onclick = async () => {
+            document.querySelector('.btn-confirm').disabled = true;
             try {
                 const formData = new FormData();
                 formData.append('id', articleId);
@@ -199,24 +182,22 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    modal.hide();
-                    showFeedbackMessage('Article deleted successfully!', () => {
-                        // Clear cache and redirect
-                        window.location.href = 'Campus News.html?' + new Date().getTime();
-                    });
-                } else {
-                    throw new Error(result.message || 'Failed to delete article');
-                }
+    modal.hide();
+    // Redirect to Campus News page after successful deletion
+    window.location.href = 'Campus News.html?' + new Date().getTime();
+} else {
+    throw new Error(result.message || 'Failed to delete article');
+}
             } catch (error) {
                 showFeedbackMessage(`Error: ${error.message}`);
-                newConfirmBtn.disabled = false;
+                document.querySelector('.btn-confirm').disabled = false;
             }
         };
         
         modal.show();
     }
 
-    function showFeedbackMessage(message, callback) {
+    function showFeedbackMessage(message) {
         const modal = new bootstrap.Modal(document.getElementById('feedbackModal'));
         const modalBody = document.getElementById('feedbackModalBody');
         const confirmBtn = document.querySelector('.btn-confirm');
@@ -225,18 +206,220 @@
         modalBody.textContent = message;
         confirmBtn.style.display = 'none';
         cancelBtn.style.display = 'inline-block';
+        cancelBtn.textContent = 'OK';
         
         // Clear previous event listeners
-        cancelBtn.replaceWith(cancelBtn.cloneNode(true));
-        const newCancelBtn = document.querySelector('.btn-cancel');
+        const newCancelBtn = cancelBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
         
-        newCancelBtn.onclick = () => {
+        document.querySelector('.btn-cancel').onclick = () => {
             modal.hide();
-            if (callback) callback();
+        };
+        
+        modal.show();
+    }
+
+    async function loadComments(articleId) {
+        const commentsList = document.getElementById('commentsList');
+        commentsList.innerHTML = '<div>Loading comments...</div>';
+        try {
+            const response = await fetch('comments.json?' + new Date().getTime());
+            const comments = await response.json();
+            const articleComments = comments.filter(c => c.articleId == articleId);
+            if (articleComments.length === 0) {
+                commentsList.innerHTML = '<div class="text-muted">No comments yet.</div>';
+                return;
+            }
+            commentsList.innerHTML = '';
+            articleComments.forEach(comment => {
+                const commentBox = document.createElement('div');
+                commentBox.className = 'comment-box mb-3 p-3 border rounded';
+                commentBox.innerHTML = `
+                    <h5>${comment.author}</h5>
+                    <p class="comment-content" data-id="${comment.id}">${comment.content}</p>
+                    <small class="text-muted">${comment.date}</small><br>
+                    <button class="btn btn-outline-secondary btn-sm edit-comment mt-2" data-id="${comment.id}">Edit</button>
+                    <button class="btn btn-outline-danger btn-sm delete-comment mt-2" data-id="${comment.id}">Delete</button>
+                `;
+                commentsList.appendChild(commentBox);
+            });
+        } catch (error) {
+            commentsList.innerHTML = '<div class="text-danger">Failed to load comments.</div>';
+        }
+    }
+
+    // Add Comment
+    const addCommentForm = document.getElementById('addCommentForm');
+    if (addCommentForm) {
+        addCommentForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const articleId = localStorage.getItem('selectedArticleId');
+            const author = document.getElementById('commenterName').value.trim();
+            const content = document.getElementById('commentText').value.trim();
+            if (!author || !content) return;
+            
+            const formData = new FormData();
+            formData.append('articleId', articleId);
+            formData.append('author', author);
+            formData.append('content', content);
+            
+            try {
+                const response = await fetch('addComment.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (result.success) {
+                    window.location.reload(); // Refresh the page after adding
+                } else {
+                    showFeedbackMessage('Error: ' + (result.message || 'Failed to add comment'));
+                }
+            } catch (error) {
+                showFeedbackMessage('An error occurred while adding the comment');
+            }
+        });
+    }
+
+    // Edit/Delete Comment Handlers
+    document.getElementById('commentsList').addEventListener('click', function(e) {
+        const articleId = localStorage.getItem('selectedArticleId');
+        
+        if (e.target.classList.contains('delete-comment')) {
+            const commentId = e.target.getAttribute('data-id');
+            showDeleteCommentConfirmation(commentId);
+        } else if (e.target.classList.contains('edit-comment')) {
+            const commentId = e.target.getAttribute('data-id');
+            const contentP = document.querySelector(`.comment-content[data-id="${commentId}"]`);
+            const oldContent = contentP.textContent;
+            showEditCommentModal(commentId, oldContent);
+        }
+    });
+
+    function showDeleteCommentConfirmation(commentId) {
+        const modal = new bootstrap.Modal(document.getElementById('feedbackModal'));
+        const modalBody = document.getElementById('feedbackModalBody');
+        const confirmBtn = document.querySelector('.btn-confirm');
+        const cancelBtn = document.querySelector('.btn-cancel');
+
+        // Show confirmation dialog
+        modalBody.textContent = 'Are you sure you want to delete this comment?';
+        confirmBtn.style.display = 'inline-block';
+        cancelBtn.style.display = 'inline-block';
+        confirmBtn.textContent = 'Delete';
+        confirmBtn.classList.remove('btn-primary');
+        confirmBtn.classList.add('btn-danger');
+        
+        // Clear previous event listeners
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+        
+        const newCancelBtn = cancelBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+        
+        document.querySelector('.btn-confirm').onclick = async () => {
+            document.querySelector('.btn-confirm').disabled = true;
+            try {
+                const formData = new FormData();
+                formData.append('id', commentId);
+                
+                const response = await fetch('deleteComment.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    modal.hide();
+                    window.location.reload(); // Refresh the page after deletion
+                } else {
+                    throw new Error(result.message || 'Failed to delete comment');
+                }
+            } catch (error) {
+                showFeedbackMessage(`Error: ${error.message}`);
+                document.querySelector('.btn-confirm').disabled = false;
+            }
+        };
+        
+        modal.show();
+    }
+
+    function showEditCommentModal(commentId, oldContent) {
+        const modal = new bootstrap.Modal(document.getElementById('feedbackModal'));
+        const modalBody = document.getElementById('feedbackModalBody');
+        const confirmBtn = document.querySelector('.btn-confirm');
+        const cancelBtn = document.querySelector('.btn-cancel');
+
+        // Show edit dialog
+        modalBody.innerHTML = `
+            <div class="mb-3">
+                <label for="editCommentText" class="form-label">Edit your comment:</label>
+                <textarea class="form-control" id="editCommentText" rows="3">${oldContent}</textarea>
+            </div>
+        `;
+        confirmBtn.style.display = 'inline-block';
+        cancelBtn.style.display = 'inline-block';
+        confirmBtn.textContent = 'Update';
+        confirmBtn.classList.remove('btn-danger');
+        confirmBtn.classList.add('btn-primary');
+        
+        // Clear previous event listeners
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+        
+        const newCancelBtn = cancelBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+        
+        document.querySelector('.btn-confirm').onclick = async () => {
+            const newContent = document.getElementById('editCommentText').value.trim();
+            if (!newContent) {
+                showFeedbackMessage('Comment cannot be empty');
+                return;
+            }
+            
+            document.querySelector('.btn-confirm').disabled = true;
+            try {
+                const formData = new FormData();
+                formData.append('id', commentId);
+                formData.append('content', newContent);
+                
+                const response = await fetch('editComment.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    modal.hide();
+                    window.location.reload(); // Refresh the page after editing
+                } else {
+                    throw new Error(result.message || 'Failed to update comment');
+                }
+            } catch (error) {
+                showFeedbackMessage(`Error: ${error.message}`);
+                document.querySelector('.btn-confirm').disabled = false;
+            }
         };
         
         modal.show();
     }
 </script>
+
+<!-- Edit Comment Modal -->
+<div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customModalLabel">Edit Comment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="customModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modalCloseBtn">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
