@@ -1,41 +1,97 @@
 document.addEventListener("DOMContentLoaded", () => {
   const itemsPerPage = 15; // Number of activities per page
-  const activities = document.querySelectorAll(".card"); // Select all activity cards
-  const paginationLinks = document.querySelectorAll(".pagination .page-link");
+  let activities = []; // Store fetched activities
+  const paginationContainer = document.querySelector(".pagination");
 
   function showPage(page) {
     const start = (page - 1) * itemsPerPage;
     const end = start + itemsPerPage;
 
-    // Hide all activities
-    activities.forEach((activity, index) => {
-      if (index >= start && index < end) {
-        activity.style.display = "block";
-      } else {
-        activity.style.display = "none";
-      }
+    const activitiesContainer = document.querySelector(".row");
+    activitiesContainer.innerHTML = ""; // Clear existing activities
+
+    // Display activities for the current page
+    activities.slice(start, end).forEach((activity) => {
+      const activityCard = document.createElement("article");
+      activityCard.classList.add("col-md-4", "mb-4");
+      activityCard.innerHTML = `
+        <div class="card">
+          <img src="${activity.image}" class="card-img-top" alt="Activity Image">
+          <div class="card-body">
+            <h5 class="card-title">${activity.title}</h5>
+            <p class="card-text"><strong>Host:</strong> ${activity.host}</p>
+            <p class="card-text"><strong>Location:</strong> ${activity.location}</p>
+            <p class="card-text"><strong>Date & Time:</strong> ${activity.datetime}</p>
+            <p class="card-text"><strong>Description:</strong> ${activity.description}</p>
+            <a href="ActivityPage.html"><button class="btn btn-success w-100">view</button></a>
+          </div>
+        </div>
+      `;
+      activitiesContainer.appendChild(activityCard);
     });
   }
 
-  // Event listeners for pagination
-  paginationLinks.forEach((link, index) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const page = parseInt(link.textContent.trim()); // Parse the page number from the link text
-      if (!isNaN(page)) {
-        showPage(page);
+  function setupPagination(totalItems) {
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    paginationContainer.innerHTML = ""; // Clear existing pagination links
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageItem = document.createElement("li");
+      pageItem.classList.add("page-item");
+      if (i === 1) pageItem.classList.add("active");
+
+      const pageLink = document.createElement("a");
+      pageLink.classList.add("page-link");
+      pageLink.href = "#";
+      pageLink.textContent = i;
+
+      pageLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        showPage(i);
 
         // Toggle active class
-        paginationLinks.forEach((link) => link.parentElement.classList.remove("active"));
-        link.parentElement.classList.add("active");
+        document.querySelectorAll(".pagination .page-item").forEach((item) => item.classList.remove("active"));
+        pageItem.classList.add("active");
+      });
+
+      pageItem.appendChild(pageLink);
+      paginationContainer.appendChild(pageItem);
+    }
+  }
+
+  async function fetchActivities() {
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/todos');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    });
-  });
+      const data = await response.json();
+      console.log("API Response:", data); // Print in log the API response
 
-  // Show the first page by default
-  showPage(1);
+      if (Array.isArray(data)) {
+        activities = data.map((item, index) => ({
+          image: "Images/logo.png", // Placeholder image
+          title: `Activity ${index + 1}`,
+          host: `Host ${index + 1}`,
+          location: `Location ${index + 1}`,
+          datetime: new Date().toLocaleString(),
+          description: item.title,
+        }));
 
-  // Edit button functionality
+        setupPagination(activities.length);
+        showPage(1); // Show the first page by default
+      } else {
+        console.error("Expected an array but received:", data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch activities:", error);
+    }
+  }
+
+  fetchActivities();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
   const editButton = document.getElementById("edit-btn");
   const editForm = document.getElementById("editActivityForm");
   const activityDetails = document.querySelector(".card-body");
@@ -198,51 +254,4 @@ document.addEventListener("DOMContentLoaded", () => {
       bootstrapCollapse.hide();
     }
   });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  async function fetchActivities() {
-    try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/todos');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log("API Response:", data); //  Print in log the API response
-
-      if (Array.isArray(data)) {
-        renderActivities(data);
-      } else {
-        console.error("Expected an array but received:", data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch activities:", error);
-    }
-  }
-
-  function renderActivities(activities) {
-    const activitiesContainer = document.querySelector(".row");
-    activitiesContainer.innerHTML = ""; // Clear existing activities
-
-    activities.forEach((activity) => {
-      const activityCard = document.createElement("article");
-      activityCard.classList.add("col-md-4", "mb-4");
-      activityCard.innerHTML = `
-        <div class="card">
-          <img src="${activity.image}" class="card-img-top" alt="Activity Image">
-          <div class="card-body">
-            <h5 class="card-title">${activity.title}</h5>
-            <p class="card-text"><strong>Host:</strong> ${activity.host}</p>
-            <p class="card-text"><strong>Location:</strong> ${activity.location}</p>
-            <p class="card-text"><strong>Date & Time:</strong> ${activity.datetime}</p>
-            <p class="card-text"><strong>Description:</strong> ${activity.description}</p>
-            <a href="ActivityPage.html"><button class="btn btn-success w-100">view</button></a>
-          </div>
-        </div>
-      `;
-      activitiesContainer.appendChild(activityCard);
-    });
-  }
-
-  fetchActivities();
 });
