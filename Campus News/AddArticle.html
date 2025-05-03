@@ -147,6 +147,27 @@ function showModal(message, onClose) {
     };
 }
 
+document.addEventListener('DOMContentLoaded', async () => {
+    // Only pre-fill if NOT editing (no selectedArticleId)
+    const articleId = localStorage.getItem('selectedArticleId');
+    if (!articleId) {
+        // Ensure the button says Publish
+        const submitBtn = document.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.textContent = 'Publish';
+        // Clear all fields
+        document.querySelector('input[name="title"]').value = '';
+        document.querySelector('select[name="college"]').selectedIndex = 0;
+        document.querySelector('input[name="course_code"]').value = '';
+        document.getElementById('editorContent').value = '';
+        if (window.FroalaEditor && document.getElementById('froala-editor').FroalaEditor) {
+            document.getElementById('froala-editor').FroalaEditor.html.set('');
+        }
+        // Optionally clear image input
+        const imageInput = document.getElementById('image_file');
+        if (imageInput) imageInput.value = '';
+    }
+});
+
 const articleForm = document.getElementById('articleForm');
 if (articleForm) {
     articleForm.addEventListener('submit', async function(e) {
@@ -155,6 +176,7 @@ if (articleForm) {
         submitBtn.disabled = true;
         const formData = new FormData(this);
         formData.append('content', document.getElementById('editorContent').value);
+        // Only add (not edit) in this form
         try {
             const response = await fetch('addArticle.php', {
                 method: 'POST',
@@ -163,13 +185,18 @@ if (articleForm) {
             const result = await response.json();
             if (result.success) {
                 showModal('Article added successfully!', () => {
-                    window.location.href = 'Campus News.html';
+                    // Redirect to Campus News.html with cache-busting param to force reload
+                    window.location.href = 'Campus News.html?' + new Date().getTime();
                 });
             } else {
-                showModal('Error: ' + (result.message || 'Failed to add article'));
+                showModal('Error: ' + (result.message || 'Failed to add article'), () => {
+                    submitBtn.disabled = false;
+                });
             }
         } catch (error) {
-            showModal('An error occurred while adding the article');
+            showModal('An error occurred while adding the article', () => {
+                submitBtn.disabled = false;
+            });
         }
     });
 }

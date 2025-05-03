@@ -364,9 +364,8 @@ function initializeFroalaEditor() {
 function showModal(message, onClose) {
     const modalBody = document.getElementById('customModalBody');
     if (!modalBody) {
-        // Only fallback to alert if modal is truly missing
         alert(message);
-        if (onClose) onClose();
+        if (typeof onClose === 'function') onClose();
         return;
     }
     modalBody.textContent = message;
@@ -374,11 +373,13 @@ function showModal(message, onClose) {
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
     const closeBtn = document.getElementById('modalCloseBtn');
-    // Remove any previous click handlers to avoid double-calling
     closeBtn.onclick = null;
     closeBtn.onclick = () => {
+        // Accessibility fix: blur the button and move focus before hiding
+        closeBtn.blur();
+        document.body.focus();
         modal.hide();
-        if (onClose) onClose();
+        if (typeof onClose === 'function') onClose();
     };
 }
 
