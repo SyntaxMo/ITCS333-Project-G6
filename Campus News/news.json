@@ -8,7 +8,7 @@
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Science",
         "courseCode": "SCI101",
-        "views": 0
+        "views": 2
     },
     {
         "id": 2,
@@ -19,7 +19,7 @@
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Information Technology",
         "courseCode": "IT202",
-        "views": 0
+        "views": 5
     },
     {
         "id": 3,
@@ -228,7 +228,7 @@
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Law",
         "courseCode": "LAW101",
-        "views": 0
+        "views": 1
     },
     {
         "id": 22,
@@ -272,6 +272,17 @@
         "image": "Pic\/University-of-Bahrain-1260x630.jpg",
         "college": "College of Arts",
         "courseCode": "ART707",
+        "views": 0
+    },
+    {
+        "id": 26,
+        "title": "4567",
+        "content": "<p>erty<\/p>",
+        "author": "Anonymous",
+        "date": "2025-05-03",
+        "image": "Pic\/article_1746277352.png",
+        "college": "College of Arts",
+        "courseCode": "rfg",
         "views": 0
     }
 ]
