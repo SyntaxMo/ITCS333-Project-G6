@@ -109,16 +109,16 @@
     <section class="row align-items-start">
         <!-- Image Section -->
         <div class="col-md-5">
-            <img src="Images/hacker.jpg" class="img-fluid rounded" alt="Activity Image" width="500px">
+            <img src="" class="img-fluid rounded" alt="Activity Image" width="500px">
         </div>
 
         <!-- Activity details Section -->
         <div class="col-md-7">
-            <h2 class="card-title">Hackathon 2025</h2> <br>
-            <p class="card-text"><strong>Host:</strong> Technology Club</p>
-            <p class="card-text"><strong>Location:</strong> IT College - UoB</p>
-            <p class="card-text"><strong>Date & Time:</strong> 4-2-2025, 7:29PM</p>
-            <p class="card-text"><strong>Description:</strong> We hacker, internet go boom</p>
+            <h2 class="card-title"> </h2> <br>
+            <p class="card-text"><strong>Host:</strong> </p>
+            <p class="card-text"><strong>Location:</strong> </p>
+            <p class="card-text"><strong>Date & Time:</strong> </p>
+            <p class="card-text"><strong>Description:</strong> </p>
         </div>
     </section>
             
@@ -152,34 +152,38 @@
         </div>
 
         <!-- Placeholder Comments -->
-        <div class="comment-box">
-            <h5>hassan alaradi</h5>
-            <p>i want to get married</p>
-        </div>
-        <div class="comment-box">
-            <h5>ahmed taha</h5>
-            <p>Is the event still going?</p>
-        </div>
-        <div class="comment-box">
-            <h5>mohammed alsaygh</h5>
-            <p>The event was sick!!, so do I.</p>
-        </div>
-        <div class="comment-box">
-            <h5>firas abdulla</h5>
-            <p>the lemon>>></p>
-        </div>
-        <div class="comment-box">
-            <h5>mohammed essam</h5>
-            <p><a href="https://www.g9g.com">Enter the link, totally not a hack</a></p>
-        </div>
 
-        
     </section>
 </main>
 
 <footer class="text-center py-3 mt-5">
   &copy; 2025 UNIHUB. All rights reserved.
 </footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const activity = JSON.parse(localStorage.getItem("selectedActivity"));
+    if (activity) {
+      document.querySelector(".img-fluid").src = activity.image;
+      document.querySelector(".card-title").textContent = activity.title;
+      document.querySelectorAll(".card-text")[0].innerHTML = `<strong>Host:</strong> ${activity.host}`;
+      document.querySelectorAll(".card-text")[1].innerHTML = `<strong>Location:</strong> ${activity.location}`;
+      document.querySelectorAll(".card-text")[2].innerHTML = `<strong>Date & Time:</strong> ${activity.datetime}`;
+      document.querySelectorAll(".card-text")[3].innerHTML = `<strong>Description:</strong> ${activity.description}`;
+    }
+
+    // Add delete functionality
+    const deleteButton = document.querySelector(".btn-danger");
+    deleteButton.addEventListener("click", () => {
+      const activities = JSON.parse(localStorage.getItem("activities")) || [];
+      const updatedActivities = activities.filter(act => act.title !== activity.title);
+      localStorage.setItem("activities", JSON.stringify(updatedActivities));
+      localStorage.removeItem("selectedActivity");
+      alert("Activity deleted successfully.");
+      window.location.href = "ClubActivity.html";
+    });
+  });
+</script>
 
 </body>
 </html>

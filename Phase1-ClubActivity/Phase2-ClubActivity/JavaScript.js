@@ -29,6 +29,17 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       activitiesContainer.appendChild(activityCard);
     });
+
+    // Update the "view" button to store activity details in localStorage
+    const viewButtons = document.querySelectorAll(".btn-success");
+    viewButtons.forEach((button, index) => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        const activity = activities[index];
+        localStorage.setItem("selectedActivity", JSON.stringify(activity));
+        window.location.href = "ActivityPage.html";
+      });
+    });
   }
 
   function setupPagination(totalItems) {
@@ -252,6 +263,83 @@ document.addEventListener("DOMContentLoaded", () => {
       const collapseElement = document.getElementById("commentForm");
       const bootstrapCollapse = bootstrap.Collapse.getInstance(collapseElement);
       bootstrapCollapse.hide();
+    }
+  });
+});
+
+// Update the delete functionality to remove the activity from the ClubActivity.html list
+const deleteButton = document.querySelector(".btn-danger");
+deleteButton.addEventListener("click", () => {
+  const activities = JSON.parse(localStorage.getItem("activities")) || [];
+  const updatedActivities = activities.filter(act => act.title !== activity.title);
+  localStorage.setItem("activities", JSON.stringify(updatedActivities));
+
+  // Remove the activity card from ClubActivity.html
+  const activityCards = document.querySelectorAll(".card");
+  activityCards.forEach(card => {
+    if (card.querySelector(".card-title").textContent === activity.title) {
+      card.remove();
+    }
+  });
+
+  localStorage.removeItem("selectedActivity");
+  alert("Activity deleted successfully.");
+  window.location.href = "ClubActivity.html";
+});
+
+// Fix the search functionality to dynamically filter activities
+const searchInput = document.getElementById("searchInput");
+searchInput.addEventListener("input", () => {
+  const filter = searchInput.value.toLowerCase().trim();
+  const activityCards = document.querySelectorAll(".row .card");
+
+  activityCards.forEach((card) => {
+    const title = card.querySelector(".card-title").textContent.toLowerCase();
+    const description = card.querySelector(".card-text").textContent.toLowerCase();
+
+    if (title.includes(filter) || description.includes(filter)) {
+      card.parentElement.style.display = "block"; // Show the card
+    } else {
+      card.parentElement.style.display = "none"; // Hide the card
+    }
+  });
+});
+
+// Fix the filter functionality to dynamically filter activities by club
+const clubsFilter = document.getElementById("clubsFilter");
+clubsFilter.addEventListener("click", (event) => {
+  const filterKey = event.target.textContent.toLowerCase().trim();
+  const activityCards = document.querySelectorAll(".row .card");
+
+  activityCards.forEach((card) => {
+    const club = card.querySelector(".card-text").textContent.toLowerCase();
+
+    if (club.includes(filterKey) || filterKey === "others")
+      card.parentElement.style.display = "block"; // Show the card
+    else 
+      card.parentElement.style.display = "none"; // Hide the card
+    
+  });
+});
+
+// Fix the edit button functionality to populate the form with the activity's content
+const editButtons = document.querySelectorAll(".btn-outline-secondary");
+editButtons.forEach((button, index) => {
+  button.addEventListener("click", () => {
+    const activities = JSON.parse(localStorage.getItem("activities")) || [];
+    const activity = activities[index];
+
+    if (activity) {
+      document.getElementById("ActivityImage").value = activity.image || "";
+      document.getElementById("itemName").value = activity.title || "";
+      document.getElementById("clubCategory").value = activity.host || "";
+      document.getElementById("datetime").value = activity.datetime || "";
+      document.getElementById("location").value = activity.location || "";
+      document.getElementById("clubDescription").value = activity.description || "";
+
+      // Show the edit form
+      const editForm = document.getElementById("addActivityForm");
+      editForm.classList.add("show");
     }
   });
 });
