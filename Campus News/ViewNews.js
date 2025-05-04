@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // Use the full base URL for images from Replit
+    const baseUrl = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/";
+
     // Fetch the article data
     fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/getNews.php?' + new Date().getTime())
         .then(response => response.json())
@@ -16,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Populate article details
             document.querySelector('.article-title').textContent = article.title;
-            document.querySelector('.article-image').src = article.image;
+            // Use full URL for image
+            document.querySelector('.article-image').src = article.image ? baseUrl + article.image : baseUrl + 'Pic/Logo.png';
             document.querySelector('.article-meta .h5:nth-child(1)').textContent = `🗓️ ${article.date}`;
             document.querySelector('.article-meta .h5:nth-child(2)').textContent = `✍️ ${article.author}`;
             document.querySelector('.article-content .lead').innerHTML = article.content;

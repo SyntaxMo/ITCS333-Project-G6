@@ -14,6 +14,9 @@ let globalNewsData = [];
 let filteredNewsData = [];
 let currentPage = 1;
 
+// Use the full base URL for images from Replit
+const baseUrl = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/";
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
     initializeApplication();
@@ -77,11 +80,11 @@ function createArticleElement(article) {
     colDiv.setAttribute('data-college', article.college);
     colDiv.setAttribute('data-course-code', article.courseCode || '');
     // Use default image if not found or if image is missing
-    let imgSrc = article.image && article.image !== '' ? article.image : 'Pic/default.jpg';
+    let imgSrc = article.image ? baseUrl + article.image : baseUrl + "Pic/default.jpg";
     // fallback for broken images
     colDiv.innerHTML = `
         <div class="card h-100">
-            <img src="${imgSrc}" class="card-img-top" alt="${article.title}" onerror="this.onerror=null;this.src='Pic/default.jpg';">
+            <img src="${imgSrc}" class="card-img-top" alt="${article.title}" onerror="this.onerror=null;this.src='${baseUrl}Pic/default.jpg';">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title">${article.title}</h5>
                 <p class="card-text flex-grow-1">${article.content?.substring(0, 100) || 'No content available'}...</p>
@@ -396,8 +399,10 @@ function updateRecentNewsCards(newsData) {
         // Remove <p> tags from content if present
         let cleanContent = (article.content || '').replace(/<p>/gi, '').replace(/<\/p>/gi, '');
         cleanContent = cleanContent.replace(/<[^>]+>/g, ''); // Remove any other HTML tags
+        // Use full URL for image
+        let imgSrc = article.image ? baseUrl + article.image : baseUrl + 'Pic/default.jpg';
         card.innerHTML = `
-            <img src="${article.image || 'Pic/Logo.png'}" class="card-img-top" alt="..." onerror="this.onerror=null;this.src='Pic/default.jpg';">
+            <img src="${imgSrc}" class="card-img-top" alt="..." onerror="this.onerror=null;this.src='${baseUrl}Pic/default.jpg';">
             <div class="card-body">
                 <h5 class="card-title">${article.title}</h5>
                 <p class="card-text">${cleanContent.substring(0, 80)}...</p>
