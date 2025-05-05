@@ -287,7 +287,7 @@ function setupEventListeners() {
                 const result = await response.json();
                 if (result.success === true) {
                     showModal('Article added successfully!', function() {
-                        window.location.href = 'Campus News.html';
+                        window.location.href = 'CampusNews.html';
                     });
                 } else {
                     showModal('Error: ' + (result.message || 'Failed to add article'));
@@ -317,7 +317,7 @@ async function handleArticleSubmission(e) {
             showModal('Article added successfully!');
             await fetchNews();
             setTimeout(() => {
-                window.location.href = 'Campus News.html';
+                window.location.href = 'CampusNews.html';
             }, 1200);
         } else {
             showModal('Error: ' + (result.message || 'Failed to add article'));

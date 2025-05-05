@@ -100,7 +100,7 @@ function showDeleteConfirmation(articleId) {
             if (result.success) {
 modal.hide();
 // Redirect to Campus News page after successful deletion
-window.location.href = 'Campus News.html?' + new Date().getTime();
+window.location.href = 'CampusNews.html?' + new Date().getTime();
 } else {
 throw new Error(result.message || 'Failed to delete article');
 }
