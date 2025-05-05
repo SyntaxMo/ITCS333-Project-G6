@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Use the full base URL for images from Replit
-    const baseUrl = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/";
+    const baseUrl = "";
 
     // Fetch the article data
-    fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/getNews.php?' + new Date().getTime())
+    fetch('json/News.json?' + new Date().getTime())
         .then(response => response.json())
         .then(articles => {
             const article = articles.find(a => a.id == articleId);
@@ -139,7 +139,7 @@ async function loadComments(articleId) {
     const commentsList = document.getElementById('commentsList');
     commentsList.innerHTML = '<div>Loading comments...</div>';
     try {
-        const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/getComments.php?' + new Date().getTime());
+        const response = await fetch('json/Comments.json?' + new Date().getTime());
         const comments = await response.json();
         const articleComments = comments.filter(c => c.articleId == articleId);
         if (articleComments.length === 0) {

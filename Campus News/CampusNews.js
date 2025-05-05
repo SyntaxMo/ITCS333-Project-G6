@@ -15,7 +15,7 @@ let filteredNewsData = [];
 let currentPage = 1;
 
 // Use the full base URL for images from Replit
-const baseUrl = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/";
+const baseUrl = "";
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
@@ -40,7 +40,7 @@ async function fetchNews() {
 
     try {
         // Add cache-busting query param to always get the latest news
-        const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/getNews.php?' + new Date().getTime());
+        const response = await fetch('json/News.json?' + new Date().getTime());
         if (!response.ok) throw new Error('Failed to fetch articles');
         
         globalNewsData = await response.json();
