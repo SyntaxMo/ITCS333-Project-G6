@@ -1,0 +1,191 @@
+body {
+    background-color: #F6F4F0;
+    color: #2E5077;
+    font-family: Arial, Helvetica, sans-serif;
+}
+/* Header Styling */
+/* Navigation bar */
+.navbar {
+    background-color: #2E5077 !important;
+}
+
+/* Navbar link default color */
+.navbar a {
+    color: white !important;
+}
+
+/* Navbar link hover color */
+.navbar a:hover {
+    color: #79D7BE !important;
+}
+
+/* Navbar active link styling (underline effect) */
+.navbar a.active {
+    color: #79D7BE !important;
+    font-weight: bold;
+    display: inline-block; /* Makes the element inline and allows border-bottom to affect only the text */
+    border-bottom: 2px solid #79D7BE;
+}
+
+/* Remove border from navbar toggler */
+.navbar-toggler {
+    border: 0 !important;   
+}
+
+/* Remove focus outline and shadow from navbar toggler */
+.navbar-toggler:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Custom hamburger icon for navbar toggler */
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* Form Control */
+.form-control {
+    border-color: #4DA1A9;
+}
+
+/* Dropdown Styling */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #F6F4F0;
+    min-width: 200px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    z-index: 1000;
+    border-radius: 6px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    padding: 12px;
+    display: block;
+    color: #2E5077;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.dropdown-content a:hover {
+    background-color: #79D7BE;
+    color: #2E5077;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+
+/* Button Styling */
+.btn-primary, .btn-success {
+    background-color: #4DA1A9;
+    border-color: #4DA1A9;
+    color: #F6F4F0;
+    transition: background-color 0.3s;
+    border-radius: 0.375rem;
+}
+
+.btn-primary:hover, .btn-success:hover {
+    background-color: #79D7BE;
+    border-color: #79D7BE;
+    color: #2E5077;
+    border-radius: 0.375rem;
+}
+
+.btn-outline-secondary {
+    background-color: #ffffff;
+    color: #2E5077;
+    border-color: #4DA1A9;
+    transition: background-color 0.3s;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #4DA1A9;
+    color: #F6F4F0;
+}
+
+/* Card Styling */
+.card {
+    border: 1px solid #4DA1A9;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    color: #2E5077;
+}
+
+.card-text {
+    color: #4DA1A9;
+}
+
+/* Pagination Styling */
+.pagination .page-item .page-link {
+    color: #4DA1A9;
+    border: 1px solid #4DA1A9;
+    transition: background-color 0.3s;
+}
+
+.pagination .page-item.active .page-link,
+.pagination .page-item .page-link:hover {
+    background-color: #4DA1A9;
+    color: #F6F4F0;
+    border-color: #4DA1A9;
+}
+
+/* Comments Section */
+.comment-box {
+    border: 1px solid #4DA1A9;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #ffffff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.comment-box h5 {
+    color: #2E5077;
+    margin-bottom: 0.5rem;
+}
+
+.comment-box p {
+    color: #4DA1A9;
+    margin: 0;
+    white-space: pre-wrap; /* Preserves whitespace and wraps text */
+    max-width: 100%;
+}
+
+/* General Border Radius Reset */
+#filterdropdown, #sortdropdown, .btn-primary {
+    border-radius: 0;
+}
+
+.nav-item a:hover{
+    color: #67dbe6 !important;
+  }
+
+/* Square Image Container for Marketplace */
+.card-img-top {
+    width: 100%;
+    height: 400px; /* Fixed height */
+    object-fit: cover; /* This will crop and center the image */
+    object-position: center;
+}

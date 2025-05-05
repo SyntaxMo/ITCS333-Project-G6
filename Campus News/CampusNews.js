@@ -5,7 +5,7 @@ const form = document.querySelector('form');
 const allCheckbox = document.getElementById('collegeAll');
 const otherCheckboxes = document.querySelectorAll('#collegeCollapse input[type="checkbox"]:not(#collegeAll)');
 const searchInput = document.querySelector('input[type="search"]');
-const sortDropdown = document.querySelector('.dropdown-menu');
+const sortDropdown = document.getElementById('sortDropdownMenu');
 const courseCodeInput = document.getElementById('courseCode');
 const deleteButton = document.querySelector('.btn-danger'); // Fix: define deleteButton so it doesn't throw ReferenceError
 
@@ -413,4 +413,3 @@ function updateRecentNewsCards(newsData) {
         recentNewsContainer.appendChild(card);
     });
 }
-
