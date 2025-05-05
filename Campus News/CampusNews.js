@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeApplication() {
     fetchNews();
     setupEventListeners();
-    initializeFroalaEditor();
 }
 
 // Fetch news data from server
@@ -347,19 +346,6 @@ function validateForm() {
     }
 
     return isValid;
-}
-
-// Initialize Froala Editor
-function initializeFroalaEditor() {
-    if (typeof FroalaEditor !== 'undefined' && document.getElementById('froala-editor')) {
-        new FroalaEditor('#froala-editor', {
-            events: {
-                'contentChanged': function() {
-                    document.getElementById('editorContent').value = this.html.get();
-                }
-            }
-        });
-    }
 }
 
 // Show modal for user feedback

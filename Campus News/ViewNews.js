@@ -148,14 +148,14 @@ async function loadComments(articleId) {
         }
         commentsList.innerHTML = '';
         articleComments.forEach(comment => {
-            const commentBox = document.createElement('div');
+            const commentBox = document.createElement('div'); 
             commentBox.className = 'comment-box mb-3 p-3 border rounded';
             commentBox.innerHTML = `
+                <button class="btn btn-outline-danger btn-sm delete-comment mt-2"  style="float: right; margin: 2px;" data-id="${comment.id}">Delete</button>
+                <button class="btn btn-outline-secondary btn-sm edit-comment mt-2" style="float: right; margin: 2px;" data-id="${comment.id}">Edit</button>
                 <h5>${comment.author}</h5>
                 <p class="comment-content" data-id="${comment.id}">${comment.content}</p>
-                <small class="text-muted">${comment.date}</small><br>
-                <button class="btn btn-outline-secondary btn-sm edit-comment mt-2" data-id="${comment.id}">Edit</button>
-                <button class="btn btn-outline-danger btn-sm delete-comment mt-2" data-id="${comment.id}">Delete</button>
+                <p class="text-muted small mb-2">Posted on ${(comment.date)}</p>                
             `;
             commentsList.appendChild(commentBox);
         });

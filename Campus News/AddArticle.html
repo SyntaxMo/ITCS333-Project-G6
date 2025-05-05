@@ -7,7 +7,6 @@
   <link rel="icon" href="../images/Logo.png">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" />
   <link href="Style.css" rel="stylesheet" />
 </head>
 <body>
@@ -83,8 +82,7 @@
 
   <div class="mb-3">
       <label class="form-label">Content</label>
-      <div id="froala-editor"></div>
-      <textarea id="editorContent" name="content" style="display:none;"></textarea>
+      <textarea id="editorContent" name="content" class="form-control" rows="8" required></textarea>
   </div>
 
   <button type="submit" class="btn btn-outline-primary">Publish</button>
@@ -114,18 +112,6 @@
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
-<script>
-  // Initialize Froala Editor
-  new FroalaEditor('#froala-editor', {
-    events: {
-      // Sync content with hidden textarea
-      'contentChanged': function () {
-        document.querySelector('textarea[name="content"]').value = this.html.get();
-      }
-    }
-  });
-</script>
 <script src="CampusNews.js"></script>
 </body>
 </html>
