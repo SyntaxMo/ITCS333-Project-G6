@@ -87,7 +87,7 @@ function createArticleElement(article) {
             <img src="${imgSrc}" class="card-img-top" alt="${article.title}" onerror="this.onerror=null;this.src='${baseUrl}Pic/default.jpg';">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title">${article.title}</h5>
-                <p class="card-text flex-grow-1">${article.content?.substring(0, 100) || 'No content available'}...</p>
+                <p class="card-text flex-grow-1"><br>${article.content?.substring(0, 100) || 'No content available'}...</p>
                 <div class="mt-auto">
                     <p class="card-text">
                         <small class="text-muted">📅 ${article.date} | ✍️ ${article.author}</small><br>
