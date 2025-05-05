@@ -15,7 +15,7 @@ let filteredNewsData = [];
 let currentPage = 1;
 
 // Use the full base URL for images from Replit
-const baseUrl = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/";
+const baseUrl = "";
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
@@ -40,7 +40,7 @@ async function fetchNews() {
 
     try {
         // Add cache-busting query param to always get the latest news
-        const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/getNews.php?' + new Date().getTime());
+        const response = await fetch('json/News.json?' + new Date().getTime());
         if (!response.ok) throw new Error('Failed to fetch articles');
         
         globalNewsData = await response.json();
@@ -76,7 +76,7 @@ function displayArticles(pageNumber, data) {
 // Create individual article element
 function createArticleElement(article) {
     const colDiv = document.createElement('div');
-    colDiv.className = 'col-md-4 mb-4';
+    colDiv.className = 'col-lg-4 col-md-6 col-sm-12 mb-4';
     colDiv.setAttribute('data-college', article.college);
     colDiv.setAttribute('data-course-code', article.courseCode || '');
     // Use default image if not found or if image is missing
@@ -287,7 +287,7 @@ function setupEventListeners() {
                 const result = await response.json();
                 if (result.success === true) {
                     showModal('Article added successfully!', function() {
-                        window.location.href = 'Campus News.html';
+                        window.location.href = 'CampusNews.html';
                     });
                 } else {
                     showModal('Error: ' + (result.message || 'Failed to add article'));
@@ -317,7 +317,7 @@ async function handleArticleSubmission(e) {
             showModal('Article added successfully!');
             await fetchNews();
             setTimeout(() => {
-                window.location.href = 'Campus News.html';
+                window.location.href = 'CampusNews.html';
             }, 1200);
         } else {
             showModal('Error: ' + (result.message || 'Failed to add article'));
