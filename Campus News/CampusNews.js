@@ -76,7 +76,7 @@ function displayArticles(pageNumber, data) {
 // Create individual article element
 function createArticleElement(article) {
     const colDiv = document.createElement('div');
-    colDiv.className = 'col-md-4 mb-4';
+    colDiv.className = 'col-lg-4 col-md-6 col-sm-12 mb-4';
     colDiv.setAttribute('data-college', article.college);
     colDiv.setAttribute('data-course-code', article.courseCode || '');
     // Use default image if not found or if image is missing
