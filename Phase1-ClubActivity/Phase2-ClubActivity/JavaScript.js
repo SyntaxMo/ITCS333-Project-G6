@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         const activity = activities[index];
         localStorage.setItem("selectedActivity", JSON.stringify(activity));
-        window.location.href = "ActivityPage.html";
+        
       });
     });
   }
@@ -338,8 +338,84 @@ editButtons.forEach((button, index) => {
       document.getElementById("clubDescription").value = activity.description || "";
 
       // Show the edit form
-      const editForm = document.getElementById("addActivityForm");
+      const editForm = document.getElementById("editActivityForm");
       editForm.classList.add("show");
     }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const addActivityButton = document.getElementById("addActivity");
+  const addActivityForm = document.querySelector("#addActivityForm form");
+
+  // Prevent form submission
+  addActivityForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+  });
+
+  addActivityButton.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    // Get input values
+    const imageInput = document.getElementById("ActivityImage").files[0];
+    const titleInput = document.getElementById("itemName").value.trim();
+    const clubInput = document.getElementById("clubCategory").value.trim();
+    const datetimeInput = document.getElementById("datetime").value.trim();
+    const locationInput = document.getElementById("location").value.trim();
+    const descriptionInput = document.getElementById("clubDescription").value.trim();
+
+    if (!imageInput || !titleInput || !clubInput || !datetimeInput || !locationInput || !descriptionInput) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    // Create a new activity object
+    const newActivity = {
+      image: URL.createObjectURL(imageInput),
+      title: titleInput,
+      host: clubInput,
+      datetime: datetimeInput,
+      location: locationInput,
+      description: descriptionInput,
+    };
+
+    // Save the new activity to localStorage
+    const activities = JSON.parse(localStorage.getItem("activities")) || [];
+    activities.push(newActivity);
+    localStorage.setItem("activities", JSON.stringify(activities));
+
+    // Add the new activity to the page
+    const activitiesContainer = document.querySelector(".row");
+    const activityCard = document.createElement("article");
+    activityCard.classList.add("col-md-4", "mb-4");
+    activityCard.innerHTML = `
+      <div class="card">
+        <img src="${newActivity.image}" class="card-img-top" alt="Activity Image">
+        <div class="card-body">
+          <h5 class="card-title">${newActivity.title}</h5>
+          <p class="card-text"><strong>Host:</strong> ${newActivity.host}</p>
+          <p class="card-text"><strong>Location:</strong> ${newActivity.location}</p>
+          <p class="card-text"><strong>Date & Time:</strong> ${newActivity.datetime}</p>
+          <p class="card-text"><strong>Description:</strong> ${newActivity.description}</p>
+          <a href="ActivityPage.html"><button class="btn btn-success w-100">view</button></a>
+        </div>
+      </div>
+    `;
+    activitiesContainer.appendChild(activityCard);
+
+    // Clear the form inputs
+    document.getElementById("ActivityImage").value = "";
+    document.getElementById("itemName").value = "";
+    document.getElementById("clubCategory").value = "";
+    document.getElementById("datetime").value = "";
+    document.getElementById("location").value = "";
+    document.getElementById("clubDescription").value = "";
+
+    // Collapse the form
+    const collapseElement = document.getElementById("addActivityForm");
+    const bootstrapCollapse = bootstrap.Collapse.getInstance(collapseElement);
+    bootstrapCollapse.hide();
+
+    alert("Activity added successfully!");
   });
 });
