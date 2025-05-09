@@ -22,7 +22,7 @@ global $conn;
 
     if(mysqli_num_rows($query) > 0){
 
-      $result = mysqli_fetch_assoc($query, MYSQLI_ASSOC);
+      $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
       $data = [
         'status' => 200,
