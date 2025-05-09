@@ -155,4 +155,98 @@ function getActivity($activityParams){
   }
 }
 
+function updateActivity($activityInput, $activityParams){
+
+  global $conn;
+
+  if(!isset($activityParams['title'])){
+    return error422("Activity is not found");
+  }else if($activityParams['title'] == null){
+    return error422("Please enter the activity title");
+  }
+
+  $title = mysqli_real_escape_string($conn, $activityParams['title']);
+  $host = mysqli_real_escape_string($conn, $activityInput['host']);
+  $location = mysqli_real_escape_string($conn, $activityInput['location']);
+  $dateTime = mysqli_real_escape_string($conn, $activityInput['date_time']);
+  $description = mysqli_real_escape_string($conn, $activityInput['description']);
+
+  $query = "SELECT * FROM activity WHERE title = '$title'";
+  $result = mysqli_query($conn, $query);
+
+  if($result){
+
+    if(mysqli_num_rows($result) > 0){
+
+      $activity = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+      if(empty(trim($activityInput['title']))){
+        return error422("Please enter a title");
+
+      }else if(empty(trim($activityInput['host']))){
+        return error422("Please select a host");
+
+      }else if(empty(trim($activityInput['location']))){
+        return error422("Please enter a location");
+
+      }else if(empty(trim($activityInput['date_time']))){
+        return error422("Please select a date and time");
+
+      }else if(empty(trim($activityInput['description']))){
+        return error422("Please enter a description");
+
+      }else{
+
+        $query = "UPDATE activity SET title='$title', host='$host', location='$location', date_time='$dateTime', description='$description' WHERE title='$title' LIMIT 1";
+        $result = mysqli_query($conn, $query);
+
+        if($result){
+
+          $data = [
+            'status' => 200,
+            'message'=> " Activity updated successfully",
+          ] ;
+          header("HTTP/1.0 200 Activity updated successfully");
+          return json_encode($data);
+
+        }
+        else{
+          $data = [
+            'status' => 500,
+            'message'=> " Internal Server Error",
+          ] ;
+          header("HTTP/1.0 500 Internal Server Error");
+          return json_encode($data);
+        }
+      }
+    }
+    else{
+
+      $data = [
+        'status' => 404,
+        'message'=> " No activity found",
+        ] ;
+      header("HTTP/1.0 404 No activity found");
+      return json_encode($data);
+
+    }
+  }
+  else{
+    $data = [
+      'status' => 500,
+      'message'=> " Internal Server Error",
+    ] ;
+    header("HTTP/1.0 500 Internal Server Error");
+    return json_encode($data);
+  }
+
+
+
+
+
+
+
+}
+
+
 ?>
