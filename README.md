@@ -8,7 +8,7 @@
 | Course Notes | Jaber | 202207991 | JaberKhalid11
 | Campus News | Ayoub Mohammed | 202209598 | A-Alomari |
 | Club Activities | Mohammed Hussain | 202204231 | MohammedAlaradi
-| Student Marketplace | Ahmed AbdulHasan | 202205376 | Ahmed-ahasan
+| Student Marketplace | Ahmed AbdulHasan | 202205376 | Ahmed-ahasan 
 
 ## CSS Framework
 We will use **Bootstrap** for styling and responsiveness.
