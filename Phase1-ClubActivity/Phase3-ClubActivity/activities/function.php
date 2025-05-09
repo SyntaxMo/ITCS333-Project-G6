@@ -240,13 +240,68 @@ function updateActivity($activityInput, $activityParams){
     return json_encode($data);
   }
 
-
-
-
-
-
-
 }
 
+function deleteActivity($activityParams){
+
+  global $conn;
+
+  if(!isset($activityParams['title'])){
+    return error422("Activity is not found");
+  }else if($activityParams['title'] == null){
+    return error422("Please enter the activity title");
+  }
+
+  $title = mysqli_real_escape_string($conn, $activityParams['title']);
+  $query = "SELECT * FROM activity WHERE title = '$title'";
+  $result = mysqli_query($conn, $query);
+
+  if($result){
+
+    if(mysqli_num_rows($result) > 0){
+
+      $query = "DELETE FROM activity WHERE title='$title' LIMIT 1";
+      $result = mysqli_query($conn, $query);
+
+      if($result){
+
+        $data = [
+          'status' => 204,
+          'message'=> " Activity deleted successfully",
+        ] ;
+        header("HTTP/1.0 204 Activity deleted successfully");
+        return json_encode($data);
+
+      }
+      else{
+        $data = [
+          'status' => 500,
+          'message'=> " Internal Server Error",
+        ] ;
+        header("HTTP/1.0 500 Internal Server Error");
+        return json_encode($data);
+      }
+    }
+    else{
+
+      $data = [
+        'status' => 404,
+        'message'=> " No activity found",
+        ] ;
+      header("HTTP/1.0 404 No activity found");
+      return json_encode($data);
+
+    }
+  }
+  else{
+    $data = [
+      'status' => 500,
+      'message'=> " Internal Server Error",
+    ] ;
+    header("HTTP/1.0 500 Internal Server Error");
+    return json_encode($data);
+  }
+
+}
 
 ?>
