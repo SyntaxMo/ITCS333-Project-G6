@@ -16,12 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
       activityCard.classList.add("col-md-4", "mb-4");
       activityCard.innerHTML = `
         <div class="card">
-          <img src="${activity.image}" class="card-img-top" alt="Activity Image">
+          <img src="${activity.image || '../Images/logo.png'}" class="card-img-top" alt="Activity Image">
           <div class="card-body">
             <h5 class="card-title">${activity.title}</h5>
             <p class="card-text"><strong>Host:</strong> ${activity.host}</p>
             <p class="card-text"><strong>Location:</strong> ${activity.location}</p>
-            <p class="card-text"><strong>Date & Time:</strong> ${activity.datetime}</p>
+            <p class="card-text"><strong>Date & Time:</strong> ${activity.dateTime}</p>
             <p class="card-text"><strong>Description:</strong> ${activity.description}</p>
             <a href="ActivityPage.html"><button class="btn btn-success w-100">view</button></a>
           </div>
@@ -35,9 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
     viewButtons.forEach((button, index) => {
       button.addEventListener("click", (e) => {
         e.preventDefault();
-        const activity = activities[index];
+        const activity = activities[start + index]; // Adjust index for pagination
         localStorage.setItem("selectedActivity", JSON.stringify(activity));
-        
       });
     });
   }
@@ -72,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchActivities() {
     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/todos');
+      const response = await fetch('../Phase3-ClubActivity/index.php');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -80,13 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("API Response:", data); // Print in log the API response
 
       if (Array.isArray(data)) {
-        activities = data.map((item, index) => ({
+        activities = data.map((item) => ({
           image: "../Images/logo.png", // Placeholder image
-          title: `Activity ${index + 1}`,
-          host: `Host ${index + 1}`,
-          location: `Location ${index + 1}`,
-          datetime: new Date().toLocaleString(),
-          description: item.title,
+          title: item.title,
+          host: item.host,
+          location: item.location,
+          dateTime: item.dateTime,
+          description: item.description,
         }));
 
         setupPagination(activities.length);
