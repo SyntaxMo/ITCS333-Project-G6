@@ -14,17 +14,17 @@ if($requestMethod == "POST") {
   $inputData = json_decode(file_get_contents("php://input"), true);
   if(empty($inputData)) {
     
-    $sotreActivity = storeActivity($_POST);
+    $storeActivity = storeActivity($_POST);
 
   }
 
   else{
 
-    $sotreActivity = storeActivity($inputData);
+    $storeActivity = storeActivity($inputData);
 
     }
 
-  echo $sotreActivity;
+  echo $storeActivity;
    }
 else {
 

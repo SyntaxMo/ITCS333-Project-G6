@@ -10,8 +10,15 @@ include('function.php');
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
 if($requestMethod == "GET") {
-   $activityList = getClubActivity();
-   echo $activityList;
+  if(isset($_GET['title'])){
+    $activity = getActivity($_GET);
+    echo $activity;
+
+  }else{
+    $activityList = getClubActivity();
+    echo $activityList;
+  }
+   
 }
 else {
     $data = [

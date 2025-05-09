@@ -105,17 +105,54 @@ if(empty(trim($title))){
     return json_encode($data);
   }
 }
+}
 
+function getActivity($activityParams){
 
+  global $conn;
 
+  if($activityParams['title'] == null){
+    return error422("Please enter the activity title");
+  }
 
+  $title = mysqli_real_escape_string($conn, $activityParams['title']);
+  $query = "SELECT * FROM activity WHERE title = '$title'";
+  $result = mysqli_query($conn, $query);
 
+  if($result){
 
+    if(mysqli_num_rows($result) > 0){
 
+      $activity = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+      $data = [
+        'status' => 200,
+        'message'=> " Activity fetched successfully",
+        "data"=> $activity
+        ] ;
+      header("HTTP/1.0 200 Activity fetched successfully");
+      return json_encode($data);
 
+    }
+    else{
 
+      $data = [
+        'status' => 404,
+        'message'=> " No activity found",
+        ] ;
+      header("HTTP/1.0 404 No activity found");
+      return json_encode($data);
 
+    }
+  }
+  else{
+    $data = [
+      'status' => 500,
+      'message'=> " Internal Server Error",
+    ] ;
+    header("HTTP/1.0 500 Internal Server Error");
+    return json_encode($data);
+  }
 }
 
 ?>
