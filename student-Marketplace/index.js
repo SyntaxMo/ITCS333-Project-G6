@@ -1,4 +1,4 @@
-// Replace absolute API_BASE_URL with config
+// Get API base URL from config
 const API_BASE_URL = API_CONFIG.BASE_URL;
 
 // Initialize global variables
@@ -180,8 +180,8 @@ async function handleItemSubmission() {
         const base64Image = await convertImageToBase64(imageFile);
         formData.image = base64Image;
 
-        // Send the request
-        const response = await fetch(`${API_BASE_URL}/create.php`, {
+        // Send the request with the correct endpoint
+        const response = await fetch(`${API_BASE_URL}?action=create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -253,12 +253,18 @@ async function fetchItems() {
     loadingSpinner.classList.remove('d-none');
     
     try {
-        const response = await fetch(`${API_BASE_URL}/read.php`);
+        // Remove /read.php from URL and use query parameter instead
+        const response = await fetch(`${API_BASE_URL}?action=read`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
         
         if (data.success && data.data) {
-            items = data.data; // Store items in global variable
-            applyFiltersAndDisplay(); // This will handle the display and pagination
+            items = data.data;
+            applyFiltersAndDisplay();
+        } else {
+            throw new Error(data.message || 'Failed to fetch items');
         }
     } catch (error) {
         console.error('Error fetching items:', error);
@@ -273,7 +279,7 @@ function createItemCard(item) {
     col.className = 'col-md-4 mb-4';
     
     // Create image URL properly
-    const imageUrl = item.image_path ? `${API_BASE_URL}/${item.image_path}` : 'images/dumbCar.jpg';
+    const imageUrl = item.image_path || 'images/dumbCar.jpg';
     
     col.innerHTML = `
         <div class="card h-100">
@@ -394,7 +400,7 @@ function displayItems(items) {
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="position-relative">
-                    <img src="${API_BASE_URL}/${item.image_path}" 
+                    <img src="${item.image_path.startsWith('uploads/') ? item.image_path : 'uploads/' + item.image_path}" 
                          class="card-img-top" 
                          alt="${item.name}"
                          onerror="this.onerror=null; this.src='images/dumbCar.jpg';"
