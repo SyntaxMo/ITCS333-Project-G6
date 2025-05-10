@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Use the full base URL for images from Replit
-    const baseUrl = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/";
+    const baseUrl = "";
 
     // Fetch the article data
     fetch(`${api}?action=getNews&`+ new Date().getTime())

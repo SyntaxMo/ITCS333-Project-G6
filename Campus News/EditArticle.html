@@ -114,7 +114,7 @@ const editArticleForm = document.getElementById('editArticleForm');
 document.addEventListener('DOMContentLoaded', async () => {
     const articleId = localStorage.getItem('selectedArticleId');
     if (articleId) {
-        const response = await fetch(`${api}?action=getNews&` + new Date().getTime());
+      const response = await fetch(`${api}?action=getNews&` + new Date().getTime());
         const articles = await response.json();
         const article = articles.find(a => a.id == articleId);
         if (article) {
@@ -126,7 +126,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 });
-
 if (editArticleForm) {
     editArticleForm.addEventListener('submit', async function(e) {
         e.preventDefault();
