@@ -8,9 +8,9 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 // Database connection
 $host = "localhost";
-$username = "root";
-$password = "";
-$dbname = "clubactivity";
+$username = "admin1";
+$password = "OIRfawCoykTa0";
+$dbname = "ISDdb";
 $conn = mysqli_connect($host, $username, $password, $dbname);
 if (!$conn) {
     http_response_code(500);
@@ -78,6 +78,7 @@ function storeActivity($activityInput){
   $location = $activityInput['location'] ?? '';
   $dateTime = $activityInput['date_time'] ?? '';
   $description = $activityInput['description'] ?? '';
+  $image = $activityInput['image'] ?? '';
   if(empty(trim($title))){
     error422("Please enter a title");
   } else if(empty(trim($host))){
@@ -88,8 +89,10 @@ function storeActivity($activityInput){
     error422("Please select a date and time");
   } else if(empty(trim($description))){
     error422("Please enter a description");
+  } else if(empty(trim($image))){
+    error422("Please provide an image");
   } else {
-    $query = "INSERT INTO activity (title, host, location, date_time, description) VALUES ('$title', '$host', '$location', '$dateTime', '$description')";
+    $query = "INSERT INTO activity (title, host, location, date_time, description, image) VALUES ('$title', '$host', '$location', '$dateTime', '$description', '$image')";
     $result = mysqli_query($conn, $query);
     if($result){
       http_response_code(201);
@@ -112,7 +115,8 @@ function updateActivity($activityInput, $activityParams){
   $location = mysqli_real_escape_string($conn, $activityInput['location']);
   $dateTime = mysqli_real_escape_string($conn, $activityInput['date_time']);
   $description = mysqli_real_escape_string($conn, $activityInput['description']);
-  $query = "UPDATE activity SET host='$host', location='$location', date_time='$dateTime', description='$description' WHERE title='$title'";
+  $image = mysqli_real_escape_string($conn, $activityInput['image']);
+  $query = "UPDATE activity SET host='$host', location='$location', date_time='$dateTime', description='$description', image='$image' WHERE title='$title'";
   $result = mysqli_query($conn, $query);
   if($result){
     http_response_code(200);

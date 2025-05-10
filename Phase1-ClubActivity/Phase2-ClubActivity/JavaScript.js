@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchActivities() {
     try {
-      const response = await fetch('../Phase3-ClubActivity/index.php');
+      const response = await fetch('https://6a5c8e51-84b7-4fd9-ab22-07d1ab58646b-00-2xy2htwsahlno.pike.replit.dev/APIca.php?action=getClubActivity');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
