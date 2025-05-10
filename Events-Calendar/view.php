@@ -7,6 +7,7 @@
     <link rel="icon" href="../images/Logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="apiEC/config.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -46,7 +47,7 @@
 
         <!-- Action Buttons -->
         <div class="mb-3 d-flex gap-2">
-            <a href="Events-Calender.html" class="btn btn-success">← Back to Events</a>
+            <a href="Events-Calender.php" class="btn btn-success">← Back to Events</a>
             <button id="editButton" class="btn btn-outline-secondary">Edit Event</button>
             <button id="deleteButton" class="btn btn-danger">Delete</button>
         </div>
@@ -223,7 +224,6 @@
 
         function formatDateForInput(date) {
             const d = new Date(date);
-            // Adjust for local timezone
             const year = d.getFullYear();
             const month = String(d.getMonth() + 1).padStart(2, '0');
             const day = String(d.getDate()).padStart(2, '0');
@@ -234,12 +234,23 @@
 
         // Display comments
         function displayComments(comments) {
+            if (!Array.isArray(comments)) {
+                if (typeof comments === 'string') {
+                    try {
+                        comments = JSON.parse(comments);
+                    } catch {
+                        comments = [];
+                    }
+                } else if (!comments) {
+                    comments = [];
+                }
+            }
             commentsContainer.innerHTML = comments.length === 0 
                 ? '<p>No comments yet. Be the first to comment!</p>'
                 : comments.map(comment => `
                     <div class="comment-box">
                         <h5>${comment.name}</h5>
-                        <p class="text-muted small mb-2">Posted on ${formatDate(comment.date)}</p>
+                        <p class="text-muted small mb-2">Posted on ${new Date(comment.date).toLocaleString()}</p>
                         <p>${comment.text}</p>
                     </div>
                 `).join('');
@@ -252,7 +263,7 @@
                 editMode.classList.remove('d-none');
                 // Populate edit form
                 document.getElementById('editTitle').value = currentEvent.title;
-                document.getElementById('editDate').value = formatDateForInput(currentEvent.date);
+                document.getElementById('editDate').value = formatDateForInput(currentEvent.event_date);
                 document.getElementById('editLocation').value = currentEvent.location;
                 document.getElementById('editCategory').value = currentEvent.category;
                 document.getElementById('editDescription').value = currentEvent.description;
@@ -264,14 +275,9 @@
 
         // Update event display
         function updateEventDisplay() {
-            // Handle base64 images or regular image paths
-            const imageSrc = currentEvent.image.startsWith('data:') ? 
-                currentEvent.image : 
-                currentEvent.image;
-                
-            eventImage.innerHTML = `<img src="${imageSrc}" class="img-fluid rounded" alt="${currentEvent.title}">`;
+            eventImage.innerHTML = `<img src="apiEC/${currentEvent.image_path}" class="img-fluid rounded" alt="${currentEvent.title}">`;
             eventTitle.textContent = currentEvent.title;
-            eventDate.innerHTML = `📅 Date: ${formatDate(currentEvent.date)}`;
+            eventDate.innerHTML = `📅 Date: ${formatDate(currentEvent.event_date)}`;
             eventLocation.innerHTML = `📍 Location: ${currentEvent.location}`;
             eventCategory.innerHTML = `🏷️ Category: ${currentEvent.category}`;
             eventDescription.textContent = currentEvent.description;
@@ -291,36 +297,44 @@
             showLoading();
 
             try {
-                // Get events from session storage
-                const events = JSON.parse(sessionStorage.getItem('events'));
-                if (!events) {
-                    throw new Error('No events found');
+                const response = await fetch(`${config.apiBaseUrl}?action=get&id=${eventId}`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to fetch event details');
                 }
 
-                currentEvent = events.find(e => e.id === eventId);
-                if (!currentEvent) {
-                    throw new Error('Event not found');
-                }
-
-                // Initialize comments array if it doesn't exist
-                if (!currentEvent.comments) {
-                    currentEvent.comments = [];
-                }
-
+                currentEvent = data;
                 updateEventDisplay();
 
                 // Register button handler
-                registerButton.addEventListener('click', () => {
-                    currentEvent.popularity++;
-                    // Update in session storage
-                    const updatedEvents = events.map(e => e.id === currentEvent.id ? currentEvent : e);
-                    sessionStorage.setItem('events', JSON.stringify(updatedEvents));
-                    showSuccess(`Successfully registered for ${currentEvent.title}!`);
-                    registerButton.disabled = true;
-                    registerButton.textContent = 'Registered';
+                registerButton.addEventListener('click', async () => {
+                    try {
+                        const response = await fetch(`${config.apiBaseUrl}?action=update`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `id=${eventId}&popularity=1`
+                        });
+
+                        const data = await response.json();
+                        
+                        if (!response.ok) {
+                            throw new Error(data.error || 'Failed to register for event');
+                        }
+
+                        showSuccess(`Successfully registered for ${data.title}!`);
+                        registerButton.disabled = true;
+                        registerButton.textContent = 'Registered';
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showError(error.message);
+                    }
                 });
 
             } catch (error) {
+                console.error('Error:', error);
                 showError('Failed to load event details. Please try again later.');
             } finally {
                 hideLoading();
@@ -335,91 +349,74 @@
         editForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(editForm);
-
-            // Handle image file
-            const imageFile = document.getElementById('editImage').files[0];
-            if (imageFile) {
-                // Convert image to base64
-                const reader = new FileReader();
-                try {
-                    const base64Image = await new Promise((resolve, reject) => {
-                        reader.onload = () => resolve(reader.result);
-                        reader.onerror = () => reject(reader.error);
-                        reader.readAsDataURL(imageFile);
-                    });
-                    
-                    // Update current event with new image
-                    currentEvent.image = base64Image;
-                } catch (error) {
-                    console.error('Error processing image:', error);
-                    showError('Failed to process image. Please try again.');
-                    return;
+            formData.append('id', currentEvent.id);
+            showLoading();
+            try {
+                const response = await fetch(`${config.apiBaseUrl}?action=update`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to update event');
                 }
+                currentEvent = data;
+                toggleEditMode(false);
+                updateEventDisplay();
+                showSuccess('Event updated successfully!');
+            } catch (error) {
+                console.error('Error:', error);
+                showError(error.message);
+            } finally {
+                hideLoading();
             }
-
-            // Update current event
-            currentEvent.title = formData.get('title');
-            currentEvent.date = new Date(formData.get('date'));
-            currentEvent.location = formData.get('location');
-            currentEvent.category = formData.get('category');
-            currentEvent.description = formData.get('description');
-
-            // Update in session storage
-            const events = JSON.parse(sessionStorage.getItem('events'));
-            const updatedEvents = events.map(e => e.id === currentEvent.id ? currentEvent : e);
-            sessionStorage.setItem('events', JSON.stringify(updatedEvents));
-
-            // Update display
-            toggleEditMode(false);
-            updateEventDisplay();
-            showSuccess('Event updated successfully!');
         });
 
         // Comment form handler
-        commentForm.addEventListener('submit', (e) => {
+        commentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
             if (!currentEvent) {
                 showError('Cannot add comment: Event not found');
                 return;
             }
-
             const formData = new FormData(commentForm);
             const name = formData.get('commenterName');
             const text = formData.get('commentText');
-
             if (!name || !text) {
                 showError('Please fill in all fields');
                 return;
             }
-
-            const newComment = {
-                name: name,
-                text: text,
-                date: new Date()
-            };
-
-            if (!currentEvent.comments) {
-                currentEvent.comments = [];
+            showLoading();
+            try {
+                // Fetch current comments
+                let comments = currentEvent.comments || [];
+                if (typeof comments === 'string') {
+                    try { comments = JSON.parse(comments); } catch { comments = []; }
+                }
+                const newComment = { name, text, date: new Date() };
+                comments.unshift(newComment);
+                // Update event with new comments array
+                const response = await fetch(`${config.apiBaseUrl}?action=update`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `id=${currentEvent.id}&comments=${encodeURIComponent(JSON.stringify(comments))}`
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to add comment');
+                }
+                currentEvent = data;
+                displayComments(currentEvent.comments || []);
+                commentForm.reset();
+                const commentFormCollapse = bootstrap.Collapse.getInstance(document.getElementById('commentForm'));
+                if (commentFormCollapse) commentFormCollapse.hide();
+                showSuccess('Comment added successfully!');
+            } catch (error) {
+                console.error('Error:', error);
+                showError(error.message);
+            } finally {
+                hideLoading();
             }
-
-            // Add comment and update storage
-            currentEvent.comments.unshift(newComment);
-            const events = JSON.parse(sessionStorage.getItem('events'));
-            const updatedEvents = events.map(e => e.id === currentEvent.id ? currentEvent : e);
-            sessionStorage.setItem('events', JSON.stringify(updatedEvents));
-            
-            // Update display
-            displayComments(currentEvent.comments);
-            
-            // Reset form and collapse
-            commentForm.reset();
-            const commentFormCollapse = bootstrap.Collapse.getInstance(document.getElementById('commentForm'));
-            if (commentFormCollapse) {
-                commentFormCollapse.hide();
-            }
-            
-            showSuccess('Comment added successfully!');
         });
 
         // Function to scroll to comment form
@@ -429,23 +426,34 @@
                     behavior: 'smooth',
                     block: 'center'
                 });
-            }, 200); // Small delay to ensure collapse animation has started
+            }, 200);
         }
 
         // Delete button handler
-        deleteButton.addEventListener('click', () => {
+        deleteButton.addEventListener('click', async () => {
             if (confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+                showLoading();
                 try {
-                    const events = JSON.parse(sessionStorage.getItem('events'));
-                    const updatedEvents = events.filter(e => e.id !== currentEvent.id);
-                    sessionStorage.setItem('events', JSON.stringify(updatedEvents));
+                    const response = await fetch(`${config.apiBaseUrl}?action=delete&id=${currentEvent.id}`, {
+                        method: 'DELETE'
+                    });
+
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Failed to delete event');
+                    }
+
                     showSuccess('Event deleted successfully!');
                     // Redirect back to events page after short delay
                     setTimeout(() => {
-                        window.location.href = 'Events-Calender.html';
+                        window.location.href = 'Events-Calender.php';
                     }, 1500);
                 } catch (error) {
-                    showError('Failed to delete event. Please try again.');
+                    console.error('Error:', error);
+                    showError(error.message);
+                } finally {
+                    hideLoading();
                 }
             }
         });

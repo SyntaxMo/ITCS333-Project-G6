@@ -11,15 +11,18 @@
         <link rel="stylesheet" href="styles.css">
         <script defer src="https://kit.fontawesome.com/387937a7f8.js" crossorigin="anonymous"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="apiEC/config.js"></script>
     </head>
     <body>
     <!-- Loading Indicator -->
+    <!--
     <div id="pageLoadingIndicator" class="loading-container">
         <div class="text-center">
             <div class="loading-spinner"></div>
             <p class="loading-text">Loading Events...</p>
         </div>
     </div>
+    -->
 
 <!-- Header -->
 
@@ -101,28 +104,28 @@
           <form id="eventForm">
             <div class="mb-3">
               <label for="eventName" class="form-label">Event Title:</label>
-              <input type="text" placeholder="Enter Event name" class="form-control" id="eventName" name="eventName" required>
+              <input type="text" placeholder="Enter Event name" class="form-control" id="eventName" name="title" required>
             </div>
 
             <div class="mb-3">
                 <label for="editDate" class="form-label">Event Date:</label>
-                <input type="datetime-local" class="form-control" id="editDate" name="eventDate" required>
+                <input type="datetime-local" class="form-control" id="editDate" name="event_date" required>
             </div>
 
             <div class="mb-3">
                 <label for="eventLocation" class="form-label">Event Location:</label> 
                 <input type="text" placeholder="Room 000, XX Building"
-                class="form-control" id="eventLocation" name="eventLocation" required>
+                class="form-control" id="eventLocation" name="location" required>
             </div>
 
             <div class="mb-3">
               <label for="eventDescription" class="form-label">Description:</label>
-              <textarea class="form-control" placeholder="Write a short description of the event" id="eventDescription" name="eventDescription" rows="3" required></textarea>
+              <textarea class="form-control" placeholder="Write a short description of the event" id="eventDescription" name="description" rows="3" required></textarea>
             </div>
   
             <div class="mb-3">
               <label for="eventCategory" class="form-label">Category:</label>
-              <select class="form-control" id="eventCategory" name="eventCategory" required>
+              <select class="form-control" id="eventCategory" name="category" required>
                 <option value="" disabled selected>Select Event Type</option>
                 <option value="Workshop">Workshop</option>
                 <option value="Competition">Competition</option>
@@ -135,7 +138,7 @@
   
             <div class="mb-3">
               <label for="eventImage" class="form-label">Upload Poster:</label>
-              <input type="file" class="form-control" id="eventImage" name="eventImage" accept="image/jpeg, image/png, .jpg, .jpeg, .png" required>
+              <input type="file" class="form-control" id="eventImage" name="image" accept="image/jpeg, image/png, .jpg, .jpeg, .png" required>
             </div>
   
             <div class="mb-3">
