@@ -108,13 +108,13 @@ function showModal(message, onClose) {
         modal.hide();
     };
 }
-
+const api = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/api.php";
 // Pre-fill form if editing
 const editArticleForm = document.getElementById('editArticleForm');
 document.addEventListener('DOMContentLoaded', async () => {
     const articleId = localStorage.getItem('selectedArticleId');
     if (articleId) {
-        const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/getNews.php?' + new Date().getTime());
+        const response = await fetch(`${api}?action=getNews&` + new Date().getTime());
         const articles = await response.json();
         const article = articles.find(a => a.id == articleId);
         if (article) {
@@ -137,7 +137,7 @@ if (editArticleForm) {
         const articleId = localStorage.getItem('selectedArticleId');
         if (articleId) {
             formData.append('id', articleId);
-            const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/editNews.php', {
+            const response = await fetch(`${api}?action=editNews&`, {
                 method: 'POST',
                 body: formData
             });

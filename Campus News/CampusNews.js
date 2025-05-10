@@ -8,7 +8,7 @@ const searchInput = document.querySelector('input[type="search"]');
 const sortDropdown = document.getElementById('sortDropdownMenu');
 const courseCodeInput = document.getElementById('courseCode');
 const deleteButton = document.querySelector('.btn-danger'); // Fix: define deleteButton so it doesn't throw ReferenceError
-
+const api = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/api.php";
 // Global Data Stores
 let globalNewsData = [];
 let filteredNewsData = [];
@@ -39,7 +39,7 @@ async function fetchNews() {
 
     try {
         // Add cache-busting query param to always get the latest news
-        const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/getNews.php?' + new Date().getTime());
+        const response = await fetch(`${api}?action=getNews&` + new Date().getTime());
         if (!response.ok) throw new Error('Failed to fetch articles');
         
         globalNewsData = await response.json();
