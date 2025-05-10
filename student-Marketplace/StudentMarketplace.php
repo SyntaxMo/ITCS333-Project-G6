@@ -1,11 +1,5 @@
 <?php 
-// Include database connection with proper error handling
-if (!@include("../apiMP/db.php")) {
-    die("Error: Could not connect to the database. Please try again later.");
-}
-
-// Remove any JSON headers that might have been set by db.php
-header_remove('Content-Type');
+// No need for database connection anymore as we're using the API
 ?>
 
 <!DOCTYPE html>
@@ -18,9 +12,7 @@ header_remove('Content-Type');
 
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     <link href="style.css" rel="stylesheet">
-    <script src="config.js"></script>
 </head>
 
 
@@ -191,6 +183,9 @@ header_remove('Content-Type');
 <footer class="text-center py-3 mt-5">
     &copy; 2025 UNIHUB. All rights reserved.
 </footer>
+    <!-- JavaScript dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="config.js"></script>
     <script src="index.js"></script>
 </body>
 </html>

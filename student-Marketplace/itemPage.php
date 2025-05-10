@@ -1,18 +1,5 @@
-<?php 
-// Include database connection with proper error handling
-if (!@include("../apiMP/db.php")) {
-    die("Error: Could not connect to the database. Please try again later.");
-}
-
-// Remove any JSON headers that might have been set by db.php
-header_remove('Content-Type');
-
-// Get the item ID from URL
-$itemId = isset($_GET['id']) ? $_GET['id'] : null;
-if (!$itemId) {
-    header('Location: StudentMarketplace.php');
-    exit;
-}
+<?php
+// No need for database connection anymore as we're using the API
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +12,6 @@ if (!$itemId) {
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
-    <script src="config.js"></script>
 </head>
 <body>
 
@@ -141,7 +127,9 @@ if (!$itemId) {
     &copy; 2025 UNIHUB. All rights reserved.
 </footer>
 
+<!-- JavaScript dependencies -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="config.js"></script>
 <script src="itemPage.js"></script>
 
 </body>

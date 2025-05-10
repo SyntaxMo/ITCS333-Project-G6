@@ -61,7 +61,7 @@ function setupEventListeners() {
 
 async function fetchProductDetails() {
     try {
-        const response = await fetch(`${API_BASE_URL}/read.php?id=${productId}`);
+        const response = await fetch(`${API_BASE_URL}?action=read&id=${productId}`);
         if (!response.ok) throw new Error('Failed to fetch product details');
 
         const result = await response.json();
@@ -84,8 +84,9 @@ function displayProductDetails(product) {
     const itemImage = document.getElementById('itemImage');
     if (itemImage) {
         if (product.image_path) {
-            itemImage.src = `${API_BASE_URL}/${product.image_path}`;
-            // Set onerror only once to prevent infinite loop
+            // Fix image path construction
+            const imagePath = product.image_path.startsWith('uploads/') ? product.image_path : 'uploads/' + product.image_path;
+            itemImage.src = imagePath;
             itemImage.onerror = function() {
                 this.onerror = null; // Remove the handler after first error
                 this.src = 'images/dumbCar.jpg';
@@ -104,10 +105,11 @@ function populateEditForm(product) {
     const editImage = document.getElementById('editItemImage');
     if (editImage) {
         if (product.image_path) {
-            editImage.src = `${API_BASE_URL}/${product.image_path}`;
-            // Set onerror only once to prevent infinite loop
+            // Fix image path construction for edit preview
+            const imagePath = product.image_path.startsWith('uploads/') ? product.image_path : 'uploads/' + product.image_path;
+            editImage.src = imagePath;
             editImage.onerror = function() {
-                this.onerror = null; // Remove the handler after first error
+                this.onerror = null;
                 this.src = 'images/dumbCar.jpg';
             };
         } else {
@@ -126,29 +128,34 @@ async function handleEditSubmit(e) {
     const form = e.target;
     
     try {
-        let formData = new FormData();
-        formData.append('id', productId);
-        formData.append('name', form.elements.name.value);
-        formData.append('description', form.elements.description.value);
-        formData.append('price', form.elements.price.value);
+        const formData = {
+            id: productId,
+            name: form.elements.name.value,
+            description: form.elements.description.value,
+            price: parseFloat(form.elements.price.value)
+        };
 
-        // Handle image upload if a new image was selected
+        // Handle image if one was selected
         const imageFile = form.elements.image?.files[0];
         if (imageFile) {
-            formData.append('image', imageFile);
+            const base64Image = await convertImageToBase64(imageFile);
+            // Get only the base64 part after the comma
+            formData.image = base64Image.split(',')[1];
         }
 
-        const response = await fetch(`${API_BASE_URL}/update.php`, {
+        const response = await fetch(`${API_BASE_URL}?action=update`, {
             method: 'POST',
-            body: formData // FormData will automatically set the correct Content-Type
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
         });
-
-        if (!response.ok) throw new Error('Failed to update product');
 
         const result = await response.json();
         if (result.success) {
             showSuccess('Product updated successfully');
-            fetchProductDetails();
+            // Refresh the product details to show new image
+            await fetchProductDetails();
             toggleEditMode(false);
         } else {
             throw new Error(result.message || 'Failed to update product');
@@ -162,7 +169,7 @@ async function handleDelete() {
     if (!confirm('Are you sure you want to delete this product?')) return;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/delete.php`, {
+        const response = await fetch(`${API_BASE_URL}?action=delete`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -170,11 +177,9 @@ async function handleDelete() {
             body: JSON.stringify({ id: productId })
         });
 
-        if (!response.ok) throw new Error('Failed to delete product');
-
         const result = await response.json();
         if (result.success) {
-            window.location.href = 'StudentMarketplace.php';  // Fixed redirect to .php
+            window.location.href = 'StudentMarketplace.php';
         } else {
             throw new Error(result.message || 'Failed to delete product');
         }
@@ -197,7 +202,7 @@ function handleImagePreview(e) {
 // Comments functionality
 async function loadComments() {
     try {
-        const response = await fetch(`${API_BASE_URL}/comment.php?product_id=${productId}`);
+        const response = await fetch(`${API_BASE_URL}?action=comment&product_id=${productId}`);
         if (!response.ok) throw new Error('Failed to fetch comments');
 
         const result = await response.json();
@@ -210,6 +215,7 @@ async function loadComments() {
 }
 
 async function handleCommentSubmit(e) {
+    e.preventDefault();
     const form = e.target;
     const commenterName = form.elements['commenter_name'].value.trim();
     const commentText = form.elements['comment_text'].value.trim();
@@ -220,7 +226,7 @@ async function handleCommentSubmit(e) {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/comment.php`, {
+        const response = await fetch(`${API_BASE_URL}?action=comment`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -236,9 +242,9 @@ async function handleCommentSubmit(e) {
         
         if (result.success) {
             form.reset();
-            await loadComments();
-            bootstrap.Collapse.getInstance(document.getElementById('commentForm')).hide();
             showSuccess('Comment added successfully');
+            await loadComments(); // This will refresh the comments list
+            bootstrap.Collapse.getInstance(document.getElementById('commentForm')).hide();
         } else {
             throw new Error(result.message || 'Failed to add comment');
         }
@@ -258,7 +264,7 @@ function displayComments(comments) {
     container.innerHTML = comments.map(comment => `
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="card-title">${escapeHtml(comment.commenter_name)}</h5>
+                <h5 class="card-title">${escapeHtml(comment.name)}</h5>
                 <p class="card-text text-break">${escapeHtml(comment.comment_text)}</p>
                 <small class="text-muted">Posted on ${new Date(comment.created_at).toLocaleString()}</small>
             </div>
@@ -296,4 +302,13 @@ function escapeHtml(unsafe) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+async function convertImageToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
 }
