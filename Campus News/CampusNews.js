@@ -15,7 +15,7 @@ let filteredNewsData = [];
 let currentPage = 1;
 
 // Use the full base URL for images from Replit
-const baseUrl = "";
+const baseUrl = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/";
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
@@ -29,6 +29,7 @@ function initializeApplication() {
 
 // Fetch news data from server
 async function fetchNews() {
+    if(window.location.href.includes('AddArticle.html')) return;
     if (!newsContainer || !loadingIndicator) {
         console.error('Required elements missing');
         return;
