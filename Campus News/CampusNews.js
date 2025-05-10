@@ -8,7 +8,7 @@ const searchInput = document.querySelector('input[type="search"]');
 const sortDropdown = document.getElementById('sortDropdownMenu');
 const courseCodeInput = document.getElementById('courseCode');
 const deleteButton = document.querySelector('.btn-danger'); // Fix: define deleteButton so it doesn't throw ReferenceError
-
+const api = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/api.php";
 // Global Data Stores
 let globalNewsData = [];
 let filteredNewsData = [];
@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeApplication() {
     fetchNews();
     setupEventListeners();
-    initializeFroalaEditor();
 }
 
 // Fetch news data from server
@@ -40,7 +39,7 @@ async function fetchNews() {
 
     try {
         // Add cache-busting query param to always get the latest news
-        const response = await fetch('json/News.json?' + new Date().getTime());
+        const response = await fetch(`${api}?action=getNews&` + new Date().getTime());
         if (!response.ok) throw new Error('Failed to fetch articles');
         
         globalNewsData = await response.json();
@@ -87,7 +86,7 @@ function createArticleElement(article) {
             <img src="${imgSrc}" class="card-img-top" alt="${article.title}" onerror="this.onerror=null;this.src='${baseUrl}Pic/default.jpg';">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title">${article.title}</h5>
-                <p class="card-text flex-grow-1">${article.content?.substring(0, 100) || 'No content available'}...</p>
+                <p class="card-text flex-grow-1"><br>${article.content?.substring(0, 100) || 'No content available'}...</p>
                 <div class="mt-auto">
                     <p class="card-text">
                         <small class="text-muted">📅 ${article.date} | ✍️ ${article.author}</small><br>
@@ -347,19 +346,6 @@ function validateForm() {
     }
 
     return isValid;
-}
-
-// Initialize Froala Editor
-function initializeFroalaEditor() {
-    if (typeof FroalaEditor !== 'undefined' && document.getElementById('froala-editor')) {
-        new FroalaEditor('#froala-editor', {
-            events: {
-                'contentChanged': function() {
-                    document.getElementById('editorContent').value = this.html.get();
-                }
-            }
-        });
-    }
 }
 
 // Show modal for user feedback
