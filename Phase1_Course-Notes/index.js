@@ -178,6 +178,31 @@ document.addEventListener('DOMContentLoaded', () => {
             `).join('');
 
         document.querySelector('#commentCount').textContent = note.comments.length;
+        // Download handler
+    const downloadBtn = document.querySelector('.btn-primary');
+    downloadBtn.addEventListener('click', () => {
+        // Increment download count
+        note.downloads += 1;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+        
+        // Simulate PDF download
+        const fileName = `${note.title.replace(/\s+/g, '_')}.pdf`;
+        const fileSize = note.fileSize;
+        
+        // Create a temporary element to trigger download
+        const link = document.createElement('a');
+        link.href = '#'; // In a real scenario, this would point to the actual PDF file URL
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Update downloads display
+        document.querySelector('[data-downloads]').textContent = note.downloads;
+
+        //  Show a success message
+        alert(`Downloading ${fileName} (${fileSize})`);
+    })
 
         // Delete handler
         deleteBtn.addEventListener('click', () => {
