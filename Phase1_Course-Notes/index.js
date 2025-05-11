@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span class="badge bg-warning">${note.type}</span>
                             </div>
                         </div>
-                        <a href="Notes-Details.html?id=${note.id}" class="btn btn-success w-100">View</a>
+                        <a href="Note-Details.html?id=${note.id}" class="btn btn-success w-100">View</a>
                     </div>
                 </article>
             `).join('');
