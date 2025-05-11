@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //  Show a success message
         alert(`Downloading ${fileName} (${fileSize})`);
-    })
+    });
 
         // Delete handler
         deleteBtn.addEventListener('click', () => {
