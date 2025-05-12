@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (Array.isArray(data)) {
         activities = data.map((item) => ({
-          image: "../Images/logo.png", // Placeholder image
+          image: item.image, // Placeholder image
           title: item.title,
           host: item.host,
           location: item.location,

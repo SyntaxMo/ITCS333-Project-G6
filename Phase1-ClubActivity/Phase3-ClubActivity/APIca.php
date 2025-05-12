@@ -1,16 +1,30 @@
 <?php
 // APIca.php - Single entry point for all Club Activity API operations
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Content-Type: application/json');
+
+$host = "localhost";
+$user = getenv("db_user");
+$password = getenv("db_pass");
+$db_name = getenv("db_name");
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db_name;charset=utf8mb4", $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $e->getMessage()]);
+    exit;
+}
+
+$action = $_POST['action'] ?? $_GET['action'] ?? null;
+$response = ['success' => false, 'message' => 'Invalid action'];
 
 // Database connection
-$host = "localhost";
-$username = "admin1";
-$password = "OIRfawCoykTa0";
-$dbname = "ISDdb";
+
 $conn = mysqli_connect($host, $username, $password, $dbname);
 if (!$conn) {
     http_response_code(500);
@@ -30,7 +44,7 @@ function error422($message){
 function getClubActivity(){
   global $conn;
   $sql = "SELECT * FROM activity";
-  $query = mysqli_query($conn, $sql);  
+  $query = mysqli_query($conn, $sql);
   if($query){
     if(mysqli_num_rows($query) > 0){
       $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
