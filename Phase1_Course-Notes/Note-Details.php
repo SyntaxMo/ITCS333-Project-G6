@@ -19,7 +19,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav mr-auto">
-                  <a class="nav-link" href="../index.html">Home</a>
+                  <a class="nav-link" href="../homePage/index.html">Home</a>
                 <a class="nav-link" href="../Campus News/Campus News.php">Campus News</a>
                 <a class="nav-link" href="../course-review2/Course-Review.php">Course Review</a>
                 <a class="nav-link" href="../Events Calendar/Events-Calender.php">Events Calendar</a>
