@@ -1,11 +1,11 @@
-// index.js
 document.addEventListener('DOMContentLoaded', () => {
-    const STORAGE_KEY = 'unihub-notes';
-    
-    // Initial Data with 3 Courses
-    let notes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
+    const { BASE_URL } = typeof window.API_CONFIG !== 'undefined' ? window.API_CONFIG : require('./config.js');
+    const API_URL = BASE_URL;
+    console.log('API_URL:', API_URL);
+
+    // Initial Data with 3 Courses (to be added via API if database is empty)
+    const initialNotes = [
         {
-            id: 1,
             title: "CSS",
             courseCode: "ITCS 333",
             type: "Lecture Notes",
@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         },
         {
-            id: 2,
             title: "HTML Fundamentals",
             courseCode: "ITCS 333",
             type: "HTML Notes",
@@ -31,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
             comments: []
         },
         {
-            id: 3,
             title: "JavaScript Basics",
             courseCode: "ITCS 333",
             type: "JavaScript Notes",
@@ -44,24 +42,78 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // First-time initialization
-    if (!localStorage.getItem(STORAGE_KEY)) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-    }
-
-    const saveNotes = () => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-        if (document.querySelector('.course-notes-page')) renderNotes();
-    };
-
     // ========== Course Notes Page ==========
     if (document.querySelector('.course-notes-page')) {
         const notesContainer = document.querySelector('#notesContainer');
         const searchInput = document.querySelector('#searchInput');
         const uploadForm = document.querySelector('#uploadForm');
 
-        // Initial render
-        function renderNotes(notesArray = notes) {
+        // Fetch and display notes
+        function loadNotes() {
+            console.log('Fetching notes from API...');
+            fetch(`${API_URL}?action=getNotes`)
+                .then(response => {
+                    console.log('Initial fetch response status:', response.status);
+                    return response.json();
+                })
+                .then(result => {
+                    console.log('Initial fetch result:', result);
+                    if (result.success) {
+                        let notes = result.data;
+                        console.log('Fetched notes:', notes);
+                        if (notes.length === 0) {
+                            console.log('Database empty, adding initial notes...');
+                            Promise.all(initialNotes.map(note =>
+                                fetch(`${API_URL}?action=addNote`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(note)
+                                })
+                                .then(response => {
+                                    console.log(`Add note ${note.title} response status:`, response.status);
+                                    return response.json();
+                                })
+                                .then(result => {
+                                    console.log(`Add note ${note.title} result:`, result);
+                                    return result;
+                                })
+                            ))
+                            .then(() => {
+                                console.log('Fetching notes again after adding initial notes...');
+                                return fetch(`${API_URL}?action=getNotes`);
+                            })
+                            .then(response => {
+                                console.log('Second fetch response status:', response.status);
+                                return response.json();
+                            })
+                            .then(result => {
+                                console.log('Second fetch result:', result);
+                                if (result.success) {
+                                    notes = result.data;
+                                    console.log('Notes after adding initial:', notes);
+                                    renderNotes(notes);
+                                } else {
+                                    notesContainer.innerHTML = '<p>Error loading notes after adding initial notes</p>';
+                                    console.error('Error after adding initial notes:', result.message);
+                                }
+                            });
+                        } else {
+                            renderNotes(notes);
+                        }
+                    } else {
+                        notesContainer.innerHTML = '<p>Error loading notes</p>';
+                        console.error('Error fetching notes:', result.message);
+                    }
+                })
+                .catch(error => {
+                    notesContainer.innerHTML = '<p>Error loading notes</p>';
+                    console.error('Fetch error:', error);
+                });
+        }
+
+        // Render notes
+        function renderNotes(notesArray) {
+            console.log('Rendering notes:', notesArray);
             notesContainer.innerHTML = notesArray.map(note => `
                 <article class="col-md-4 mb-4">
                     <div class="card h-100">
@@ -73,45 +125,53 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span class="badge bg-warning">${note.type}</span>
                             </div>
                         </div>
-                        <a href="Note-Details.html?id=${note.id}" class="btn btn-success w-100">View</a>
+                        <a href="Note-Details.php?id=${note.id}" class="btn btn-success w-100">View</a>
                     </div>
                 </article>
             `).join('');
         }
 
-        // First load render
-        renderNotes();
-
         // Event Listeners
         searchInput.addEventListener('input', handleSearch);
         uploadForm.addEventListener('submit', handleUpload);
-        
+
         document.querySelectorAll('.dropdown-menu').forEach(menu => {
             menu.addEventListener('click', handleFilterSort);
         });
 
         function handleSearch(e) {
             const term = e.target.value.toLowerCase();
-            const filtered = notes.filter(note =>
-                note.title.toLowerCase().includes(term) ||
-                note.courseCode.toLowerCase().includes(term)
-            );
-            renderNotes(filtered);
+            fetch(`${API_URL}?action=getNotes`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        const filtered = result.data.filter(note =>
+                            note.title.toLowerCase().includes(term) ||
+                            note.courseCode.toLowerCase().includes(term)
+                        );
+                        renderNotes(filtered);
+                    }
+                });
         }
 
         function handleFilterSort(e) {
             if (e.target.tagName === 'A') {
                 const filterType = e.target.textContent;
-                let filtered = [...notes];
-                
-                if (filterType === 'Newest First') {
-                    filtered.sort((a,b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-                } else if (filterType === 'Course Code') {
-                    filtered.sort((a,b) => a.courseCode.localeCompare(b.courseCode));
-                } else {
-                    filtered = notes.filter(n => n.courseCode === filterType);
-                }
-                renderNotes(filtered);
+                fetch(`${API_URL}?action=getNotes`)
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            let filtered = [...result.data];
+                            if (filterType === 'Newest First') {
+                                filtered.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+                            } else if (filterType === 'Course Code') {
+                                filtered.sort((a, b) => a.courseCode.localeCompare(b.courseCode));
+                            } else {
+                                filtered = filtered.filter(n => n.courseCode === filterType);
+                            }
+                            renderNotes(filtered);
+                        }
+                    });
             }
         }
 
@@ -119,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const formData = new FormData(e.target);
             const fileInput = e.target.querySelector('input[type="file"]');
-            
+
             const newNote = {
                 id: Date.now(),
                 title: formData.get('title'),
@@ -128,98 +188,164 @@ document.addEventListener('DOMContentLoaded', () => {
                 description: formData.get('description'),
                 uploadDate: new Date().toISOString().split('T')[0],
                 downloads: 0,
-                fileSize: fileInput.files[0] ? 
-                    `${(fileInput.files[0].size / 1024 / 1024).toFixed(1)} MB` : 
+                fileSize: fileInput.files[0] ?
+                    `${(fileInput.files[0].size / 1024 / 1024).toFixed(1)} MB` :
                     "Not uploaded",
                 contentOverview: [],
                 comments: []
             };
 
-            notes.push(newNote);
-            saveNotes();
-            bootstrap.Modal.getInstance(document.getElementById('uploadModal')).hide();
-            e.target.reset();
+            fetch(`${API_URL}?action=addNote`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newNote)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert(result.message);
+                    bootstrap.Modal.getInstance(document.getElementById('uploadModal')).hide();
+                    e.target.reset();
+                    loadNotes();
+                } else {
+                    alert(result.message);
+                }
+            });
         }
+
+        loadNotes();
     }
 
     // ========== Note Details Page ==========
     if (document.querySelector('.note-details-page')) {
         const urlParams = new URLSearchParams(window.location.search);
-        const noteId = parseInt(urlParams.get('id'));
-        const note = notes.find(n => n.id === noteId);
+        const noteId = urlParams.get('id');
 
-        if (!note) window.location.href = 'Course-Notes.html';
-
+        const noteTitle = document.querySelector('#noteTitle');
+        const contentList = document.querySelector('#contentList');
+        const commentsContainer = document.querySelector('#commentsContainer');
+        const commentCount = document.querySelector('#commentCount');
+        const commentForm = document.querySelector('#commentForm');
         const deleteBtn = document.querySelector('#deleteBtn');
         const editBtn = document.querySelector('#editBtn');
-        const commentForm = document.querySelector('#commentForm');
 
-        // Populate Data
-        document.querySelector('#noteTitle').textContent = note.title;
-        document.querySelector('[data-course]').textContent = note.courseCode;
-        document.querySelector('[data-type]').textContent = note.type;
-        document.querySelector('[data-date]').textContent = note.uploadDate;
-        document.querySelector('[data-downloads]').textContent = note.downloads;
-        document.querySelector('[data-size]').textContent = note.fileSize;
+        // Fetch and display note details
+        fetch(`${API_URL}?action=getNotes&id=${noteId}`)
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    const note = result.data;
+                    if (!note) {
+                        window.location.href = 'Course-Notes.php';
+                        return;
+                    }
+                    noteTitle.textContent = note.title;
+                    document.querySelector('[data-course]').textContent = note.courseCode;
+                    document.querySelector('[data-type]').textContent = note.type;
+                    document.querySelector('[data-date]').textContent = note.uploadDate;
+                    document.querySelector('[data-downloads]').textContent = note.downloads;
+                    document.querySelector('[data-size]').textContent = note.fileSize;
+                    contentList.innerHTML = note.contentOverview
+                        .map(item => `<li class="list-group-item">${item}</li>`)
+                        .join('');
+                    loadComments();
+                } else {
+                    window.location.href = 'Course-Notes.php';
+                }
+            });
 
-        // Content Overview
-        document.querySelector('#contentList').innerHTML = note.contentOverview
-            .map(item => `<li class="list-group-item">${item}</li>`)
-            .join('');
+        // Load comments (FULLY CORRECTED)
+        function loadComments() {
+            fetch(`${API_URL}?action=getComments&noteId=${noteId}`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        commentsContainer.innerHTML = result.data
+                            .map(comment => `
+                                <div class="comment-box bg-light p-3 mb-3 rounded">
+                                    <h5>${comment.author}</h5>
+                                    <p class="text-muted small mb-2">Posted ${comment.date}</p>
+                                    <p>${comment.text}</p>
+                                </div>
+                            `).join('');
+                        commentCount.textContent = result.data.length;
+                    }
+                });
+        }
 
-        // Comments
-        document.querySelector('#commentsContainer').innerHTML = note.comments
-            .map(comment => `
-                <div class="comment-box bg-light p-3 mb-3 rounded">
-                    <h5>${comment.author}</h5>
-                    <p class="text-muted small mb-2">Posted ${comment.date}</p>
-                    <p>${comment.text}</p>
-                </div>
-            `).join('');
-
-        document.querySelector('#commentCount').textContent = note.comments.length;
         // Download handler
-    const downloadBtn = document.querySelector('.btn-primary');
-    downloadBtn.addEventListener('click', () => {
-        // Increment download count
-        note.downloads += 1;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-        
-        // Simulate PDF download
-        const fileName = `${note.title.replace(/\s+/g, '_')}.pdf`;
-        const fileSize = note.fileSize;
-        
-        // Create a temporary element to trigger download
-        const link = document.createElement('a');
-        link.href = '#'; // In a real scenario, this would point to the actual PDF file URL
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const downloadBtn = document.querySelector('.btn-primary');
+        downloadBtn.addEventListener('click', () => {
+            fetch(`${API_URL}?action=getNotes&id=${noteId}`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        const note = result.data;
+                        const updatedDownloads = note.downloads + 1;
 
-        // Update downloads display
-        document.querySelector('[data-downloads]').textContent = note.downloads;
+                        fetch(`${API_URL}?action=updateNote`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id: noteId, downloads: updatedDownloads })
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.success) {
+                                const fileName = `${note.title.replace(/\s+/g, '_')}.pdf`;
+                                const fileSize = note.fileSize;
+                                const link = document.createElement('a');
+                                link.href = '#';
+                                link.download = fileName;
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
 
-        //  Show a success message
-        alert(`Downloading ${fileName} (${fileSize})`);
-    });
+                                document.querySelector('[data-downloads]').textContent = updatedDownloads;
+                                alert(`Downloading ${fileName} (${fileSize})`);
+                            }
+                        });
+                    }
+                });
+        });
 
         // Delete handler
         deleteBtn.addEventListener('click', () => {
             if (confirm('Permanently delete this note?')) {
-                notes = notes.filter(n => n.id !== noteId);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-                window.location.href = 'Course-Notes.html';
+                fetch(`${API_URL}?action=deleteNote`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: noteId })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert(result.message);
+                        window.location.href = 'Course-Notes.php';
+                    } else {
+                        alert(result.message);
+                    }
+                });
             }
         });
 
         // Edit handler
         editBtn.addEventListener('click', () => {
-            const newTitle = prompt('Enter new title:', note.title);
+            const newTitle = prompt('Enter new title:', noteTitle.textContent);
             if (newTitle) {
-                note.title = newTitle;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-                location.reload();
+                fetch(`${API_URL}?action=updateNote`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: noteId, title: newTitle })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert(result.message);
+                        location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                });
             }
         });
 
@@ -227,16 +353,27 @@ document.addEventListener('DOMContentLoaded', () => {
         commentForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            
-            note.comments.push({
-                author: formData.get('name'),
-                text: formData.get('comment'),
-                date: new Date().toLocaleDateString()
-            });
 
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-            e.target.reset();
-            location.reload();
+            fetch(`${API_URL}?action=addComment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    noteId: noteId,
+                    author: formData.get('name'),
+                    text: formData.get('comment'),
+                    date: new Date().toLocaleDateString()
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert(result.message);
+                    e.target.reset();
+                    loadComments();
+                } else {
+                    alert(result.message);
+                }
+            });
         });
     }
 });
