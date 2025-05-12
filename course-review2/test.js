@@ -91,6 +91,181 @@ document.addEventListener('DOMContentLoaded', () => {
       return `<span class="text-warning">${fullStars}</span>${emptyStars}`;
   }
 
+  // Function to show course details modal
+  function showCourseDetailsModal(review) {
+      // Create modal HTML
+      const modalHTML = `
+      <div class="modal fade" id="courseDetailsModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title">${review.courseTitle} (${review.courseCode})</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="mb-4">
+                          <div class="d-flex justify-content-between align-items-center mb-3">
+                              <h6>Taught by: ${review.professorName}</h6>
+                              <div class="rating-stars fs-5">${generateStars(review.rating)}</div>
+                          </div>
+                          <div class="card mb-3">
+                              <div class="card-body">
+                                  <h5 class="card-title">Course Description</h5>
+                                  <p class="card-text">${review.courseDescription || 'No description available for this course.'}</p>
+                              </div>
+                          </div>
+                          <div class="card">
+                              <div class="card-body">
+                                  <div class="d-flex justify-content-between align-items-center mb-3">
+                                      <h5 class="card-title mb-0">Comments</h5>
+                                      <button class="btn btn-sm btn-primary" id="addCommentBtn">Add Comment</button>
+                                  </div>
+                                  <div id="commentsContainer">
+                                      ${review.comments && review.comments.length > 0 
+                                          ? review.comments.map(comment => `
+                                              <div class="mb-3 p-3 border rounded">
+                                                  <div class="d-flex justify-content-between">
+                                                      <strong>${comment.author}</strong>
+                                                      <small class="text-muted">${comment.date}</small>
+                                                  </div>
+                                                  <p class="mb-1 mt-2">${comment.text}</p>
+                                                  <div class="d-flex justify-content-end">
+                                                      <button class="btn btn-sm btn-outline-success me-1 like-comment-btn" 
+                                                              data-review-id="${review.id}" 
+                                                              data-comment-id="${comment.id}">
+                                                          👍 ${comment.likes || 0}
+                                                      </button>
+                                                  </div>
+                                              </div>
+                                          `).join('')
+                                          : '<p>No comments yet. Be the first to comment!</p>'}
+                                  </div>
+                                  <form id="commentForm" class="mt-3 d-none">
+                                      <div class="mb-3">
+                                          <textarea class="form-control" id="commentText" rows="3" required 
+                                                    placeholder="Write your comment here..."></textarea>
+                                      </div>
+                                      <div class="d-flex justify-content-end">
+                                          <button type="button" class="btn btn-outline-secondary me-2" 
+                                                  id="cancelCommentBtn">Cancel</button>
+                                          <button type="submit" class="btn btn-success">Submit</button>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      `;
+      
+      // Add modal to DOM
+      document.body.insertAdjacentHTML('beforeend', modalHTML);
+      
+      // Show modal
+      const modal = new bootstrap.Modal(document.getElementById('courseDetailsModal'));
+      modal.show();
+      
+      // Add event listeners for the modal
+      document.getElementById('addCommentBtn')?.addEventListener('click', () => {
+          document.getElementById('commentForm').classList.remove('d-none');
+          document.getElementById('addCommentBtn').classList.add('d-none');
+      });
+      
+      document.getElementById('cancelCommentBtn')?.addEventListener('click', () => {
+          document.getElementById('commentForm').classList.add('d-none');
+          document.getElementById('addCommentBtn').classList.remove('d-none');
+          document.getElementById('commentText').value = '';
+      });
+      
+      document.getElementById('commentForm')?.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const commentText = document.getElementById('commentText').value.trim();
+          if (!commentText) return;
+          
+          // Create new comment
+          const newComment = {
+              id: Date.now(),
+              text: commentText,
+              author: "You",
+              date: new Date().toISOString().split('T')[0],
+              likes: 0
+          };
+          
+          // Add comment to the review
+          if (!review.comments) review.comments = [];
+          review.comments.unshift(newComment);
+          
+          // Update localStorage
+          localStorage.setItem('courseReviews', JSON.stringify(reviews));
+          
+          // Close the form and refresh comments
+          document.getElementById('commentForm').classList.add('d-none');
+          document.getElementById('addCommentBtn').classList.remove('d-none');
+          document.getElementById('commentText').value = '';
+          
+          // Refresh comments display
+          const commentsContainer = document.getElementById('commentsContainer');
+          commentsContainer.insertAdjacentHTML('afterbegin', `
+              <div class="mb-3 p-3 border rounded">
+                  <div class="d-flex justify-content-between">
+                      <strong>${newComment.author}</strong>
+                      <small class="text-muted">${newComment.date}</small>
+                  </div>
+                  <p class="mb-1 mt-2">${newComment.text}</p>
+                  <div class="d-flex justify-content-end">
+                      <button class="btn btn-sm btn-outline-success me-1 like-comment-btn" 
+                              data-review-id="${review.id}" 
+                              data-comment-id="${newComment.id}">
+                          👍 ${newComment.likes}
+                      </button>
+                  </div>
+              </div>
+          `);
+          
+          // Add event listener to the new like button
+          document.querySelector(`.like-comment-btn[data-comment-id="${newComment.id}"]`)?.addEventListener('click', function() {
+              const reviewId = parseInt(this.dataset.reviewId);
+              const commentId = parseInt(this.dataset.commentId);
+              const review = reviews.find(r => r.id === reviewId);
+              if (review && review.comments) {
+                  const comment = review.comments.find(c => c.id === commentId);
+                  if (comment) {
+                      comment.likes = (comment.likes || 0) + 1;
+                      localStorage.setItem('courseReviews', JSON.stringify(reviews));
+                      this.textContent = `👍 ${comment.likes}`;
+                  }
+              }
+          });
+      });
+      
+      // Add event listeners to like buttons for existing comments
+      document.querySelectorAll('.like-comment-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+              const reviewId = parseInt(this.dataset.reviewId);
+              const commentId = parseInt(this.dataset.commentId);
+              const review = reviews.find(r => r.id === reviewId);
+              if (review && review.comments) {
+                  const comment = review.comments.find(c => c.id === commentId);
+                  if (comment) {
+                      comment.likes = (comment.likes || 0) + 1;
+                      localStorage.setItem('courseReviews', JSON.stringify(reviews));
+                      this.textContent = `👍 ${comment.likes}`;
+                  }
+              }
+          });
+      });
+      
+      // Remove modal when closed
+      document.getElementById('courseDetailsModal').addEventListener('hidden.bs.modal', () => {
+          document.getElementById('courseDetailsModal').remove();
+      });
+  }
+
   // Load reviews from API or localStorage
   async function loadReviews() {
       toggleLoading(true);
@@ -109,7 +284,15 @@ document.addEventListener('DOMContentLoaded', () => {
               const data = await response.json();
               
               const placeholderReviews = data.slice(0, 10).map((post, index) => {
-                  // Ensure all fields have proper fallback values
+                  // Course descriptions for placeholder courses
+                  const courseDescriptions = [
+                      "Introduction to fundamental programming concepts using Python. Covers variables, loops, functions, and basic data structures.",
+                      "Advanced mathematical concepts including derivatives, integrals, and their applications in science and engineering.",
+                      "Fundamentals of physics including mechanics, thermodynamics, and electromagnetism with laboratory components.",
+                      "Database systems concepts including relational models, SQL, normalization, and transaction processing.",
+                      "Ethical issues in computing including privacy, intellectual property, professional responsibility, and social impact."
+                  ];
+                  
                   const courseTitle = post.title?.split(' ').slice(0, 3).join(' ') || `Course ${index + 1}`;
                   const courseCode = ["COMP 101", "MATH 202", "PHYS 101", "ITCS 333", "ITCS 396"][index % 5] || "CODE 000";
                   const professorName = ["Prof. Ali", "Prof. John", "Prof. Ahmed", "Prof. Sarah", "Prof. Michael"][index % 5] || "Professor";
@@ -118,6 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   const author = post.userId ? `User ${post.userId}` : "Anonymous";
                   const date = new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] || new Date().toISOString().split('T')[0];
                   const likes = Math.floor(Math.random() * 50) || 0;
+                  const courseDescription = courseDescriptions[index % 5] || "No course description available.";
   
                   return {
                       id: Date.now() + index,
@@ -128,7 +312,9 @@ document.addEventListener('DOMContentLoaded', () => {
                       reviewText,
                       author,
                       date,
-                      likes
+                      likes,
+                      courseDescription,
+                      comments: []
                   };
               });
               
@@ -146,7 +332,9 @@ document.addEventListener('DOMContentLoaded', () => {
                   reviewText: review.reviewText || "No review text available",
                   author: review.author || "Anonymous",
                   date: review.date || new Date().toISOString().split('T')[0],
-                  likes: review.likes || 0
+                  likes: review.likes || 0,
+                  courseDescription: review.courseDescription || "No course description available.",
+                  comments: review.comments || []
               }));
               filteredReviews = [...reviews];
           }
@@ -163,7 +351,24 @@ document.addEventListener('DOMContentLoaded', () => {
                   reviewText: "This course transformed my understanding of programming. The professor was engaging and the materials were top-notch.",
                   author: "Abdulrahman",
                   date: "2023-10-15",
-                  likes: 24
+                  likes: 24,
+                  courseDescription: "Introduction to fundamental programming concepts using Python. Covers variables, loops, functions, and basic data structures.",
+                  comments: [
+                      {
+                          id: 101,
+                          text: "I completely agree! This course was a game-changer for me.",
+                          author: "Sarah",
+                          date: "2023-10-16",
+                          likes: 5
+                      },
+                      {
+                          id: 102,
+                          text: "The assignments were challenging but very rewarding.",
+                          author: "Ahmed",
+                          date: "2023-10-17",
+                          likes: 3
+                      }
+                  ]
               },
               {
                   id: 2,
@@ -174,7 +379,9 @@ document.addEventListener('DOMContentLoaded', () => {
                   reviewText: "Good content but the assignments were too time-consuming compared to the credit hours offered.",
                   author: "Mohamed",
                   date: "2023-10-10",
-                  likes: 8
+                  likes: 8,
+                  courseDescription: "Advanced mathematical concepts including derivatives, integrals, and their applications in science and engineering.",
+                  comments: []
               },
               {
                   id: 3,
@@ -185,7 +392,17 @@ document.addEventListener('DOMContentLoaded', () => {
                   reviewText: "Excellent course that makes you think critically about real-world business scenarios.",
                   author: "Ali Mohamed",
                   date: "2023-10-05",
-                  likes: 15
+                  likes: 15,
+                  courseDescription: "Ethical issues in computing including privacy, intellectual property, professional responsibility, and social impact.",
+                  comments: [
+                      {
+                          id: 103,
+                          text: "The case studies were particularly interesting and relevant.",
+                          author: "Fatima",
+                          date: "2023-10-06",
+                          likes: 7
+                      }
+                  ]
               }
           ];
           filteredReviews = [...reviews];
@@ -274,7 +491,7 @@ document.addEventListener('DOMContentLoaded', () => {
                               <small class="text-muted">${review.author} • ${review.date}</small>
                               <div>
                                   <button class="btn btn-sm btn-outline-success me-1 like-btn" data-id="${review.id}">👍 ${review.likes}</button>
-                                  <button class="btn btn-sm btn-outline-primary comment-btn" data-id="${review.id}">💬</button>
+                                  <button class="btn btn-sm btn-outline-primary comment-btn" data-id="${review.id}">💬 ${review.comments?.length || 0}</button>
                               </div>
                           </div>
                       </div>
@@ -292,6 +509,17 @@ document.addEventListener('DOMContentLoaded', () => {
                   localStorage.setItem('courseReviews', JSON.stringify(reviews));
                   this.textContent = `👍 ${review.likes}`;
                   applyFilters();
+              }
+          });
+      });
+      
+      // Add event listeners to comment buttons
+      document.querySelectorAll('.comment-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+              const reviewId = parseInt(this.dataset.id);
+              const review = reviews.find(r => r.id === reviewId);
+              if (review) {
+                  showCourseDetailsModal(review);
               }
           });
       });
@@ -403,41 +631,41 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Search functionality
-if (searchInput) {
-  let searchTimeout;
-  searchInput.addEventListener("input", (e) => {
-      toggleLoading(true);
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-          const query = e.target.value.toLowerCase();
-          filteredReviews = reviews.filter(review => 
-              (review.courseTitle && review.courseTitle.toLowerCase().includes(query)) ||
-              (review.courseCode && review.courseCode.toLowerCase().includes(query)) ||
-              (review.professorName && review.professorName.toLowerCase().includes(query)) ||
-              (review.reviewText && review.reviewText.toLowerCase().includes(query)) ||
-              (review.author && review.author.toLowerCase().includes(query))
-          );
-          currentPage = 1;
-          applySorting(); // Apply current sort to search results
-          renderReviews();
-          renderPagination();
-          toggleLoading(false);
-      }, 300);
-  });
-  
-  // Clear search when user clicks the 'x' in the search box (for browsers that support this)
-  searchInput.addEventListener('search', () => {
-      if (searchInput.value === '') {
+  if (searchInput) {
+      let searchTimeout;
+      searchInput.addEventListener("input", (e) => {
           toggleLoading(true);
-          filteredReviews = [...reviews];
-          currentPage = 1;
-          applySorting();
-          renderReviews();
-          renderPagination();
-          toggleLoading(false);
-      }
-  });
-}
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(() => {
+              const query = e.target.value.toLowerCase();
+              filteredReviews = reviews.filter(review => 
+                  (review.courseTitle && review.courseTitle.toLowerCase().includes(query)) ||
+                  (review.courseCode && review.courseCode.toLowerCase().includes(query)) ||
+                  (review.professorName && review.professorName.toLowerCase().includes(query)) ||
+                  (review.reviewText && review.reviewText.toLowerCase().includes(query)) ||
+                  (review.author && review.author.toLowerCase().includes(query))
+              );
+              currentPage = 1;
+              applySorting(); // Apply current sort to search results
+              renderReviews();
+              renderPagination();
+              toggleLoading(false);
+          }, 300);
+      });
+      
+      // Clear search when user clicks the 'x' in the search box (for browsers that support this)
+      searchInput.addEventListener('search', () => {
+          if (searchInput.value === '') {
+              toggleLoading(true);
+              filteredReviews = [...reviews];
+              currentPage = 1;
+              applySorting();
+              renderReviews();
+              renderPagination();
+              toggleLoading(false);
+          }
+      });
+  }
 
   // Add review form handler
   if (addReviewForm) {
@@ -455,7 +683,9 @@ if (searchInput) {
               reviewText: document.getElementById('reviewText').value,
               author: "You",
               date: new Date().toISOString().split('T')[0],
-              likes: 0
+              likes: 0,
+              courseDescription: "No description available yet.",
+              comments: []
           };
           
           // Add to beginning of array
