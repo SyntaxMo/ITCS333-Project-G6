@@ -1,8 +1,7 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     // Retrieve the selected article ID from localStorage
-    const articleId = localStorage.getItem('selectedArticleId');
-
+const articleId = localStorage.getItem('selectedArticleId');
+const api = 'https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/api.php';
     if (!articleId) {
         document.querySelector('main').innerHTML = '<p class="text-danger">No article selected.</p>';
         return;
@@ -17,14 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(articles => {
             const article = articles.find(a => a.id == articleId);
             if (!article) throw new Error('Article not found');
-            
             // Populate article details
             document.querySelector('.article-title').textContent = article.title;
             // Use full URL for image
-            document.querySelector('.article-image').src = article.image ? baseUrl + article.image : baseUrl + 'Pic/Logo.png';
+            document.querySelector('.article-image').src = article.image ? baseUrl + article.image : baseUrl + 'Pic/default.jpg';
             document.querySelector('.article-meta .h5:nth-child(1)').textContent = `🗓️ ${article.date}`;
-            document.querySelector('.article-meta .h5:nth-child(2)').textContent = `✍️ ${article.author}`;
-            document.querySelector('.article-meta .h5:nth-child(3)').textContent = `📚 ${article.courseCode}`;
+            if(article.author === 'Anonymous'){
+            document.querySelector('.article-meta .h5:nth-child(2)').textContent = ``;}else{
+            document.querySelector('.article-meta .h5:nth-child(2)').textContent = `✍️ ${article.author}`;}
+            if(article.courseCode){
+            document.querySelector('.article-meta .h5:nth-child(3)').textContent = `📚 ${article.courseCode}`};
             document.querySelector('.article-content .lead').innerHTML = article.content;
 
             // Show views count
@@ -42,6 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     // Increment views count when article is loaded
+    if (!window.ViewNewsLoaded) {
+        window.ViewNewsLoaded = true;
     if (articleId) {
         fetch(`${api}?action=incrementViews&`, {
             method: 'POST',
@@ -51,6 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return fd;
             })()
         });
+    }}else {
+                window.ViewNewsLoaded = false;
     }
 
     // Delete button handler
@@ -60,6 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showDeleteConfirmation(articleId);
         });
     }
+
+    
 
     // On article load, also load comments
     if (articleId) loadComments(articleId);
@@ -115,6 +122,23 @@ throw new Error(result.message || 'Failed to delete article');
     modal.show();
 }
 
+function showModal(message, onClose) {
+    document.getElementById('customModalBody').textContent = message;
+    const modalEl = document.getElementById('customModal');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+    const submitBtn = document.querySelector('#editArticleForm button[type="submit"]');
+    function handleClose() {
+        modalEl.removeEventListener('hidden.bs.modal', handleClose);
+        if (submitBtn) submitBtn.disabled = false;
+        if (onClose) onClose();
+    }
+    modalEl.addEventListener('hidden.bs.modal', handleClose);
+    document.getElementById('modalCloseBtn').onclick = () => {
+        modal.hide();
+    };
+}
+
 function showFeedbackMessage(message) {
     const modal = new bootstrap.Modal(document.getElementById('feedbackModal'));
     const modalBody = document.getElementById('feedbackModalBody');
@@ -165,12 +189,11 @@ async function loadComments(articleId) {
         commentsList.innerHTML = '<div class="text-danger">Failed to load comments.</div>';
     }
 }
-
-// Add Comment
-const addCommentForm = document.getElementById('addCommentForm');
-if (addCommentForm) {
-    addCommentForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
+if (!window.ViewNewsLoaded) {
+  window.ViewNewsLoaded = true;
+  const addCommentForm = document.getElementById('addCommentForm');
+  addCommentForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
         const articleId = localStorage.getItem('selectedArticleId');
         const author = document.getElementById('commenterName').value.trim();
         const content = document.getElementById('commentText').value.trim();
@@ -188,7 +211,7 @@ if (addCommentForm) {
             });
             const result = await response.json();
             if (result.success) {
-                window.location.reload(); // Refresh the page after adding
+                window.location.href = 'ViewNews.html?'
             } else {
                 showFeedbackMessage('Error: ' + (result.message || 'Failed to add comment'));
             }
@@ -196,7 +219,12 @@ if (addCommentForm) {
             showFeedbackMessage('An error occurred while adding the comment');
         }
     });
+
+  // You can also declare other functions/handlers here
 }
+// Add Comment
+    
+
 
 // Edit/Delete Comment Handlers
 document.getElementById('commentsList').addEventListener('click', function(e) {
@@ -321,4 +349,105 @@ function showEditCommentModal(commentId, oldContent) {
     };
     
     modal.show();
+}
+window.loadEditArticle = function () {
+    const target = document.getElementById("editArticleContent");
+    if (!target) return;
+
+    if (!target.dataset.loaded) {
+        fetch("EditArticle.html")
+            .then(response => response.text())
+            .then(html => {
+                target.innerHTML = html;
+                target.dataset.loaded = "true";
+
+                // Wait for DOM to update before attaching submit handler and populating form
+                setTimeout(() => {
+                    const form = document.getElementById("editArticleForm");
+                    if (form) {
+                        const articleId = localStorage.getItem('selectedArticleId');
+                        if (articleId) {
+                            populateEditForm(articleId, form); // Populate form with article data
+                            setupEditFormSubmission(form); // Set up the submit event listener
+                        } else {
+                            showFeedbackMessage('No article selected for editing.');
+                        }
+                    } else {
+                        console.error("Edit form not found in loaded content");
+                    }
+                }, 0);
+            })
+            .catch(err => {
+                target.innerHTML = `<div class="alert alert-danger">Error loading edit form: ${err.message}</div>`;
+                console.error("Error loading EditArticle.html:", err);
+            });
+    }
+};
+
+async function populateEditForm(articleId, form) {
+    try {
+        const api = 'https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/api.php';
+        const baseUrl = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/";
+
+        const response = await fetch(`${api}?action=getNews&` + new Date().getTime());
+        const articles = await response.json();
+        const article = articles.find(a => a.id == articleId);
+
+        if (!article) {
+            showFeedbackMessage('Article not found.');
+            return;
+        }
+
+        // Populate the form fields
+        form.querySelector('input[name="title"]').value = article.title;
+        form.querySelector('select[name="college"]').value = article.college;
+        form.querySelector('input[name="course_code"]').value = article.courseCode || '';
+        form.querySelector('#editorContent').value = article.content;
+        const imageElement = form.querySelector('#currentImage');
+        if (imageElement) {
+            imageElement.src = article.image ? baseUrl + article.image : baseUrl + 'Pic/default.jpg';
+        }
+
+    } catch (error) {
+        showFeedbackMessage('Error fetching article data: ' + error.message);
+        console.error('Error fetching article for edit:', error);
+    }
+}
+
+function setupEditFormSubmission(form) {
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+
+        const formData = new FormData(this);
+        const articleId = localStorage.getItem('selectedArticleId');
+
+        if (articleId) {
+            formData.append('id', articleId);
+            try {
+                const api = 'https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/api.php';
+                const response = await fetch(`${api}?action=editNews&`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    showFeedbackMessage('Article updated successfully!', () => {
+                        window.location.href = 'ViewNews.html';
+                    });
+                } else {
+                    throw new Error(result.message || 'Failed to update article');
+                }
+            } catch (error) {
+                showFeedbackMessage('Error: ' + error.message);
+                console.error('Error updating article:', error);
+                submitBtn.disabled = false;
+            }
+        } else {
+            showFeedbackMessage('No article selected for update.');
+            submitBtn.disabled = false;
+        }
+    });
 }
