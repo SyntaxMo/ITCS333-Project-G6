@@ -29,7 +29,7 @@ function initializeApplication() {
 
 // Fetch news data from server
 async function fetchNews() {
-    if(window.location.href.includes('AddArticle.html')) return;
+    if(window.location.href.includes('AddArticle.html') || window.location.href.includes('ViewNews.html') ) return;
     if (!newsContainer || !loadingIndicator) {
         console.error('Required elements missing');
         return;
@@ -44,6 +44,7 @@ async function fetchNews() {
         if (!response.ok) throw new Error('Failed to fetch articles');
         
         globalNewsData = await response.json();
+        globalNewsData.sort((a, b) => b.views - a.views);
         filteredNewsData = [...globalNewsData];
         
         displayArticles(1, filteredNewsData);
@@ -81,7 +82,11 @@ function createArticleElement(article) {
     colDiv.setAttribute('data-course-code', article.courseCode || '');
     // Use default image if not found or if image is missing
     let imgSrc = article.image ? baseUrl + article.image : baseUrl + "Pic/default.jpg";
-    // fallback for broken images
+    let authorHtml = `<small class="text-muted">✍️ ${article.author}</small><br>`;
+        const courseCodeHtml = article.courseCode ? `<small class="text-muted">📚 ${article.courseCode}</small><br>` : '';
+        if( article.author === 'Anonymous'){
+                authorHtml = '';}
+             // fallback for broken images
     colDiv.innerHTML = `
         <div class="card h-100">
             <img src="${imgSrc}" class="card-img-top" alt="${article.title}" onerror="this.onerror=null;this.src='${baseUrl}Pic/default.jpg';">
@@ -90,13 +95,13 @@ function createArticleElement(article) {
                 <p class="card-text flex-grow-1"><br>${article.content?.substring(0, 100) || 'No content available'}...</p>
                 <div class="mt-auto">
                     <p class="card-text">
-                        <small class="text-muted">📅 ${article.date} | ✍️ ${article.author}</small><br>
+                        ${authorHtml}
                         <small class="text-muted">🏫 ${article.college}</small><br>
-                        <small class="text-muted">📚 ${article.courseCode || 'N/A'}</small><br>
+                        ${courseCodeHtml}
                         <small class="text-muted">👁️ ${article.views} views</small>
                     </p>
-                    <a href="ViewNews.html" class="btn btn-outline-primary" onclick="viewArticle(${article.id})">Read More</a>
-                </div>
+                        <a href="ViewNews.html" class="btn btn-outline-primary" onclick="localStorage.setItem('selectedArticleId', ${article.id})">Read More</a>               
+                    </div>
             </div>
         </div>
     `;
@@ -229,12 +234,6 @@ function handleSort(event) {
     displayArticles(1, filteredNewsData);
 }
 
-// View article details
-function viewArticle(articleId) {
-    localStorage.setItem('selectedArticleId', articleId);
-    window.location.href = 'ViewNews.html';
-}
-
 // Initialize event listeners
 function setupEventListeners() {
     // College filters
@@ -267,65 +266,64 @@ function setupEventListeners() {
         sortDropdown.addEventListener('click', handleSort);
     }
 
-    // Form submission
-    if (document.getElementById('articleForm')) {
-        document.getElementById('articleForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const submitBtn = this.querySelector('button[type="submit"]');
-            submitBtn.disabled = true; // Prevent double submit
-            if (!validateForm()) {
-                submitBtn.disabled = false;
-                return;
-            }
-            const formData = new FormData(this);
-            formData.append('content', document.getElementById('editorContent').value);
-            try {
-                const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/addNews.php', {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-                if (result.success === true) {
-                    showModal('Article added successfully!', function() {
-                        window.location.href = 'CampusNews.html';
-                    });
-                } else {
-                    showModal('Error: ' + (result.message || 'Failed to add article'));
-                }
-            } catch (error) {
-                showModal('An error occurred while adding the article');
-            } finally {
-                submitBtn.disabled = false;
-            }
-        });
-    }
 }
+window.loadAddArticle = function () {
+  const target = document.getElementById("addArticleContent");
+  if (!target) return;
 
-// Handle article form submission
-async function handleArticleSubmission(e) {
-    e.preventDefault();
-    if (!validateForm()) return;
-    const formData = new FormData(e.target);
-    formData.append('content', document.getElementById('editorContent').value);
-    try {
-        const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/addNews.php', {
-            method: 'POST',
-            body: formData
-        });
-        const result = await response.json();
-        if (result.success) {
-            showModal('Article added successfully!');
-            await fetchNews();
-            setTimeout(() => {
-                window.location.href = 'CampusNews.html';
-            }, 1200);
-        } else {
-            showModal('Error: ' + (result.message || 'Failed to add article'));
-        }
-    } catch (error) {
-        showModal('An error occurred while adding the article');
-    }
+  if (!target.dataset.loaded) {
+    fetch("AddArticle.html")
+      .then(response => response.text())
+      .then(html => {
+        target.innerHTML = html;
+        target.dataset.loaded = "true";
+
+        // Wait for DOM to update before attaching submit event
+        setTimeout(() => {
+          const form = document.getElementById("addArticleForm");
+          if (form) {
+            form.addEventListener("submit", handleArticleSubmission);
+          } else {
+            console.error("Form not found in loaded AddArticle.html");
+          }
+        }, 0);
+      })
+      .catch(err => {
+        target.innerHTML = `<div class="text-danger">Error loading form: ${err.message}</div>`;
+        console.error("Error loading AddArticle.html:", err);
+      });
+  }
 }
+// Handle article form submission
+window.handleArticleSubmission = async function (e) {
+  e.preventDefault();
+  if (!validateForm()) return;
+  
+  const formData = new FormData(e.target);
+  formData.append('content', document.getElementById('editorContent').value);
+  
+  try {
+    const response = await fetch('https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/addNews.php', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const result = await response.json();
+    
+    if (result.success === true) {
+      // Store the article ID and redirect after modal closes
+      showModal('Article added successfully!!', () => {
+                localStorage.setItem('selectedArticleId', result.articleid);
+                 window.location.href = 'ViewNews.html';   
+      });
+    } else {
+      showModal('Error: ' + (result.message || 'Failed to add article'));
+    }
+  } catch (error) {
+    showModal('An error occurred while adding the article');
+  }
+};
+
 
 // Validate form
 function validateForm() {
@@ -351,25 +349,37 @@ function validateForm() {
 
 // Show modal for user feedback
 function showModal(message, onClose) {
-    const modalBody = document.getElementById('customModalBody');
-    if (!modalBody) {
-        alert(message);
-        if (typeof onClose === 'function') onClose();
-        return;
+  const modalEl = document.getElementById('customModal');
+  const modalBody = document.getElementById('customModalBody');
+  
+  if (!modalEl || !modalBody) {
+    alert(message);
+    if (typeof onClose === 'function') onClose();
+    return;
+  }
+
+  modalBody.textContent = message;
+  
+  // Initialize modal if not already initialized
+  if (!modalEl._modal) {
+    modalEl._modal = new bootstrap.Modal(modalEl);
+  }
+
+  // Clean up previous event listeners
+  modalEl.removeEventListener('hidden.bs.modal', modalEl._modalHandler);
+  
+  // Create new handler
+  modalEl._modalHandler = () => {
+    if (typeof onClose === 'function') {
+      onClose();
     }
-    modalBody.textContent = message;
-    const modalEl = document.getElementById('customModal');
-    const modal = new bootstrap.Modal(modalEl);
-    modal.show();
-    const closeBtn = document.getElementById('modalCloseBtn');
-    closeBtn.onclick = null;
-    closeBtn.onclick = () => {
-        // Accessibility fix: blur the button and move focus before hiding
-        closeBtn.blur();
-        document.body.focus();
-        modal.hide();
-        if (typeof onClose === 'function') onClose();
-    };
+  };
+  
+  // Add new event listener
+  modalEl.addEventListener('hidden.bs.modal', modalEl._modalHandler);
+  
+  // Show the modal
+  modalEl._modal.show();
 }
 
 // Add this function to update the recent news cards
