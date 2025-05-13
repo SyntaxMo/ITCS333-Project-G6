@@ -139,8 +139,9 @@ function showModal(message, onClose) {
     };
 }
 
-function showFeedbackMessage(message) {
-    const modal = new bootstrap.Modal(document.getElementById('feedbackModal'));
+function showFeedbackMessage(message, onClose) {
+    const modalEl = document.getElementById('feedbackModal');
+    const modal = new bootstrap.Modal(modalEl);
     const modalBody = document.getElementById('feedbackModalBody');
     const confirmBtn = document.querySelector('.btn-confirm');
     const cancelBtn = document.querySelector('.btn-cancel');
@@ -149,15 +150,22 @@ function showFeedbackMessage(message) {
     confirmBtn.style.display = 'none';
     cancelBtn.style.display = 'inline-block';
     cancelBtn.textContent = 'OK';
-    
+
     // Clear previous event listeners
     const newCancelBtn = cancelBtn.cloneNode(true);
     cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
-    
-    document.querySelector('.btn-cancel').onclick = () => {
+
+    newCancelBtn.onclick = () => {
         modal.hide();
     };
-    
+
+    // Attach onClose callback
+    function handleHidden() {
+        modalEl.removeEventListener('hidden.bs.modal', handleHidden);
+        if (onClose) onClose();
+    }
+    modalEl.addEventListener('hidden.bs.modal', handleHidden);
+
     modal.show();
 }
 
@@ -435,7 +443,8 @@ function setupEditFormSubmission(form) {
 
                 if (result.success) {
                     showFeedbackMessage('Article updated successfully!', () => {
-                        window.location.href = 'ViewNews.html';
+                        window.location.href = 'ViewNews.html?' + new Date().getTime(); // Append timestamp to prevent caching
+                        console.log('Redirecting to ViewNews.html');
                     });
                 } else {
                     throw new Error(result.message || 'Failed to update article');
