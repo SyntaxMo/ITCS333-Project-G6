@@ -40,6 +40,8 @@
     <div class="mb-3">
       <label class="form-label">Current Image</label><br>
       <img id="currentImage" src="" alt="Current Article Image" style="max-width:200px; max-height:150px; border-radius:8px; margin-bottom:10px;">
+      <!-- Add this right after the current image display -->
+    <input type="hidden" id="originalImage" name="originalImage" value="">
     </div>
     <div class="mb-3">
       <label class="form-label">Change Image</label>
@@ -100,6 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('form-errors').textContent = error.message;
         });
 });
+const imageInput = document.getElementById('image_file');
+if (imageInput.files.length > 0) {
+    formData.append('image_file', imageInput.files[0]);
+}
 </script>
 </body>
 </html>

@@ -116,7 +116,6 @@ function editNews($db) {
     if (empty($_POST['id'])) {
         throw new Exception('Article ID is required');
     }
-
     $imagePath = $_POST['originalImage'] ?? 'Pic/default.jpg';
     if (!empty($_FILES['image_file']['tmp_name'])) {
         $validTypes = ['image/jpeg', 'image/png', 'image/gif'];
