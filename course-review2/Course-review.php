@@ -167,6 +167,7 @@
 <footer class="text-center py-3 mt-5">
     &copy; <?php echo date("Y"); ?> UNIHUB. Course Review Module
 </footer>
+<script src="config.js"></script>
 <script src="test.js"></script>
 </body>
 </html> 
