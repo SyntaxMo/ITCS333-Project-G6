@@ -14,60 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // API Configuration - Added fallback for API_CONFIG
   const BASE_URL = (typeof window.API_CONFIG !== 'undefined' && window.API_CONFIG.BASE_URL) 
     ? window.API_CONFIG.BASE_URL 
-    : 'http://localhost:3000/api';
-  const API_URL = `${BASE_URL}/reviews`;
+    : 'https://d5fad21c-f428-429a-9bb1-2ac8b3537d7d-00-1ca4huywajoo5.pike.replit.dev/CRapi.php';
+  const API_URL = `${BASE_URL}`;
   console.log('API_URL:', API_URL);
 
   // Initial Data (to be added via API if database is empty)
-  const initialReviews = [
-    {
-      id: 1,
-      courseTitle: "Intro to Computer Science",
-      courseCode: "COMP 101",
-      professorName: "Prof. Smith",
-      rating: 5,
-      reviewText: "Excellent introduction to programming concepts. The professor was very knowledgeable and approachable.",
-      author: "Student1",
-      date: "2023-09-15",
-      likes: 24,
-      courseDescription: "Introduction to fundamental programming concepts using Python.",
-      comments: [
-        {
-          id: 101,
-          text: "I completely agree! The assignments were challenging but fair.",
-          author: "Student2",
-          date: "2023-09-16",
-          likes: 5
-        }
-      ]
-    },
-    {
-      id: 2,
-      courseTitle: "Calculus II",
-      courseCode: "MATH 202",
-      professorName: "Prof. Johnson",
-      rating: 4,
-      reviewText: "Good coverage of integration techniques. Homework was time-consuming but helpful.",
-      author: "Student3",
-      date: "2023-09-10",
-      likes: 12,
-      courseDescription: "Advanced integration techniques and applications.",
-      comments: []
-    },
-    {
-      id: 3,
-      courseTitle: "Database Systems",
-      courseCode: "ITCS 333",
-      professorName: "Prof. Williams",
-      rating: 3,
-      reviewText: "Content was good but the projects were too complex for the time given.",
-      author: "Student4",
-      date: "2023-09-05",
-      likes: 8,
-      courseDescription: "Relational database design and implementation.",
-      comments: []
-    }
-  ];
+
 
   // State Variables
   let reviews = [];
@@ -96,58 +48,60 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Load reviews from API
+  // API Configuration
+ 
+
+  // Enhanced load function
   async function loadReviews() {
+     const API_URL = `https://d5fad21c-f428-429a-9bb1-2ac8b3537d7d-00-1ca4huywajoo5.pike.replit.dev/CRapi.php`;
+    console.log('Loading reviews...');
     toggleLoading(true);
+
     try {
       // First try to fetch from API
-      const response = await fetch(`${API_URL}?action=getReviews`);
-      
+      console.log('Fetching from API...');
+      const response = await fetch(`${API_URL}?action=getReviews&nocache=${Date.now()}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+
+      console.log('Response status:', response.status);
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const result = await response.json();
-      
+      console.log('API response:', result);
+
       if (result.success) {
         reviews = result.data || [];
-        
-        // If database is empty, add initial reviews
-        if (reviews.length === 0) {
-          console.log('Database empty, adding initial reviews...');
-          for (const review of initialReviews) {
-            try {
-              const addResponse = await fetch(`${API_URL}?action=addReview`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(review)
-              });
-              
-              if (!addResponse.ok) {
-                console.error('Failed to add initial review:', review.id);
-                continue;
-              }
-            } catch (error) {
-              console.error('Error adding initial review:', error);
-            }
-          }
-          
-          // Fetch again after adding initial reviews
+        console.log('Fetched reviews count:', reviews.length);
+
+        // If empty, add initial reviews (only once per session)
+        if (reviews.length === 0 && !sessionStorage.getItem('initialReviewsAdded')) {
+          console.log('Adding initial reviews...');
+          await addInitialReviews();
+          sessionStorage.setItem('initialReviewsAdded', 'true');
+
+          // Reload after adding
           const newResponse = await fetch(`${API_URL}?action=getReviews`);
           if (newResponse.ok) {
             const newResult = await newResponse.json();
             reviews = newResult.success ? newResult.data : initialReviews;
-          } else {
-            reviews = initialReviews;
           }
         }
       } else {
         console.error('API Error:', result.message);
-        reviews = initialReviews; // Fallback to initial data
+        reviews = initialReviews;
       }
     } catch (error) {
       console.error('Fetch Error:', error);
-      reviews = initialReviews; // Fallback to initial data
+      reviews = initialReviews;
     } finally {
+      console.log('Finalizing with reviews count:', reviews.length);
       filteredReviews = [...reviews];
       applyFilters();
       renderPagination();
@@ -155,34 +109,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Initialize on load
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM fully loaded, initializing...');
+    loadReviews();
+  });
+
   // Apply filters based on current state
   function applyFilters() {
+    console.log('Applying filters...');
     filteredReviews = [...reviews];
-    
+
     // Filter by course
     if (currentCourse !== 'all') {
-      filteredReviews = filteredReviews.filter(review => review.courseCode === currentCourse);
+      filteredReviews = filteredReviews.filter(review => review.coursecode === currentCourse);
     }
-    
+
     // Filter by rating
     if (currentRating !== 'all') {
       filteredReviews = filteredReviews.filter(review => review.rating == currentRating);
     }
-    
+
     // Apply search filter if there's a search term
     if (searchInput && searchInput.value) {
       const query = searchInput.value.toLowerCase();
       filteredReviews = filteredReviews.filter(review => 
-        (review.courseTitle && review.courseTitle.toLowerCase().includes(query)) ||
-        (review.courseCode && review.courseCode.toLowerCase().includes(query)) ||
-        (review.professorName && review.professorName.toLowerCase().includes(query)) ||
-        (review.reviewText && review.reviewText.toLowerCase().includes(query))
+        (review.coursetitle && review.coursetitle.toLowerCase().includes(query)) ||
+        (review.coursecode && review.coursecode.toLowerCase().includes(query)) ||
+        (review.professorname && review.professorname.toLowerCase().includes(query)) ||
+        (review.reviewtext && review.reviewtext.toLowerCase().includes(query))
       );
     }
-    
+
     // Apply sorting
     applySorting();
-    
+
     // Adjust current page if needed
     const totalPages = Math.ceil(filteredReviews.length / reviewsPerPage);
     if (currentPage > totalPages && totalPages > 0) {
@@ -190,8 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (totalPages === 0) {
       currentPage = 1;
     }
-    
-    renderReviews();
+
+
+    console.log('Filtered reviews count:', filteredReviews.length);
+    renderReviews(); // Explicitly call render
     renderPagination();
   }
 
@@ -205,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         filteredReviews.sort((a, b) => b.rating - a.rating || new Date(b.date) - new Date(a.date));
         break;
       case 'course':
-        filteredReviews.sort((a, b) => a.courseCode.localeCompare(b.courseCode) || new Date(b.date) - new Date(a.date));
+        filteredReviews.sort((a, b) => a.coursecode.localeCompare(b.coursecode) || new Date(b.date) - new Date(a.date));
         break;
       default:
         filteredReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -214,78 +177,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Render reviews to the page
   function renderReviews() {
-    if (!reviewsContainer) return;
-    
-    const start = (currentPage - 1) * reviewsPerPage;
-    const end = start + reviewsPerPage;
-    const reviewsToRender = filteredReviews.slice(start, end);
+    if (!reviewsContainer) {
+      console.error('reviewsContainer not found!');
+      return;
+    }
 
-    reviewsContainer.innerHTML = reviewsToRender.length === 0 
-      ? '<div class="col-12 text-center"><p>No reviews found matching your criteria</p></div>'
-      : reviewsToRender.map(review => `
-          <article class="col-md-4 mb-4">
-              <div class="card h-100">
-                  <div class="card-body">
-                      <div class="d-flex justify-content-between mb-2">
-                          <h5 class="card-title">${review.courseTitle || 'Untitled Course'}</h5>
-                          <div class="rating-stars">${generateStars(review.rating || 0)}</div>
-                      </div>
-                      <h6 class="card-subtitle mb-2 text-muted">${review.courseCode || 'N/A'} • ${review.professorName || 'Unknown Professor'}</h6>
-                      <p class="card-text">${review.reviewText || 'No review text provided.'}</p>
-                      <div class="d-flex justify-content-between align-items-center">
-                          <small class="text-muted">${review.author || 'Anonymous'} • ${review.date || 'Unknown date'}</small>
-                          <div>
-                              <button class="btn btn-sm btn-outline-success me-1 like-btn" data-id="${review.id}">👍 ${review.likes || 0}</button>
-                              <button class="btn btn-sm btn-outline-primary details-btn" data-id="${review.id}">View Details</button>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </article>
-      `).join('');
+    console.log('Rendering reviews:', filteredReviews.length);
 
-    // Add event listeners to like buttons
-    document.querySelectorAll('.like-btn').forEach(btn => {
-      btn.addEventListener('click', async function() {
-        const reviewId = parseInt(this.dataset.id);
-        const review = reviews.find(r => r.id === reviewId);
-        if (review) {
-          try {
-            const response = await fetch(`${API_URL}?action=likeReview`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ id: reviewId })
-            });
-            
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const result = await response.json();
-            
-            if (result.success) {
-              review.likes = result.newLikes;
-              this.textContent = `👍 ${review.likes}`;
-            }
-          } catch (error) {
-            console.error('Error liking review:', error);
-          }
-        }
-      });
-    });
-    
-    // Add event listeners to details buttons
-    document.querySelectorAll('.details-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const reviewId = parseInt(this.dataset.id);
-        const review = reviews.find(r => r.id === reviewId);
-        if (review) {
-          showReviewDetailsModal(review);
-        }
-      });
+    // Clear existing reviews
+    reviewsContainer.innerHTML = '';
+
+    // Get reviews for the current page
+    const startIndex = (currentPage - 1) * reviewsPerPage;
+    const endIndex = startIndex + reviewsPerPage;
+    const reviewsToShow = filteredReviews.slice(startIndex, endIndex);
+
+    if (reviewsToShow.length === 0) {
+      reviewsContainer.innerHTML = '<p class="text-muted">No reviews found.</p>';
+      return;
+    }
+
+    reviewsToShow.forEach(review => {
+      const reviewHTML = `
+        <article class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="card-title">${review.coursetitle || 'Untitled Course'}</h5>
+                        <div class="rating-stars">${generateStars(review.rating || 0)}</div>
+                    </div>
+                    <h6 class="card-subtitle mb-2 text-muted">${review.coursecode || 'N/A'} • ${review.professorname || 'Unknown Professor'}</h6>
+                    <p class="card-text">${review.reviewtext || 'No review text provided.'}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">${review.author || 'Anonymous'} • ${review.date || 'Unknown date'}</small>
+                        <div>
+                            <button class="btn btn-sm btn-outline-success me-1 like-btn" data-id="${review.id}">👍 ${review.likes || 0}</button>
+                            <button class="btn btn-sm btn-outline-primary details-btn" data-id="${review.id}">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+      `;
+      reviewsContainer.insertAdjacentHTML('beforeend', reviewHTML);
     });
   }
 
+
+
+ 
   // Show review details modal
   function showReviewDetailsModal(review) {
     // Remove existing modal if any
@@ -299,19 +239,19 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">${review.courseTitle || 'Untitled Course'} (${review.courseCode || 'N/A'})</h5>
+            <h5 class="modal-title">${review.coursetitle} (${review.coursecode || 'N/A'})</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="mb-4">
               <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6>Taught by: ${review.professorName || 'Unknown Professor'}</h6>
+                <h6>Taught by: ${review.professorname || 'Unknown Professor'}</h6>
                 <div class="rating-stars fs-5">${generateStars(review.rating || 0)}</div>
               </div>
               <div class="card mb-3">
                 <div class="card-body">
                   <h5 class="card-title">Course Description</h5>
-                  <p class="card-text">${review.courseDescription || 'No course description available.'}</p>
+                  <p class="card-text">${review.coursedescription || 'No course description available.'}</p>
                   <div class="d-flex justify-content-between">
                     <small class="text-muted">Posted by ${review.author || 'Anonymous'} on ${review.date || 'Unknown date'}</small>
                     <button class="btn btn-sm btn-outline-success like-btn" data-id="${review.id}">
@@ -323,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Review</h5>
-                  <p class="card-text">${review.reviewText || 'No review text provided.'}</p>
+                  <p class="card-text">${review.reviewtext || 'No review text provided.'}</p>
                   <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="card-title mb-0">Comments</h5>
                     <button class="btn btn-sm btn-primary" id="addCommentBtn">Add Comment</button>
@@ -374,37 +314,37 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     </div>
     `;
-    
+
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     const modal = new bootstrap.Modal(document.getElementById('reviewDetailsModal'));
     modal.show();
-    
+
     // Rest of the modal event listeners remain the same...
     // [Previous event listener code remains unchanged]
 }
 
   // Handle liking a comment
   async function handleLikeComment() {
-    const reviewId = parseInt(this.dataset.reviewId);
-    const commentId = parseInt(this.dataset.commentId);
-    
+    const reviewid = parseInt(this.dataset.reviewid);
+    const commentid = parseInt(this.dataset.commentid);
+
     try {
       const response = await fetch(`${API_URL}?action=likeComment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reviewId, commentId })
+        body: JSON.stringify({ reviewid, commentid })
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const result = await response.json();
-      
+
       if (result.success) {
-        const review = reviews.find(r => r.id === reviewId);
+        const review = reviews.find(r => r.id === reviewid);
         if (review && review.comments) {
-          const comment = review.comments.find(c => c.id === commentId);
+          const comment = review.comments.find(c => c.id === commentid);
           if (comment) {
             comment.likes = result.newLikes;
             this.textContent = `👍 ${comment.likes}`;
@@ -419,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Render pagination controls
   function renderPagination() {
     if (!paginationContainer) return;
-    
+
     const totalPages = Math.ceil(filteredReviews.length / reviewsPerPage);
     if (totalPages <= 1) {
       paginationContainer.innerHTML = '';
@@ -427,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const pages = [];
-    
+
     // Previous button
     pages.push(`
         <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
@@ -440,14 +380,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Page numbers - limit to 5 pages with ellipsis
     const maxVisiblePages = 5;
     let startPage, endPage;
-    
+
     if (totalPages <= maxVisiblePages) {
       startPage = 1;
       endPage = totalPages;
     } else {
       const maxPagesBeforeCurrent = Math.floor(maxVisiblePages / 2);
       const maxPagesAfterCurrent = Math.ceil(maxVisiblePages / 2) - 1;
-      
+
       if (currentPage <= maxPagesBeforeCurrent) {
         startPage = 1;
         endPage = maxVisiblePages;
@@ -525,20 +465,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const filterItem = e.target.closest('.dropdown-item');
       if (!filterItem) return;
       e.preventDefault();
-      
+
       const isCourse = !!filterItem.dataset.course;
       const isRating = !!filterItem.dataset.rating;
-      
+
       if (!isCourse && !isRating) return;
-      
+
       // Remove active class from siblings
       const siblings = isCourse 
         ? filterDropdown.querySelectorAll('[data-course]') 
         : filterDropdown.querySelectorAll('[data-rating]');
-        
+
       siblings.forEach(item => item.classList.remove('active'));
       filterItem.classList.add('active');
-      
+
       if (isCourse) {
         currentCourse = filterItem.dataset.course;
         if (filterButton) {
@@ -547,7 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (isRating) {
         currentRating = filterItem.dataset.rating;
       }
-      
+
       currentPage = 1;
       applyFilters();
     });
@@ -559,18 +499,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const sortItem = e.target.closest('.dropdown-item');
       if (!sortItem) return;
       e.preventDefault();
-      
+
       const sortOption = sortItem.dataset.sort;
       if (!sortOption) return;
-      
+
       sortDropdown.querySelectorAll('.dropdown-item').forEach(item => item.classList.remove('active'));
       sortItem.classList.add('active');
-      
+
       currentSort = sortOption;
       if (sortButton) {
         sortButton.textContent = `Sort: ${sortItem.textContent.trim()}`;
       }
-      
+
       applySorting();
       renderReviews();
     });
@@ -585,10 +525,10 @@ document.addEventListener('DOMContentLoaded', () => {
       searchTimeout = setTimeout(() => {
         const query = e.target.value.toLowerCase();
         filteredReviews = reviews.filter(review => 
-          (review.courseTitle && review.courseTitle.toLowerCase().includes(query)) ||
-          (review.courseCode && review.courseCode.toLowerCase().includes(query)) ||
-          (review.professorName && review.professorName.toLowerCase().includes(query)) ||
-          (review.reviewText && review.reviewText.toLowerCase().includes(query))
+          (review.coursetitle && review.coursetitle.toLowerCase().includes(query)) ||
+          (review.coursecode && review.coursecode.toLowerCase().includes(query)) ||
+          (review.professorname && review.professorname.toLowerCase().includes(query)) ||
+          (review.reviewtext && review.reviewtext.toLowerCase().includes(query))
         );
         currentPage = 1;
         applySorting();
@@ -600,111 +540,108 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Add review form handler
+ 
   if (addReviewForm) {
-    addReviewForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!submitReviewBtn) return;
-      
-      submitReviewBtn.disabled = true;
-      submitReviewBtn.textContent = 'Submitting...';
-      
-      const newReview = {
-        courseTitle: document.getElementById('courseTitle')?.value || 'Untitled Course',
-        courseCode: document.getElementById('courseCode')?.value || 'N/A',
-        professorName: document.getElementById('professorName')?.value || 'Unknown Professor',
-        rating: parseInt(document.getElementById('courseRating')?.value) || 3,
-        reviewText: document.getElementById('reviewText')?.value || 'No review text provided.',
-        author: "You",
-        date: new Date().toISOString().split('T')[0],
-        likes: 0,
-        courseDescription: "No description available yet.",
-        comments: []
-      };
-      
-      try {
-        const response = await fetch(`${API_URL}?action=addReview`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newReview)
+    addReviewForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Gather form data with correct field names
+        const formData = {
+            courseTitle: document.getElementById('courseTitle').value,
+            courseCode: document.getElementById('courseCode').value,
+            professorName: document.getElementById('professorName').value,
+            courseRating: document.getElementById('courseRating').value,
+            reviewText: document.getElementById('reviewText').value,
+            author: "Anonymous Student", // You might want to get this from user session
+            date: new Date().toISOString().split('T')[0] // YYYY-MM-DD format
+        };
+
+        // Send to your API
+        fetch('https://d5fad21c-f428-429a-9bb1-2ac8b3537d7d-00-1ca4huywajoo5.pike.replit.dev/CRapi.php?action=addReview', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Review submitted successfully!');
+                // Close modal and refresh reviews
+                bootstrap.Modal.getInstance(document.getElementById('addReviewModal')).hide();
+                loadReviews(); // You should have this function to reload reviews
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while submitting the review.');
         });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        
-        if (result.success) {
-          // Add to beginning of array
-          newReview.id = result.id;
-          reviews.unshift(newReview);
-          filteredReviews = [...reviews];
-          
-          // Reset form and close modal
-          addReviewForm.reset();
-          const modal = bootstrap.Modal.getInstance(document.getElementById('addReviewModal'));
-          if (modal) modal.hide();
-          
-          // Reset filters to show new review
-          currentCourse = 'all';
-          currentRating = 'all';
-          currentSort = 'newest';
-          currentPage = 1;
-          
-          // Reset UI
-          if (filterDropdown) {
-            filterDropdown.querySelectorAll('.dropdown-item').forEach(item => {
-              item.classList.remove('active');
-              if (item.dataset.course === 'all' || item.dataset.rating === 'all') {
-                item.classList.add('active');
-              }
-            });
-          }
-          
-          if (filterButton) {
-            filterButton.textContent = 'Filter';
-          }
-          
-          if (sortDropdown) {
-            sortDropdown.querySelectorAll('.dropdown-item').forEach(item => {
-              item.classList.remove('active');
-              if (item.dataset.sort === 'newest') {
-                item.classList.add('active');
-              }
-            });
-          }
-          
-          if (sortButton) {
-            sortButton.textContent = 'Sort';
-          }
-          
-          // Refresh display
-          applyFilters();
-          
-          // Show success message
-          const toastEl = document.getElementById('submitSuccessToast');
-          if (toastEl) {
-            const toast = new bootstrap.Toast(toastEl);
-            toast.show();
-          }
-        }
-      } catch (error) {
-        console.error('Error submitting review:', error);
-        // Show error message
-        const toastEl = document.getElementById('submitErrorToast');
-        if (toastEl) {
-          const toast = new bootstrap.Toast(toastEl);
-          toast.show();
-        }
-      } finally {
-        if (submitReviewBtn) {
-          submitReviewBtn.disabled = false;
-          submitReviewBtn.textContent = 'Submit';
-        }
-      }
     });
   }
 
-  // Initialize
+  // Helper function to generate star ratings
+  function generateStars(rating) {
+    const fullStars = '★'.repeat(Math.floor(rating));
+    const emptyStars = '☆'.repeat(5 - Math.ceil(rating));
+    return fullStars + emptyStars;
+  }
+
+  function loadReviews() {
+    fetch('https://d5fad21c-f428-429a-9bb1-2ac8b3537d7d-00-1ca4huywajoo5.pike.replit.dev/CRapi.php?action=getReviews')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                displayReviews(data.data);
+            } else {
+                console.error('Error loading reviews:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+  }
+
+  function displayReviews(reviews) {
+    const container = document.getElementById('reviewsContainer');
+    if (!container) {
+        console.error('Reviews container not found');
+        return;
+    }
+
+    container.innerHTML = '';
+
+    reviews.forEach(review => {
+        const reviewElement = document.createElement('article');
+        reviewElement.className = 'col-md-4 mb-4';
+        reviewElement.innerHTML = `
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="card-title">${review.courseTitle || review.coursetitle || 'Untitled Course'}</h5>
+                        <div class="rating-stars">${generateStars(review.courseRating || review.rating || 0)}</div>
+                    </div>
+                    <h6 class="card-subtitle mb-2 text-muted">${review.courseCode || review.coursecode || 'N/A'} • ${review.professorName || review.professorname || 'Unknown Professor'}</h6>
+                    <p class="card-text">${review.reviewText || review.reviewtext || 'No review text provided.'}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">${review.author || 'Anonymous'} • ${review.date || 'Unknown date'}</small>
+                        <div>
+                            <button class="btn btn-sm btn-outline-success me-1 like-btn" data-id="${review.id}">👍 ${review.likes || 0}</button>
+                            <button class="btn btn-sm btn-outline-primary details-btn" data-id="${review.id}">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        container.appendChild(reviewElement);
+    });
+  }
+
+  // Initial load of reviews
   loadReviews();
-});
+  });
+
+  // Initialize
+  

@@ -2,20 +2,20 @@
 // Database configuration
 $host = 'localhost';
 $username = 'myadmin';
-$password = 'wwe123';
+$password = 'WWe123';
 
 try {
     // Create connection without database
     $pdo = new PDO("mysql:host=$host", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+
     // Create database if it doesn't exist
     $pdo->exec("CREATE DATABASE IF NOT EXISTS unihubb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     echo "Database created successfully<br>";
-    
+
     // Select the database
     $pdo->exec("USE unihubb");
-    
+
     // Create events table
     $sql = "CREATE TABLE IF NOT EXISTS events (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,66 +33,66 @@ try {
 
     $pdo->exec($sql);
     echo "Table 'events' created successfully<br>";
-    
+
     // Create reviews table (for course reviews)
     $sql = "CREATE TABLE IF NOT EXISTS reviews (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        course_title VARCHAR(255) NOT NULL,
-        course_code VARCHAR(50) NOT NULL,
-        professor_name VARCHAR(255) NOT NULL,
+        coursetitle VARCHAR(255) NOT NULL,
+        coursecode VARCHAR(50) NOT NULL,
+        professorname VARCHAR(255) NOT NULL,
         rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
-        review_text TEXT NOT NULL,
+        reviewtext TEXT NOT NULL,
         author VARCHAR(255) NOT NULL,
         date DATE NOT NULL,
-        course_description TEXT,
+        coursedescription TEXT,
         likes INT DEFAULT 0,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        createdat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
-    
+
     $pdo->exec($sql);
     echo "Table 'reviews' created successfully<br>";
-    
+
     // Create review_likes table
-    $sql = "CREATE TABLE IF NOT EXISTS review_likes (
+    $sql = "CREATE TABLE IF NOT EXISTS reviewlikes (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        review_id INT NOT NULL,
-        user_identifier VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (review_id) REFERENCES reviews(id) ON DELETE CASCADE,
-        UNIQUE KEY (review_id, user_identifier)
+        reviewid INT NOT NULL,
+        useridentifier VARCHAR(255) NOT NULL,
+        createdat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (reviewid) REFERENCES reviews(id) ON DELETE CASCADE,
+        UNIQUE KEY (reviewid, useridentifier)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
-    
+
     $pdo->exec($sql);
     echo "Table 'review_likes' created successfully<br>";
-    
+
     // Create comments table
     $sql = "CREATE TABLE IF NOT EXISTS comments (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        review_id INT NOT NULL,
+        reviewid INT NOT NULL,
         author VARCHAR(255) NOT NULL,
         text TEXT NOT NULL,
         date DATE NOT NULL,
         likes INT DEFAULT 0,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (review_id) REFERENCES reviews(id) ON DELETE CASCADE
+        createdat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (reviewid) REFERENCES reviews(id) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
-    
+
     $pdo->exec($sql);
     echo "Table 'comments' created successfully<br>";
-    
+
     // Create comment_likes table
-    $sql = "CREATE TABLE IF NOT EXISTS comment_likes (
+    $sql = "CREATE TABLE IF NOT EXISTS commentlikes (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        comment_id INT NOT NULL,
-        user_identifier VARCHAR(255) NOT NULL,
+        commentid INT NOT NULL,
+        useridentifier VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE,
-        UNIQUE KEY (comment_id, user_identifier)
+        FOREIGN KEY (commentid) REFERENCES comments(id) ON DELETE CASCADE,
+        UNIQUE KEY (commentid, useridentifier)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
-    
+
     $pdo->exec($sql);
-    echo "Table 'comment_likes' created successfully<br>";
-    
+    echo "Table 'commentlikes' created successfully<br>";
+
     // Insert sample events
     $sampleEvents = [
         [
@@ -123,15 +123,15 @@ try {
             'popularity' => 75
         ]
     ];
-    
+
     $stmt = $pdo->prepare("INSERT INTO events (title, event_date, location, description, category, image_path, popularity) 
                           VALUES (:title, :event_date, :location, :description, :category, :image_path, :popularity)");
-    
+
     foreach ($sampleEvents as $event) {
         $stmt->execute($event);
     }
     echo "Sample events inserted successfully<br>";
-    
+
     // Insert sample reviews
     $sampleReviews = [
         [
@@ -168,15 +168,15 @@ try {
             'likes' => 8
         ]
     ];
-    
+
     $stmt = $pdo->prepare("INSERT INTO reviews (course_title, course_code, professor_name, rating, review_text, author, date, course_description, likes) 
                           VALUES (:course_title, :course_code, :professor_name, :rating, :review_text, :author, :date, :course_description, :likes)");
-    
+
     foreach ($sampleReviews as $review) {
         $stmt->execute($review);
     }
     echo "Sample reviews inserted successfully<br>";
-    
+
     // Insert sample comments
     $sampleComments = [
         [
@@ -201,17 +201,17 @@ try {
             'likes' => 2
         ]
     ];
-    
+
     $stmt = $pdo->prepare("INSERT INTO comments (review_id, author, text, date, likes) 
                           VALUES (:review_id, :author, :text, :date, :likes)");
-    
+
     foreach ($sampleComments as $comment) {
         $stmt->execute($comment);
     }
     echo "Sample comments inserted successfully<br>";
-    
+
     echo "<h2>Database initialization completed successfully!</h2>";
-    
+
 } catch(PDOException $e) {
     die("Database initialization failed: " . $e->getMessage());
 }
