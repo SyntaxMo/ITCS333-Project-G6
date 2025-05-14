@@ -19,13 +19,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav mr-auto">
-                  <a class="nav-link" href="../homePage/index.html">Home</a>
+                  <a class="nav-link" href="../homePage/index.php">Home</a>
                 <a class="nav-link" href="../Campus News/Campus News.php">Campus News</a>
                 <a class="nav-link" href="../course-review2/Course-Review.php">Course Review</a>
                 <a class="nav-link" href="../Events Calendar/Events-Calender.php">Events Calendar</a>
-                <a class="nav-link" href="../Phase1_Course-Notes/Course-Notes.php">Course Notes</a>
+                <a class="nav-link active" href="../Phase1_Course-Notes/Course-Notes.php">Course Notes</a>
                 <a class="nav-link" href="../Phase1-ClubActivity/ClubActivity.php">Club Activities</a>
-                <a class="nav-link active" href="StudentMarketplace.php">Student Marketplace</a>
+                <a class="nav-link " href="StudentMarketplace.php">Student Marketplace</a>
             </div>
         </div>
     </div>
