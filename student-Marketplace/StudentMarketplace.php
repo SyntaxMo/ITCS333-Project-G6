@@ -1,3 +1,7 @@
+<?php 
+// No need for database connection anymore as we're using the API
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,13 +12,11 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     <link href="style.css" rel="stylesheet">
-    
-    </head>
+</head>
 
 
-    <body>
+<body>
 
 <!-- Header -->
 
@@ -31,12 +33,12 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav mr-auto">
                 <a class="nav-link" href="../index.html">Home</a>
-                <a class="nav-link" href="../Campus News/Campus News.html">Campus News</a>
-                <a class="nav-link" href="../course-review2/Course-Review.html">Course Review</a>
-                <a class="nav-link" href="../Events Calendar/Events-Calender.html">Events Calendar</a>
-                <a class="nav-link" href="../Phase1_Course-Notes/Course-Notes.html">Course Notes</a>
-                <a class="nav-link" href="../Phase1-ClubActivity/ClubActivity.html">Club Activities</a>
-                <a class="nav-link active" href="StudentMarketplace.html">Student Marketplace</a>
+                <a class="nav-link" href="../Campus News/Campus News.php">Campus News</a>
+                <a class="nav-link" href="../course-review2/Course-Review.php">Course Review</a>
+                <a class="nav-link" href="../Events Calendar/Events-Calender.php">Events Calendar</a>
+                <a class="nav-link" href="../Phase1_Course-Notes/Course-Notes.php">Course Notes</a>
+                <a class="nav-link" href="../Phase1-ClubActivity/ClubActivity.php">Club Activities</a>
+                <a class="nav-link active" href="StudentMarketplace.php">Student Marketplace</a>
             </div>
         </div>
     </div>
@@ -48,7 +50,7 @@
         <section class="mb-4">
             <div class="d-flex justify-content-start align-items-center w-100" style="flex-wrap: nowrap;">
                 <!-- Search Bar (Left corners not rounded) -->
-                <input type="search" class="form-control" placeholder="Search marketplace..." style="border-radius: 0.375rem 0 0 0.375rem; min-width: 120px; border-right: none;">
+                <input type="search" id="search-input" class="form-control" placeholder="Search marketplace..." style="border-radius: 0.375rem 0 0 0.375rem; min-width: 120px; border-right: none;">
 
                 <!-- Filter Dropdown (No rounded corners) -->
                 <div class="dropdown flex-shrink-0" style="margin-left: -1px;">
@@ -87,9 +89,9 @@
                         Sort
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                        <li><a class="dropdown-item" href="#">Price Low-High</a></li>
-                        <li><a class="dropdown-item" href="#">Price High-Low</a></li>
-                        <li><a class="dropdown-item" href="#">Newest</a></li>
+                        <li><a class="dropdown-item" href="#" data-sort="price-low-high">Price Low-High</a></li>
+                        <li><a class="dropdown-item" href="#" data-sort="price-high-low">Price High-Low</a></li>
+                        <li><a class="dropdown-item" href="#" data-sort="newest">Newest</a></li>
                     </ul>
                 </div>
         
@@ -120,13 +122,13 @@
                         <label for="itemCategory" class="form-label">Category:</label>
                         <select class="form-control" id="itemCategory" name="itemCategory" required>
                             <option value="" disabled selected>Select Category</option>
-                            <option value="Books">Books</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Clothing">Clothing</option>
-                            <option value="Furniture">Furniture</option>
-                            <option value="Accessories">Accessories</option>
-                            <option value="Sports Equipment">Sports Equipment</option>
-                            <option value="Others">Others</option>
+                            <option value="1">Books</option>
+                            <option value="2">Electronics</option>
+                            <option value="3">Clothing</option>
+                            <option value="4">Furniture</option>
+                            <option value="5">Accessories</option>
+                            <option value="6">Sports Equipment</option>
+                            <option value="7">Others</option>
                         </select>
                     </div>
 
@@ -141,7 +143,7 @@
                     </div>
 
                     <div class="mb-3">
-                    <button type="submit" class="btn btn-success w-100">Submit Item</button>
+                    <button type="button" class="btn btn-success w-100" id="submitItemButton">Submit Item</button>
                     </div>
 
                     <div class="mb-3">
@@ -181,6 +183,9 @@
 <footer class="text-center py-3 mt-5">
     &copy; 2025 UNIHUB. All rights reserved.
 </footer>
+    <!-- JavaScript dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="config.js"></script>
     <script src="index.js"></script>
 </body>
 </html>

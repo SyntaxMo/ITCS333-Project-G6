@@ -14,7 +14,7 @@
 <!-- Header -->
 <header class="p-3 navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="../index.html">
+        <a class="navbar-brand" href="../index.php">
             <img src="Logo.png" alt="Logo" width="30" height="24">
         </a>
         <button class="navbar-toggler ms-auto" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
@@ -22,13 +22,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav mr-auto">
-                <a class="nav-link" href="../index.html">Home</a>
-                <a class="nav-link" href="../Campus News/Campus News.html">Campus News</a>
-                <a class="nav-link active" href="../course-review2/Course-Review.html">Course Review</a>
-                <a class="nav-link" href="../Events Calendar/Events-Calender.html">Events Calendar</a>
-                <a class="nav-link" href="../Phase1_Course-Notes/Course-Notes.html">Course Notes</a>
-                <a class="nav-link" href="../Phase1-ClubActivities/Phase1-ClubActivity/ClubActivity.html">Club Activities</a>
-                <a class="nav-link" href="../studente Marketplace/StudentMarketplace.html">Student Marketplace</a>
+                <a class="nav-link" href="../index.php">Home</a>
+                <a class="nav-link" href="../Campus News/Campus News.php">Campus News</a>
+                <a class="nav-link active" href="../course-review2/Course-Review.php">Course Review</a>
+                <a class="nav-link" href="../Events Calendar/Events-Calender.php">Events Calendar</a>
+                <a class="nav-link" href="../Phase1_Course-Notes/Course-Notes.php">Course Notes</a>
+                <a class="nav-link" href="../Phase1-ClubActivities/Phase1-ClubActivity/ClubActivity.php">Club Activities</a>
+                <a class="nav-link" href="../studente Marketplace/StudentMarketplace.php">Student Marketplace</a>
             </div>
         </div>
     </div>
@@ -123,24 +123,24 @@
                 <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addReviewForm">
+                <form id="addReviewForm" action="process_review.php" method="POST">
                     <div class="mb-3">
                         <label class="form-label">Course Title</label>
-                        <input type="text" class="form-control" id="courseTitle" required>
+                        <input type="text" class="form-control" id="courseTitle" name="courseTitle" required>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Course Code</label>
-                            <input type="text" class="form-control" id="courseCode" placeholder="e.g., COMP 101" required>
+                            <input type="text" class="form-control" id="courseCode" name="courseCode" placeholder="e.g., COMP 101" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Professor Name</label>
-                            <input type="text" class="form-control" id="professorName" required>
+                            <input type="text" class="form-control" id="professorName" name="professorName" required>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Rating</label>
-                        <select class="form-select" id="courseRating" required>
+                        <select class="form-select" id="courseRating" name="courseRating" required>
                             <option value="">Select rating</option>
                             <option value="5">★★★★★ (5/5)</option>
                             <option value="4">★★★★☆ (4/5)</option>
@@ -151,7 +151,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Review</label>
-                        <textarea class="form-control" id="reviewText" rows="3" required></textarea>
+                        <textarea class="form-control" id="reviewText" name="reviewText" rows="3" required></textarea>
                     </div>
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-success" id="submitReviewBtn">Submit</button>
@@ -165,8 +165,9 @@
 
 <!-- Footer -->
 <footer class="text-center py-3 mt-5">
-    &copy; 2025 UNIHUB. Course Review Module
+    &copy; <?php echo date("Y"); ?> UNIHUB. Course Review Module
 </footer>
+<script src="config.js"></script>
 <script src="test.js"></script>
 </body>
-</html>
+</html> 

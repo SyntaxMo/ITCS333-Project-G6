@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Article - UniHub</title>
+  <link rel="icon" href="../images/Logo.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="Style.css" rel="stylesheet" />
+</head>
+<body>
+<main class="container mt-4">
+  <h2 class="mb-4">Edit Article</h2>
+  <form id="editArticleForm" enctype="multipart/form-data">
+    <div id="form-errors" class="text-danger mb-3"></div>
+    <div class="mb-3">
+      <label class="form-label">Title <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" name="title" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">College <span class="text-danger">*</span></label>
+      <select class="form-select" name="college" required>
+        <option value="" disabled>Select a college</option>
+        <option value="all">All Colleges</option>
+        <option value="College of Law">College of Law</option>
+        <option value="College of Arts">College of Arts</option>
+        <option value="College of Science">College of Science</option>
+        <option value="College of Engineering">College of Engineering</option>
+        <option value="Bahrain Teachers College">Bahrain Teachers College</option>
+        <option value="College of Applied Science">College of Applied Science</option>
+        <option value="College of Information Technology">College of Information Technology</option>
+        <option value="College of Business Administration">College of Business Administration</option>
+        <option value="College of Health and Sport Sciences">College of Health and Sport Sciences</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Course Code (optional)</label>
+      <input type="text" class="form-control" name="course_code" placeholder="e.g., CS101">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Current Image</label><br>
+      <img id="currentImage" src="" alt="Current Article Image" style="max-width:200px; max-height:150px; border-radius:8px; margin-bottom:10px;">
+      <!-- Add this right after the current image display -->
+    <input type="hidden" id="originalImage" name="originalImage" value="">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Change Image</label>
+      <div class="input-group">
+        <input type="file" class="form-control" id="image_file" name="image_file" accept="image/*">
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Content</label>
+      <textarea id="editorContent" name="content" class="form-control" rows="8" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-outline-primary">Update</button>
+  </form>
+</main>
+<div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customModalLabel">Message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="customModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modalCloseBtn">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    if (!articleId) {
+        document.querySelector('main').innerHTML = '<p class="text-danger">No article selected.</p>';
+        return;
+    }
+
+    const baseUrl = "https://7c52feb7-4a7c-440b-af78-47bb633d14a6-00-2v8szsbn47wab.sisko.replit.dev/";
+
+    fetch(`${api}?action=getNews&` + new Date().getTime())
+        .then(response => response.json())
+        .then(articles => {
+            const article = articles.find(a => a.id == articleId);
+            if (!article) throw new Error('Article not found');
+
+            // Populate the edit form fields
+            document.querySelector('input[name="title"]').value = article.title;
+            document.querySelector('select[name="college"]').value = article.college;
+            if (article.courseCode) {
+                document.querySelector('input[name="course_code"]').value = article.courseCode;
+            }
+            document.getElementById('currentImage').src = article.image 
+                ? baseUrl + article.image 
+                : baseUrl + 'Pic/default.jpg';
+            document.getElementById('editorContent').value = article.content;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('form-errors').textContent = error.message;
+        });
+});
+const imageInput = document.getElementById('image_file');
+if (imageInput.files.length > 0) {
+    formData.append('image_file', imageInput.files[0]);
+}
+</script>
+</body>
+</html>

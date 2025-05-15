@@ -1,242 +1,314 @@
-// Mock API URL 
-const apiUrl = "https://jsonplaceholder.typicode.com/posts";
+const API_BASE_URL = API_CONFIG.BASE_URL;
+
+// Get product ID from URL
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get('id');
+
+if (!productId) {
+    window.location.href = 'StudentMarketplace.php';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    let currentItem = null;
-
-    function getItemDetails() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const itemId = urlParams.get('id');
-        
-        const items = JSON.parse(localStorage.getItem('marketplaceItems')) || [];
-        currentItem = items.find(item => item.id.toString() === itemId);
-
-        if (currentItem) {
-            updateItemDisplay(currentItem);
-        } else {
-            alert('Item not found!');
-            window.location.href = 'StudentMarketplace.html';
-        }
-    }
-
-    function updateItemDisplay(item) {
-        document.querySelector('h2.card-title').textContent = item.title;
-        document.querySelector('p.card-text:nth-of-type(1)').innerHTML = `<strong>Price:</strong> ${item.price}`;
-        document.querySelector('p.card-text:nth-of-type(2)').innerHTML = `<strong>Description:</strong> ${item.description}`;
-        
-        const imgElement = document.querySelector('.img-fluid');
-        imgElement.src = item.imageData || item.image;
-        imgElement.onerror = function() {
-            this.src = '../images/marketplace.jpeg';
-        };
-    }
-
-    function setupDeleteButton() {
-        const deleteBtn = document.querySelector('.btn-danger');
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', () => {
-                if (confirm('Are you sure you want to delete this item?')) {
-                    const items = JSON.parse(localStorage.getItem('marketplaceItems')) || [];
-                    const updatedItems = items.filter(item => item.id !== currentItem.id);
-                    localStorage.setItem('marketplaceItems', JSON.stringify(updatedItems));
-                    window.location.href = 'StudentMarketplace.html';
-                }
-            });
-        }
-    }
-
-    function setupEditButton() {
-        const editBtn = document.querySelector('.btn-outline-secondary');
-        if (editBtn) {
-            editBtn.addEventListener('click', () => {
-                const currentText = editBtn.textContent;
-                
-                if (currentText === 'Edit') {
-                    makeContentEditable(true);
-                    editBtn.textContent = 'Save Changes';
-                    editBtn.classList.add('btn-success');
-                    editBtn.classList.remove('btn-outline-secondary');
-                } else {
-                    if (saveChanges()) {
-                        makeContentEditable(false);
-                        editBtn.textContent = 'Edit';
-                        editBtn.classList.remove('btn-success');
-                        editBtn.classList.add('btn-outline-secondary');
-                    }
-                }
-            });
-        }
-    }
-
-    function makeContentEditable(editable) {
-        const title = document.querySelector('h2.card-title');
-        const priceText = document.querySelector('p.card-text:nth-of-type(1)');
-        const descText = document.querySelector('p.card-text:nth-of-type(2)');
-        const imgElement = document.querySelector('.img-fluid');
-        const imgContainer = imgElement.parentElement;
-        
-        if (editable) {
-            title.contentEditable = true;
-            title.classList.add('form-control', 'mb-2', 'h2');
+    // Update the back button functionality
+    const backButton = document.querySelector('a[href="StudentMarketplace.php"]');
+    if (backButton) {
+        backButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Get the saved state from localStorage
+            const savedState = JSON.parse(localStorage.getItem('marketplaceState') || '{}');
             
-            const priceValue = currentItem.price.replace(' BHD', '');
-            priceText.innerHTML = `
-                <strong>Price:</strong>
-                <div class="input-group mb-3">
-                    <input type="number" class="form-control" value="${priceValue}" step="0.01" min="0">
-                    <span class="input-group-text">BHD</span>
-                </div>`;
+            // Build the URL with the saved state parameters
+            const params = new URLSearchParams();
+            if (savedState.page && savedState.page !== 1) params.set('page', savedState.page);
+            if (savedState.sort && savedState.sort !== 'newest') params.set('sort', savedState.sort);
+            if (savedState.category && savedState.category !== 'all') params.set('category', savedState.category);
+            if (savedState.priceRange && savedState.priceRange !== 'all') params.set('priceRange', savedState.priceRange);
+            if (savedState.searchTerm) params.set('searchTerm', savedState.searchTerm);
             
-            descText.innerHTML = `
-                <strong>Description:</strong>
-                <textarea class="form-control mt-2 mb-3">${currentItem.description}</textarea>
-                <strong>Change Image:</strong>
-                <input type="file" class="form-control mt-2" id="imageInput" accept="image/*">`;
-
-            const imageInput = document.getElementById('imageInput');
-            imageInput.addEventListener('change', async (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    try {
-                        const newImageData = await handleImageUpload(e.target.files[0]);
-                        imgElement.src = newImageData;
-                        currentItem.imageData = newImageData;
-                    } catch (error) {
-                        alert(error.message || 'Error uploading image');
-                    }
-                }
-            });
-            
-            title.style.padding = '0.375rem';
-            title.style.border = '1px solid #ced4da';
-            title.style.borderRadius = '0.25rem';
-        } else {
-            title.contentEditable = false;
-            title.classList.remove('form-control', 'mb-2', 'h2');
-            title.style.padding = '';
-            title.style.border = '';
-            title.style.borderRadius = '';
-            
-            updateItemDisplay(currentItem);
-        }
-    }
-
-    async function handleImageUpload(file) {
-        if (!file || !file.type.startsWith('image/')) {
-            throw new Error('Please select a valid image file');
-        }
-
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    let width = img.width;
-                    let height = img.height;
-                    
-                    const maxSize = 800;
-                    if (width > height && width > maxSize) {
-                        height *= maxSize / width;
-                        width = maxSize;
-                    } else if (height > maxSize) {
-                        width *= maxSize / height;
-                        height = maxSize;
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    resolve(canvas.toDataURL('image/jpeg', 0.6));
-                };
-                img.onerror = () => reject(new Error('Failed to process image'));
-                img.src = e.target.result;
-            };
-            reader.onerror = () => reject(new Error('Failed to read file'));
-            reader.readAsDataURL(file);
+            // Redirect with the preserved state
+            const queryString = params.toString();
+            window.location.href = `StudentMarketplace.php${queryString ? '?' + queryString : ''}`;
         });
     }
-
-    function saveChanges() {
-        const title = document.querySelector('h2.card-title').textContent.trim();
-        const priceInput = document.querySelector('p.card-text:nth-of-type(1) input');
-        const descTextarea = document.querySelector('p.card-text:nth-of-type(2) textarea');
-        
-        if (!title || !priceInput?.value || !descTextarea?.value) {
-            alert('Please fill out all fields');
-            return false;
-        }
-        
-        currentItem.title = title;
-        currentItem.price = priceInput.value + ' BHD';
-        currentItem.description = descTextarea.value;
-        // Image data is already updated in the currentItem when file is selected
-        
-        const items = JSON.parse(localStorage.getItem('marketplaceItems')) || [];
-        const itemIndex = items.findIndex(item => item.id === currentItem.id);
-        if (itemIndex !== -1) {
-            items[itemIndex] = currentItem;
-            localStorage.setItem('marketplaceItems', JSON.stringify(items));
-            return true;
-        }
-        return false;
-    }
-
-    // Setup Comment Form
-    function setupCommentForm() {
-        const commentForm = document.querySelector('#commentForm form');
-        if (commentForm) {
-            commentForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const name = document.querySelector('#commenterName').value.trim();
-                const comment = document.querySelector('#commentText').value.trim();
-                
-                if (!name || !comment) {
-                    alert('Please fill out both name and comment');
-                    return;
-                }
-                
-                const comments = JSON.parse(localStorage.getItem(`comments_${currentItem.id}`) || '[]');
-                comments.unshift({
-                    name: name,
-                    comment: comment,
-                    date: new Date().toISOString()
-                });
-                
-                localStorage.setItem(`comments_${currentItem.id}`, JSON.stringify(comments));
-                displayComments();
-                
-                commentForm.reset();
-                const bsCollapse = bootstrap.Collapse.getInstance(document.querySelector('#commentForm'));
-                if (bsCollapse) {
-                    bsCollapse.hide();
-                }
-            });
-        }
-    }
-
-    function displayComments() {
-        const commentsSection = document.querySelector('section.mt-5');
-        const existingComments = commentsSection.querySelectorAll('.comment-box');
-        existingComments.forEach(comment => comment.remove());
-        
-        const comments = JSON.parse(localStorage.getItem(`comments_${currentItem.id}`) || '[]');
-        
-        comments.forEach(comment => {
-            commentsSection.insertAdjacentHTML('beforeend', `
-                <div class="comment-box">
-                    <h5>${comment.name}</h5>
-                    <p>${comment.comment}</p>
-                </div>
-            `);
-        });
-    }
-
-    // Initialize page
-    getItemDetails();
-    setupDeleteButton();
-    setupEditButton();
-    setupCommentForm();
-    displayComments();
+    
+    fetchProductDetails();
+    setupEventListeners();
+    loadComments();
 });
+
+function setupEventListeners() {
+    // Try to get the edit form - don't throw error if not found yet
+    const editForm = document.getElementById('editItemForm');
+    if (editForm) {
+        editForm.addEventListener('submit', handleEditSubmit);
+    }
+    
+    // Try to get the comment form - don't throw error if not found yet
+    const commentForm = document.querySelector('#commentForm form');
+    if (commentForm) {
+        commentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await handleCommentSubmit(e);
+        });
+    }
+
+    // Try to get the image input - don't throw error if not found yet
+    const imageInput = document.getElementById('itemImageInput');
+    if (imageInput) {
+        imageInput.addEventListener('change', handleImagePreview);
+    }
+}
+
+async function fetchProductDetails() {
+    try {
+        const response = await fetch(`${API_BASE_URL}?action=read&id=${productId}`);
+        if (!response.ok) throw new Error('Failed to fetch product details');
+
+        const result = await response.json();
+        if (result.success && result.data) {
+            displayProductDetails(result.data);
+            populateEditForm(result.data);
+        } else {
+            throw new Error('Product not found');
+        }
+    } catch (error) {
+        showError('Failed to load product details. Please try again later.');
+    }
+}
+
+function displayProductDetails(product) {
+    document.getElementById('itemName').textContent = product.name;
+    document.getElementById('itemPrice').textContent = `${product.price} BHD`;
+    document.getElementById('itemDescription').textContent = product.description;
+    
+    const itemImage = document.getElementById('itemImage');
+    if (itemImage) {
+        if (product.image_path) {
+            // Fix image path construction
+            const imagePath = product.image_path.startsWith('uploads/') ? product.image_path : 'uploads/' + product.image_path;
+            itemImage.src = imagePath;
+            itemImage.onerror = function() {
+                this.onerror = null; // Remove the handler after first error
+                this.src = 'images/dumbCar.jpg';
+            };
+        } else {
+            itemImage.src = 'images/dumbCar.jpg';
+        }
+    }
+}
+
+function populateEditForm(product) {
+    document.getElementById('itemNameInput').value = product.name;
+    document.getElementById('itemPriceInput').value = product.price;
+    document.getElementById('itemDescriptionInput').value = product.description;
+    
+    const editImage = document.getElementById('editItemImage');
+    if (editImage) {
+        if (product.image_path) {
+            // Fix image path construction for edit preview
+            const imagePath = product.image_path.startsWith('uploads/') ? product.image_path : 'uploads/' + product.image_path;
+            editImage.src = imagePath;
+            editImage.onerror = function() {
+                this.onerror = null;
+                this.src = 'images/dumbCar.jpg';
+            };
+        } else {
+            editImage.src = 'images/dumbCar.jpg';
+        }
+    }
+}
+
+function toggleEditMode(show) {
+    document.getElementById('item-details').style.display = show ? 'none' : 'flex';
+    document.getElementById('edit-form').style.display = show ? 'flex' : 'none';
+}
+
+async function handleEditSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    
+    try {
+        const formData = {
+            id: productId,
+            name: form.elements.name.value,
+            description: form.elements.description.value,
+            price: parseFloat(form.elements.price.value)
+        };
+
+        // Handle image if one was selected
+        const imageFile = form.elements.image?.files[0];
+        if (imageFile) {
+            const base64Image = await convertImageToBase64(imageFile);
+            // Get only the base64 part after the comma
+            formData.image = base64Image.split(',')[1];
+        }
+
+        const response = await fetch(`${API_BASE_URL}?action=update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            showSuccess('Product updated successfully');
+            // Refresh the product details to show new image
+            await fetchProductDetails();
+            toggleEditMode(false);
+        } else {
+            throw new Error(result.message || 'Failed to update product');
+        }
+    } catch (error) {
+        showError(error.message);
+    }
+}
+
+async function handleDelete() {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}?action=delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: productId })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            window.location.href = 'StudentMarketplace.php';
+        } else {
+            throw new Error(result.message || 'Failed to delete product');
+        }
+    } catch (error) {
+        showError(error.message);
+    }
+}
+
+function handleImagePreview(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('editItemImage').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Comments functionality
+async function loadComments() {
+    try {
+        const response = await fetch(`${API_BASE_URL}?action=comment&product_id=${productId}`);
+        if (!response.ok) throw new Error('Failed to fetch comments');
+
+        const result = await response.json();
+        if (result.success) {
+            displayComments(result.data);
+        }
+    } catch (error) {
+        showError('Failed to load comments');
+    }
+}
+
+async function handleCommentSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const commenterName = form.elements['commenter_name'].value.trim();
+    const commentText = form.elements['comment_text'].value.trim();
+
+    if (!commenterName || !commentText) {
+        showError('Please fill in both name and comment fields');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}?action=comment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                commenter_name: commenterName,
+                comment_text: commentText
+            })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            form.reset();
+            showSuccess('Comment added successfully');
+            await loadComments(); // This will refresh the comments list
+            bootstrap.Collapse.getInstance(document.getElementById('commentForm')).hide();
+        } else {
+            throw new Error(result.message || 'Failed to add comment');
+        }
+    } catch (error) {
+        console.error('Comment error:', error);
+        showError(error.message || 'Failed to add comment. Please try again.');
+    }
+}
+
+function displayComments(comments) {
+    const container = document.querySelector('.comments-container');
+    if (!comments || comments.length === 0) {
+        container.innerHTML = '<p class="text-muted">No comments yet. Be the first to comment!</p>';
+        return;
+    }
+
+    container.innerHTML = comments.map(comment => `
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">${escapeHtml(comment.name)}</h5>
+                <p class="card-text text-break">${escapeHtml(comment.comment_text)}</p>
+                <small class="text-muted">Posted on ${new Date(comment.created_at).toLocaleString()}</small>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Utility functions
+function showError(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.querySelector('main').insertBefore(alertDiv, document.querySelector('section'));
+    setTimeout(() => alertDiv.remove(), 5000);
+}
+
+function showSuccess(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.querySelector('main').insertBefore(alertDiv, document.querySelector('section'));
+    setTimeout(() => alertDiv.remove(), 5000);
+}
+
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+async function convertImageToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}

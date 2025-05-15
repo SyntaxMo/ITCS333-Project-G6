@@ -9,48 +9,55 @@
   <link href="Style.css" rel="stylesheet" />
 </head>
 <body>
+  <script src="ViewNews.js" defer></script>
 <!-- Header -->
 <header class="p-3 navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="../index.html">
-            <img src="Pic\Logo.png" alt="Logo" width="30" height="24">
+        <a class="navbar-brand" href="https://syntaxmo.github.io/ITCS333-Project-G6/index.html">
+            <img src="https://syntaxmo.github.io/ITCS333-Project-G6/images/Logo.png" alt="Logo" width="30" height="24">
         </a>
         <button class="navbar-toggler ms-auto" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav mr-auto">
-                <a class="nav-link" href="../index.html">Home</a>
-                <a class="nav-link active" href="../Campus News/Campus News.html">Campus News</a>
-                <a class="nav-link" href="../course-review2/Course-Review.html">Course Review</a>
-                <a class="nav-link" href="../Events Calendar/Events-Calender.html">Events Calendar</a>
-                <a class="nav-link" href="../Phase1_Course-Notes/Course-Notes.html">Course Notes</a>
-                <a class="nav-link" href="../Phase1-ClubActivity/ClubActivity.html">Club Activities</a>
-                <a class="nav-link" href="../student-Marketplace/StudentMarketplace.html">Student Marketplace</a>
+                <a class="nav-link" href="https://syntaxmo.github.io/ITCS333-Project-G6/index.html">Home</a>
+                <a class="nav-link active" href="https://syntaxmo.github.io/ITCS333-Project-G6/Campus News/CampusNews.html">Campus News</a>
+                <a class="nav-link" href="https://d5fad21c-f428-429a-9bb1-2ac8b3537d7d-00-1ca4huywajoo5.pike.replit.dev/Course-review.php">Course Review</a>
+                <a class="nav-link" href="https://72550fef-bf50-419e-a582-64ecf4d18546-00-1dq0623xo0z6m.pike.replit.dev/Events-Calendar/Events-Calender.php">Events Calendar</a>
+                <a class="nav-link" href="https://63d98e1d-18eb-45d2-a341-3e5b80497860-00-2allsb7etny4v.pike.replit.dev/Phase1_Course-Notes/Course-Notes.php">Course Notes</a>
+                <a class="nav-link" href="https://72550fef-bf50-419e-a582-64ecf4d18546-00-1dq0623xo0z6m.pike.replit.dev/ClubActivity/ClubActivity.php">Club Activities</a>
+                <a class="nav-link" href="https://72550fef-bf50-419e-a582-64ecf4d18546-00-1dq0623xo0z6m.pike.replit.dev/student-Marketplace/StudentMarketplace.php">Student Marketplace</a>
             </div>
         </div>
     </div>
-  </header>
-  
-
-
-
-
+</header>
 <!--Main-->
 <main class="container mt-4">
-    <!-- Back, Edit, and Delete Buttons -->
-    <div class="mb-3 d-flex justify-content-between">
-        <a href="Campus News.html" class="btn" style="background-color: #4DA1A9; color: white;">Back</a>
-        <div>
-            <a href="AddArticle.html" class="btn btn-outline-secondary">Edit</a>
-            <button class="btn btn-danger">Delete</button>
-        </div>
-    </div>
+<div class="mb-3 d-flex gap-2">
+  <a href="CampusNews.html" class="btn" style="background-color: #4DA1A9; color: white;">Back to Campus News</a>
+  <div>
+    <button class="btn btn-outline-secondary" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#editArticleCollapse"
+            aria-expanded="false"
+            aria-controls="editArticleCollapse"
+            onclick="loadEditArticle()">Edit</button>
+    <button class="btn btn-danger" id="deleteButton">Delete</button>
+  </div>
+</div>
+<!-- Add this collapse container below the buttons -->
+<div class="collapse mt-3" id="editArticleCollapse">
+  <div class="card card-body" id="editArticleContent">
+        Loading form...
+  </div>
+</div>
+
         <!-- News Article Section -->
         <section class="row">
             <!-- Article Image -->
             <div class="col-md-5">
-                <img src="Pic\University-of-Bahrain-1260x630.jpg" class="img-fluid rounded" alt="Article Image">
+                <img src="Pic\University-of-Bahrain-1260x630.jpg" class="img-fluid rounded article-image" alt="Article Image">
             </div>
     
             <!-- Article Title & Content -->
@@ -60,6 +67,7 @@
                     <div class="article-meta">
                         <p class="h5 mb-1">🗓️ [Publication Date]</p>
                         <p class="h5 mb-0">✍️ [Author Name]</p>
+                        <p class="h5 mb-0"></p>
                     </div>
                 </div>
                 <div class="article-content mt-3">
@@ -68,63 +76,78 @@
             </div>
         </section>
     
-        <!-- Comments Section -->
-        <section class="mt-5">
-            <h3>Comments:</h3>
-    
-            <!-- Add New Comment Toggle Button -->
-            <button class="btn btn-success mt-3 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#commentForm" aria-expanded="false" aria-controls="commentForm">
+<section class="mb-5 mt-5">
+            <h3 class="comment-header mb-4">Comments</h3>
+
+            <!-- Add Comment Button -->
+            <button class="btn btn-success mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#commentForm">
                 Add a Comment
             </button>
-    
-            <!-- Collapsible Form -->
-            <div class="collapse" id="commentForm">
+<div class="collapse" id="commentForm">
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Add a Comment</h5>
-                        <form>
+                          <form id="addCommentForm" class="mb-4">
                             <div class="mb-3">
                                 <label for="commenterName" class="form-label">Your Name:</label>
-                                <input type="text" class="form-control" id="commenterName" placeholder="Enter your name" required>
+                                <input type="text" class="form-control" id="commenterName" name="commenterName" placeholder="Enter your name" required>
                             </div>
                             <div class="mb-3">
                                 <label for="commentText" class="form-label">Your Comment:</label>
-                                <textarea class="form-control" id="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
+                                <textarea class="form-control" id="commentText" name="commentText" rows="3" placeholder="Write your comment here..." required></textarea>
                             </div>
                             <button type="submit" class="btn btn-success w-100">Submit Comment</button>
                         </form>
+                        
                     </div>
                 </div>
             </div>
-        
-            <!-- Placeholder Comments -->
-            <div class="comment-box">
-                <h5>Student Name</h5>
-                <p>The comment go here</p>
-            </div>
-            <div class="comment-box">
-                <h5>Student Name</h5>
-                <p>The comment go here</p>
-            </div>
-            <div class="comment-box">
-                <h5>Student Name</h5>
-                <p>The comment go here</p>
-            </div>
+<!-- Comments List -->
+            <div id="commentsList"></div>
         </section>
     </main>
     
+    <!-- Feedback Modal -->
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="feedbackModalLabel">Notification</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="feedbackModalBody"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-cancel" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-confirm btn-primary" style="border-radius: 0.375rem">Confirm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <footer class="text-center py-3 mt-5">
         &copy; 2025 UNIHUB. All rights reserved.
     </footer>
-    
-    </body>
-    </html>
-<!-- Footer -->
-<footer class="text-center py-3 mt-5">
-  &copy; 2025 UNIHUB. All rights reserved.
-</footer>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="CampusNews.js" defer></script>
+<script src="ViewNews.js" defer></script>
+
+
+<!-- Edit Comment Modal -->
+<div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customModalLabel">Edit Comment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="customModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modalCloseBtn">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

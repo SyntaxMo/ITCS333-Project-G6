@@ -71,7 +71,7 @@ body {
 }
 
 /* Primary and success button styles */
-.btn-primary, .btn-success {
+.btn-primary, .btn-success .btn-confirm {
     background-color: #4DA1A9;
     border-color: #4DA1A9;
     color: #F6F4F0;
@@ -80,7 +80,7 @@ body {
 }
 
 /* Primary and success button hover effects */
-.btn-primary:hover, .btn-success:hover {
+.btn-primary:hover, .btn-success:hover, .btn-confirm:hover {
     background-color: #79D7BE;
     border-color: #79D7BE;
     color: #2E5077;
@@ -102,7 +102,7 @@ body {
 }
 
 /* Outline primary button style */
-.btn-outline-primary {
+.btn-outline-primary, .btn-confirm {
     background-color: #4DA1A9;
     border-color: #4DA1A9;
     color: #F6F4F0;
@@ -186,3 +186,37 @@ body {
 .comment-box p {
     color: #4DA1A9;
 }
+/* In your Style.css */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.col-md-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+    #commentForm .btn-success {
+    background-color: #4DA1A9 !important;
+    border-color: #4DA1A9 !important;
+}
+
+#commentForm .btn-success:hover {
+    background-color: #79D7BE !important;
+    border-color: #79D7BE }
+.btn-success {
+    background-color: #4DA1A9 !important;
+    border-color: #4DA1A9 !important;
+    color: #F6F4F0 !important;
+}
+
+.btn-success:hover {
+    background-color: #79D7BE !important;
+    border-color: #79D7BE !important;
+    color: #2E5077 !important;
+    transition: all 0.2s ease; 
+  }
