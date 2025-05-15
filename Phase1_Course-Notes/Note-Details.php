@@ -25,7 +25,7 @@
                     <a class="nav-link" href="https://72550fef-bf50-419e-a582-64ecf4d18546-00-1dq0623xo0z6m.pike.replit.dev/Events-Calendar/Events-Calender.php">Events Calendar</a>
                     <a class="nav-link active" href="https://63d98e1d-18eb-45d2-a341-3e5b80497860-00-2allsb7etny4v.pike.replit.dev/Phase1_Course-Notes/Course-Notes.php">Course Notes</a>
                     <a class="nav-link" href="https://72550fef-bf50-419e-a582-64ecf4d18546-00-1dq0623xo0z6m.pike.replit.dev/ClubActivity/ClubActivity.php">Club Activities</a>
-                    <a class="nav-link" href="https://72550fef-bf50-419e-a582-64ecf4dhttps://72550fef-bf50-419e-a582-64ecf4d18546-00-1dq0623xo0z6m.pike.replit.dev/student-Marketplace/StudentMarketplace.php">Student Marketplace</a>
+                    <a class="nav-link" href="https://72550fef-bf50-419e-a582-64ecf4d18546-00-1dq0623xo0z6m.pike.replit.dev/student-Marketplace/StudentMarketplace.php">Student Marketplace</a>
                 </div>
             </div>
         </div>
