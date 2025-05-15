@@ -2,8 +2,7 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-// .. SHOW ERRORS for debugging
-ini_set('display_errors', 1); 
+ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 $host = getenv("db_host") ?: "127.0.0.1";
@@ -14,9 +13,9 @@ $dbname = "unihubb";
 $response = ['success' => false, 'message' => 'Invalid action'];
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo = new PDO("mysql:host=$host", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+    $pdo->exec("USE `$dbname`");
     $action = $_GET['action'] ?? ($_POST['action'] ?? '');
 
     switch ($action) {
