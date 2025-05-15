@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 $host = getenv("db_host") ?: "127.0.0.1";
 $username = getenv("db_user") ?: "myadmin";
 $password = getenv("db_pass") ?: "wwe123";
-$dbname = "unihubb";
+$dbname = getenv("db_name") ?: "unihubb";
 
 try {
     $pdo = new PDO("mysql:host=$host", $username, $password);

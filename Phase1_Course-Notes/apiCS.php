@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 $host = getenv("db_host") ?: "127.0.0.1";
 $username = getenv("db_user") ?: "myadmin";
 $password = getenv("db_pass") ?: "wwe123";
-$dbname = "unihubb";
+$dbname = getenv("db_name") ?: "unihubb";
 
 $response = ['success' => false, 'message' => 'Invalid action'];
 
