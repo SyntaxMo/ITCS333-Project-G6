@@ -11,7 +11,7 @@
 <body>
 <header class="p-3 navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="../index.html">
+        <a class="navbar-brand" href="../index.php">
             <img src="Logo.png" alt="Logo" width="30" height="24">
         </a>
         <button class="navbar-toggler ms-auto" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
@@ -19,13 +19,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav mr-auto">
-                  <a class="nav-link" href="../homePage/index.html">Home</a>
+                  <a class="nav-link" href="../homePage/index.php">Home</a>
                 <a class="nav-link" href="../Campus News/Campus News.php">Campus News</a>
                 <a class="nav-link" href="../course-review2/Course-Review.php">Course Review</a>
                 <a class="nav-link" href="../Events Calendar/Events-Calender.php">Events Calendar</a>
-                <a class="nav-link" href="../Phase1_Course-Notes/Course-Notes.php">Course Notes</a>
+                <a class="nav-link active" href="../Phase1_Course-Notes/Course-Notes.php">Course Notes</a>
                 <a class="nav-link" href="../Phase1-ClubActivity/ClubActivity.php">Club Activities</a>
-                <a class="nav-link active" href="StudentMarketplace.php">Student Marketplace</a>
+                <a class="nav-link " href="../student-Marketplace/StudentMarketplace.php">Student Marketplace</a>
             </div>
         </div>
     </div>
@@ -33,7 +33,7 @@
 
 <main class="container mt-4 note-details-page">
     <div class="mb-3 d-flex gap-2">
-        <a href="Course-Notes.html" class="btn btn-success">← Back to Notes</a>
+        <a href="Course-Notes.php" class="btn btn-success">← Back to Notes</a>
         <button class="btn btn-outline-secondary" id="editBtn">Edit</button>
         <button class="btn btn-danger" id="deleteBtn">Delete</button>
     </div>
@@ -109,8 +109,10 @@
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-<script src="index.js"></script>
+ 
 <script src="config.js"></script>
+<script src="index.js"></script>
+
 
 </body>
 </html>

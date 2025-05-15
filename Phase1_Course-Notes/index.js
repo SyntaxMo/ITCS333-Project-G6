@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const { BASE_URL } = typeof window.API_CONFIG !== 'undefined' ? window.API_CONFIG : require('./config.js');
+   const BASE_URL = window.API_CONFIG?.BASE_URL || './apiCS.php';
     const API_URL = BASE_URL;
     console.log('API_URL:', API_URL);
 
@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-        // Load comments (FULLY CORRECTED)
+        // Load comments 
         function loadComments() {
             fetch(`${API_URL}?action=getComments&noteId=${noteId}`)
                 .then(response => response.json())
@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     noteId: noteId,
                     author: formData.get('name'),
                     text: formData.get('comment'),
-                    date: new Date().toLocaleDateString()
+             date: new Date().toISOString().split('T')[0]
                 })
             })
             .then(response => response.json())
