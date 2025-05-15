@@ -10,27 +10,27 @@
     <link href="Style.css" rel="stylesheet">
 </head>
 <body>
-<header class="p-3 navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="../index.php">
-            <img src="Logo.png" alt="Logo" width="30" height="24">
-        </a>
-        <button class="navbar-toggler ms-auto" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav mr-auto">
-                 <a class="nav-link" href="../homePage/index.php">Home</a>
-                <a class="nav-link" href="../Campus News/Campus News.php">Campus News</a>
-                <a class="nav-link" href="../course-review2/Course-Review.php">Course Review</a>
-                <a class="nav-link" href="../Events Calendar/Events-Calender.php">Events Calendar</a>
-                <a class="nav-link active" href="../Phase1_Course-Notes/Course-Notes.php">Course Notes</a>
-                <a class="nav-link" href="../Phase1-ClubActivity/ClubActivity.php">Club Activities</a>
-                <a class="nav-link " href="../student-Marketplace/StudentMarketplace.php">Student Marketplace</a>
+  <header class="p-3 navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="https://syntaxmo.github.io/ITCS333-Project-G6/index.html">
+                <img src="https://syntaxmo.github.io/ITCS333-Project-G6/images/Logo.png" alt="Logo" width="30" height="24">
+            </a>
+            <button class="navbar-toggler ms-auto" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-link active" href="https://syntaxmo.github.io/ITCS333-Project-G6/index.html">Home</a>
+                    <a class="nav-link" href="https://syntaxmo.github.io/ITCS333-Project-G6/Campus News/CampusNews.html">Campus News</a>
+                    <a class="nav-link" href="https://d5fad21c-f428-429a-9bb1-2ac8b3537d7d-00-1ca4huywajoo5.pike.replit.dev/Course-review.php">Course Review</a>
+                    <a class="nav-link" href="https://72550fef-bf50-419e-a582-64ecf4d18546-00-1dq0623xo0z6m.pike.replit.dev/Events-Calendar/Events-Calender.php">Events Calendar</a>
+                    <a class="nav-link" href="https://63d98e1d-18eb-45d2-a341-3e5b80497860-00-2allsb7etny4v.pike.replit.dev/Phase1_Course-Notes/Course-Notes.php">Course Notes</a>
+                    <a class="nav-link" href="https://72550fef-bf50-419e-a582-64ecf4d18546-00-1dq0623xo0z6m.pike.replit.dev/ClubActivity/ClubActivity.php">Club Activities</a>
+                    <a class="nav-link" href="https://72550fef-bf50-419e-a582-64ecf4d18546-00-1dq0623xo0z6m.pike.replit.dev/student-Marketplace/StudentMarketplace.php">Student Marketplace</a>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
 <main class="container mt-4 course-notes-page">
     <section class="mb-4">
