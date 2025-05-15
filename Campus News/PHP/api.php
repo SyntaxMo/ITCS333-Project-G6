@@ -9,6 +9,9 @@ require_once 'DatabaseHelper.php';
 
 $db = new DatabaseHelper($config);
 
+$db->createNewsTable();
+$db->createCommentsTable();
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
@@ -113,14 +116,29 @@ function addNews($db) {
 }
 
 function editNews($db) {
-    if (empty($_POST['id'])) {
-        throw new Exception('Article ID is required');
+    if (empty($_POST['id']) || empty($_POST['title']) || empty($_POST['college'])) {
+        throw new Exception('Article ID, title, and college are required');
     }
-    $imagePath = $_POST['originalImage'] ?? 'Pic/default.jpg';
-    if (!empty($_FILES['image_file']['tmp_name'])) {
+
+    $id = $_POST['id'];
+    $title = $_POST['title'];
+    $content = $_POST['content'] ?? '';
+    $college = $_POST['college'];
+    $courseCode = $_POST['course_code'] ?? null;
+
+    // Fetch current image
+    $stmt = $db->prepare('SELECT image FROM news WHERE id = ?');
+    $stmt->execute([$id]);
+    $existing = $stmt->fetch();
+    if (!$existing) throw new Exception("Article not found");
+    $imagePath = $existing['image'];
+
+    // Check if new image uploaded
+    if (!empty($_FILES['image_file']['tmp_name']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
         $validTypes = ['image/jpeg', 'image/png', 'image/gif'];
         $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = finfo_file($fileInfo, $_FILES['image_file']['tmp_name']);
+
         if (in_array($mime, $validTypes)) {
             $ext = str_replace('image/', '', $mime);
             $uploadDir = __DIR__ . '/Pic/';
@@ -130,6 +148,7 @@ function editNews($db) {
             }
             $filename = 'article_' . time() . '.' . $ext;
             $targetPath = $uploadDir . $filename;
+
             if (move_uploaded_file($_FILES['image_file']['tmp_name'], $targetPath)) {
                 $imagePath = $webDir . $filename;
             }
@@ -137,14 +156,8 @@ function editNews($db) {
     }
 
     $stmt = $db->prepare('UPDATE news SET title = ?, content = ?, college = ?, courseCode = ?, image = ?, date = NOW() WHERE id = ?');
-    $stmt->execute([
-        $_POST['title'],
-        $_POST['content'],
-        $_POST['college'],
-        $_POST['course_code'] ?? null,
-        $imagePath,
-        $_POST['id']
-    ]);
+    $stmt->execute([$title, $content, $college, $courseCode, $imagePath, $id]);
+
     return ['success' => true, 'message' => 'Article updated successfully'];
 }
 
